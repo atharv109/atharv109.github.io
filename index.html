@@ -327,6 +327,14 @@
             padding: 50px 40px;
             transition: all 0.4s;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .skill-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .skill-item:hover {
@@ -497,6 +505,14 @@
             padding: 35px;
             transition: all 0.3s;
             text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .contact-item:hover {
@@ -620,6 +636,7 @@
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#skills">Skills</a></li>
+                <li><a href="#activities">Activities</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -627,12 +644,13 @@
 
     <section id="home">
         <div class="hero-content">
-            <div class="hero-label">CYBERSECURITY PROFESSIONAL</div>
+            <div class="hero-label">CYBERSECURITY STUDENT · PENN STATE</div>
             <h1>Atharv Mittal</h1>
-            <p class="subtitle">SOC Operations Specialist & Security Researcher</p>
+            <p class="subtitle">Security Engineer · Builder · CTF Competitor</p>
             <p class="description">
-                Results-driven cybersecurity professional with enterprise SOC experience, CompTIA Security+ certification, 
-                and expertise in SIEM technologies, threat detection, and incident response across 5,000+ endpoints.
+                Cybersecurity student at Penn State with CompTIA Security+ and hands-on experience in SOC operations,
+                threat detection, vulnerability analysis, Python-based security tooling, and full-stack software development.
+                Building practical security skills across enterprise environments, detection engineering labs, and real-world product work.
             </p>
             <div class="hero-cta">
                 <a href="#projects" class="btn-primary">View Projects</a>
@@ -649,12 +667,23 @@
             </div>
             <div class="timeline">
                 <div class="timeline-item">
-                    <h3>Cyber Security Intern</h3>
-                    <div class="meta">Centrient Pharma · Oct 2025 - Dec 2025 · Gurugram, HR</div>
+                    <h3>Founder / Full-Stack Web Developer</h3>
+                    <div class="meta">Independent Web Development Business · Oct 2025 – Present · Remote</div>
                     <ul>
-                        <li>Assisted SOC operations across 5,000+ enterprise endpoints using Microsoft Defender and Mimecast, monitoring an average of 200+ alerts per day generated from EDP telemetry</li>
-                        <li>Supported daily alert triage and security monitoring by performing network traffic analysis on flow logs and IDS alerts, helping review and categorize dozens of security alerts per week</li>
-                        <li>Applied incident response frameworks while performing log analysis on Active Directory and cloud environments, leading containment actions and enforcing three key organizational security policies</li>
+                        <li>Built and deployed production-ready applications for approximately 50 local business clients using React, Next.js, TypeScript, Node.js, Supabase, and Stripe — managing the full delivery lifecycle end-to-end</li>
+                        <li>Implemented frontend, backend, database design, authentication, and payment workflows for real customer-facing systems, applying secure coding practices throughout</li>
+                        <li>Generated approximately $5,000/month in revenue through recurring and project-based web development services while operating fully remotely</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <h3>Cyber Security Intern</h3>
+                    <div class="meta">Centrient Pharma · Oct 2025 – Dec 2025 · Gurugram, India</div>
+                    <ul>
+                        <li>Supported SOC operations across 5,000+ enterprise endpoints using Microsoft Defender and Mimecast, monitoring and triaging 200+ daily security alerts to identify and escalate threats</li>
+                        <li>Investigated security events to assess severity, identify indicators of suspicious or malicious behavior, and escalate confirmed threats for response and containment</li>
+                        <li>Performed log analysis across Active Directory and cloud-connected environments to support incident investigations and improve operational security visibility</li>
+                        <li>Learned enterprise ticketing and escalation workflows end-to-end — following incidents from alert generation through analyst handling, triage, and coordinated response</li>
+                        <li>Collaborated with IT teams to enforce 3 key security policies, strengthening baseline mitigations and security hygiene across enterprise systems</li>
                     </ul>
                 </div>
             </div>
@@ -675,36 +704,53 @@
             <div class="projects-grid">
                 <div class="project-card">
                     <h3>Adversary Emulation & Detection Lab</h3>
-                    <div class="date">January 2026</div>
+                    <div class="date">January 2026 · MITRE ATT&CK | Wazuh, Elastic, Sigma</div>
                     <ul>
-                        <li>Simulated 10+ MITRE ATT&CK techniques across Discovery, Persistence, Lateral Movement, and Collection in a controlled lab environment</li>
-                        <li>Collected and analyzed endpoint telemetry from Windows and Linux hosts using Wazuh and Elastic, authoring custom Sigma detection rules to identify malicious behavior</li>
+                        <li>Designed and executed a full adversary emulation environment simulating 10+ MITRE ATT&CK techniques across Discovery, Persistence, Lateral Movement, and Collection on Windows and Linux hosts</li>
+                        <li>Deployed Wazuh and Elastic SIEM to ingest and correlate endpoint telemetry, enabling end-to-end behavioral visibility of simulated attacker activity</li>
+                        <li>Authored 10+ custom Sigma detection rules mapped to specific ATT&CK technique IDs, building a reusable detection content library and strengthening detection engineering skills</li>
                     </ul>
                 </div>
                 <div class="project-card">
                     <h3>TinyVulnScanner</h3>
-                    <div class="date">September 2025 - November 2025</div>
+                    <div class="date">Sep 2025 – Nov 2025 · Python Security Automation</div>
                     <ul>
-                        <li>Built a multi-threaded Python vulnerability scanner capable of scanning hundreds of ports per target, performing banner grabbing and automated vulnerability checks</li>
-                        <li>Detected multiple OWASP Top 10 issues including reflected XSS, Boolean-based SQL injection, and missing security headers, generating structured HTML and JSON reports</li>
+                        <li>Engineered a multi-threaded Python scanner capable of probing 500+ ports concurrently (~70% faster than sequential), automating detection of reflected XSS and SQL injection vulnerabilities</li>
+                        <li>Implemented detection across critical OWASP Top 10 categories and generated structured HTML and JSON reports with per-vulnerability severity ratings for clear remediation workflows</li>
                     </ul>
                 </div>
                 <div class="project-card">
-                    <h3>EDUAI - AI-Powered Study Scheduler</h3>
-                    <div class="date">January 2025 - April 2025</div>
+                    <h3>Prompt Optimiser</h3>
+                    <div class="date">2026 · Chrome/Edge Extension | Llama 3.3 70B, Groq</div>
                     <ul>
-                        <li>Built an AI-powered scheduler using Canvas LMS data across 5+ courses and 30+ academic tasks to automate study planning</li>
-                        <li>Applied ML-based workload prediction to estimate assignment completion time, achieving partial accuracy and revealing challenges in modeling subjective academic effort</li>
-                        <li>Designed and tested a dynamic scheduling engine that adapts to overlapping deadlines and exam-heavy weeks</li>
+                        <li>Built and shipped a production browser extension running user prompts through a 6-stage AI optimization pipeline powered by Llama 3.3 70B via Groq API</li>
+                        <li>Designed the full browser-side architecture including real-time DOM injection, API integration, and state management — compatible across ChatGPT, Claude, and Gemini</li>
+                        <li>Strengthened hands-on experience in browser-side engineering, applied LLM tooling, and user-focused software design</li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <h3>Proto Paper</h3>
+                    <div class="date">January 2026 · Hackathon | React, Python</div>
+                    <ul>
+                        <li>Built a full-stack tool that converts uploaded research PDFs into actionable experiment guides — including required materials lists and runnable Python simulation code</li>
+                        <li>Led frontend development and contributed to backend implementation, delivering a working product under hackathon time constraints</li>
+                        <li>Reduced research operationalization time from hours to under 2 minutes by automating the translation of dense technical content into reproducible workflows</li>
+                    </ul>
+                </div>
+                <div class="project-card">
+                    <h3>EDUAI – AI-Powered Study Scheduler</h3>
+                    <div class="date">Jan 2025 – Apr 2025 · Python, ML, Canvas LMS</div>
+                    <ul>
+                        <li>Built an AI-assisted scheduling system ingesting data from 5+ courses and 30+ tasks via Canvas LMS, applying ML techniques to estimate assignment effort and optimize study allocation</li>
+                        <li>Evaluated real-world limitations of predictive modeling on subjective workload data, developing practical intuition for data quality, model reliability, and applied ML challenges</li>
                     </ul>
                 </div>
                 <div class="project-card">
                     <h3>AI Outfit Recommender</h3>
-                    <div class="date">2025</div>
+                    <div class="date">2025 · Python, Machine Learning</div>
                     <ul>
-                        <li>Developed an AI-powered outfit recommender generating top-N clothing combinations using item attributes and user preferences</li>
-                        <li>Processed dozens of apparel items and contextual factors (occasion, season), highlighting challenges in modeling subjective fashion taste</li>
-                        <li>Identified key system limitations related to data sparsity and personalization depth, informing future ML-driven improvements</li>
+                        <li>Developed an AI-powered outfit recommender generating top-N clothing combinations using item attributes and user preferences across occasion and seasonal context</li>
+                        <li>Identified key system limitations related to data sparsity and personalization depth, informing future ML-driven improvements in preference modeling</li>
                     </ul>
                 </div>
             </div>
@@ -719,20 +765,85 @@
             </div>
             <div class="skills-grid">
                 <div class="skill-item">
-                    <h3>SIEM & Detection</h3>
-                    <p>Wazuh, Elastic, Sigma Rules, Custom Detection Engineering, Log Analysis, Threat Hunting</p>
+                    <h3>SIEM & Detection Engineering</h3>
+                    <p>Wazuh, Elastic, Sigma Rules, Custom Detection Rules, Log Analysis, Threat Hunting, MITRE ATT&CK Mapping</p>
                 </div>
                 <div class="skill-item">
                     <h3>Endpoint & Email Security</h3>
-                    <p>Microsoft Defender, Mimecast, EDR/XDR Platforms, Malware Analysis</p>
+                    <p>Microsoft Defender, Mimecast, EDR/XDR Platforms, Alert Triage, Incident Escalation, Enterprise SOC Operations</p>
                 </div>
                 <div class="skill-item">
-                    <h3>Vulnerability Management</h3>
-                    <p>Vulnerability Scanning, OWASP Top 10, CVE Analysis, Penetration Testing</p>
+                    <h3>Application & Web Security</h3>
+                    <p>OWASP Top 10, Vulnerability Scanning, Reflected XSS, SQL Injection, Web App Pen Testing, Security Automation</p>
                 </div>
                 <div class="skill-item">
-                    <h3>Programming & Automation</h3>
-                    <p>Python, JavaScript, SQL, Bash, Security Automation, Scripting</p>
+                    <h3>Programming & Scripting</h3>
+                    <p>Python, JavaScript, TypeScript, Bash, PowerShell, SQL — security tooling, automation, and full-stack development</p>
+                </div>
+                <div class="skill-item">
+                    <h3>Full-Stack Development</h3>
+                    <p>React, Next.js, Vite, Tailwind CSS, Node.js, Supabase, Stripe — production-grade client-facing systems</p>
+                </div>
+                <div class="skill-item">
+                    <h3>Systems & Networking</h3>
+                    <p>Windows, Linux, Active Directory, DNS, DHCP, TCP/IP, TLS/SSL, Routing Fundamentals, Cloud Environments</p>
+                </div>
+                <div class="skill-item">
+                    <h3>AI & LLM Tooling</h3>
+                    <p>Groq API, Llama 3.3 70B, Browser Extension Development, Prompt Engineering, AI-powered Automation, API Integration</p>
+                </div>
+                <div class="skill-item">
+                    <h3>Offensive Security</h3>
+                    <p>CTF Competitions, Hack The Box, Adversary Emulation, Reverse Engineering, OSINT, Pwn, Cryptography Challenges</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="activities">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Competitions & Practice</div>
+                <h2>Technical Activities</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>CTF Competitions</h3>
+                    <div class="meta">2026 · Solo Competitor</div>
+                    <ul>
+                        <li><strong>LACTF 2026</strong> — Solo · Top 100 · Feb 7–9, 2026 · Solved challenges across web, crypto, reverse engineering, pwn, and miscellaneous categories; published writeups on GitHub</li>
+                        <li><strong>0xFun CTF 2026</strong> — Solo · Top 110+ · Feb 12–14, 2026 · Completed challenges spanning web, pwn, crypto, forensics, and OSINT-oriented problem solving</li>
+                        <li><strong>BSides CTF</strong> — Solo · Mar 20, 2026 · Participated primarily in web-focused security challenges</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <h3>Hack The Box</h3>
+                    <div class="meta">Ongoing · Hands-On Offensive Security</div>
+                    <ul>
+                        <li>Completed the WingData machine, strengthening practical skills in offensive security analysis, enumeration, and system investigation</li>
+                        <li>Practiced across challenge categories including web exploitation, binary exploitation, cryptography, forensics, and OSINT</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="section-header" style="margin-top: 80px; margin-bottom: 40px;">
+                <div class="section-label">Community</div>
+                <h2>Leadership</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Head of Cybersecurity Club</h3>
+                    <div class="meta">KBDAV · Jan 2022 – Mar 2023 · Chandigarh, India</div>
+                    <ul>
+                        <li>Led cybersecurity awareness initiatives for students and teachers, covering phishing, hacking techniques, and core security fundamentals</li>
+                        <li>Organized workshops and events to promote practical security knowledge and digital safety across the school community</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <h3>Volunteer</h3>
+                    <div class="meta">Local NGO · Jun 2024 – Aug 2024 · Chandigarh, India</div>
+                    <ul>
+                        <li>Supported community outreach programs focused on digital literacy and online safety education</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -760,6 +871,14 @@
                 <div class="contact-item">
                     <div class="label">Location</div>
                     <a>State College, PA</a>
+                </div>
+                <div class="contact-item">
+                    <div class="label">Languages</div>
+                    <a>English · Hindi · Punjabi</a>
+                </div>
+                <div class="contact-item">
+                    <div class="label">Education</div>
+                    <a>Penn State · B.S. Cybersecurity · 2028</a>
                 </div>
             </div>
         </div>
@@ -884,16 +1003,21 @@
         }, observerOptions);
 
         // Observe all animated elements
-        document.querySelectorAll('.section-header, .timeline-item, .project-card').forEach(el => {
+        document.querySelectorAll('.section-header, .timeline-item, .project-card, .skill-item, .contact-item').forEach(el => {
             observer.observe(el);
         });
 
         // Smooth scroll
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
             });
         });
     </script>
