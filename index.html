@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atharv Mittal - Cybersecurity Professional</title>
+    <title>Atharv Mittal - Cybersecurity + Full-Stack Builder</title>
     <style>
         * {
             margin: 0;
@@ -556,6 +556,224 @@
             font-size: 0.95rem;
         }
 
+
+
+        /* Portfolio update additions - keeps original visual system */
+        .hero-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 34px 0 48px;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.85s;
+        }
+
+        .metric-pill {
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 0.92rem;
+            white-space: nowrap;
+        }
+
+        .metric-pill strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .project-tags, .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 22px 0 0;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 0.78rem;
+            letter-spacing: 0.2px;
+        }
+
+        .spotlight-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        .spotlight-card {
+            background: rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            padding: 48px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .spotlight-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .spotlight-card h3 {
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 18px;
+            letter-spacing: -0.7px;
+        }
+
+        .spotlight-card p {
+            color: rgba(255, 255, 255, 0.58);
+            line-height: 1.75;
+            margin-bottom: 18px;
+        }
+
+        .code-line {
+            margin-top: 26px;
+            padding: 18px 20px;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            color: rgba(255, 255, 255, 0.78);
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            font-size: 0.88rem;
+            overflow-x: auto;
+        }
+
+        .ask-panel {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 34px;
+            align-items: stretch;
+        }
+
+        .ask-card {
+            background: rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            padding: 42px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ask-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .ask-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            letter-spacing: -0.4px;
+        }
+
+        .ask-card p, .ask-card li {
+            color: rgba(255, 255, 255, 0.58);
+        }
+
+        .ask-card ul {
+            list-style: none;
+            margin-top: 22px;
+        }
+
+        .ask-card li {
+            margin-bottom: 13px;
+            padding-left: 24px;
+            position: relative;
+            line-height: 1.55;
+        }
+
+        .ask-card li::before {
+            content: '?';
+            position: absolute;
+            left: 0;
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 700;
+        }
+
+        .ask-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .ask-form input, .ask-form textarea {
+            width: 100%;
+            padding: 17px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font: inherit;
+            outline: none;
+            transition: border-color 0.25s, background 0.25s;
+        }
+
+        .ask-form input:focus, .ask-form textarea:focus {
+            border-color: rgba(255, 255, 255, 0.38);
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .ask-form textarea {
+            min-height: 160px;
+            resize: vertical;
+        }
+
+        .form-note {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .status-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.62);
+            margin-top: 26px;
+            font-size: 0.95rem;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.6);
+        }
+
+        .project-link {
+            display: inline-flex;
+            margin-top: 22px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.35);
+        }
+
+        .project-link:hover {
+            border-bottom-color: #fff;
+        }
+
+        @media (max-width: 900px) {
+            .spotlight-grid, .ask-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 1024px) {
             nav, section {
                 padding-left: 40px;
@@ -621,7 +839,7 @@
     <div class="intro-overlay" id="introOverlay">
         <div class="intro-content">
             <div class="intro-logo">AM</div>
-            <div class="intro-tagline">Cybersecurity Professional</div>
+            <div class="intro-tagline">Security · Software · Systems</div>
             <div class="loading-bar"></div>
         </div>
     </div>
@@ -636,7 +854,7 @@
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#skills">Skills</a></li>
-                <li><a href="#activities">Activities</a></li>
+                <li><a href="#ask">Ask Me</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -644,17 +862,23 @@
 
     <section id="home">
         <div class="hero-content">
-            <div class="hero-label">CYBERSECURITY STUDENT · PENN STATE</div>
+            <div class="hero-label">PENN STATE CYBERSECURITY · SECURITY+ · FULL-STACK BUILDER</div>
             <h1>Atharv Mittal</h1>
-            <p class="subtitle">Security Engineer · Builder · CTF Competitor</p>
+            <p class="subtitle">I build security tools, web products, and AI workflows that survive demos.</p>
             <p class="description">
-                Cybersecurity student at Penn State with CompTIA Security+ and hands-on experience in SOC operations,
-                threat detection, vulnerability analysis, Python-based security tooling, and full-stack software development.
-                Building practical security skills across enterprise environments, detection engineering labs, and real-world product work.
+                Cybersecurity student at Penn State with hands-on SOC experience, full-stack product work,
+                CTF practice, and research in vulnerability triage. I like projects where the output is not
+                just a slide deck: it has to run, explain itself, and make a real decision easier.
             </p>
+            <div class="hero-metrics">
+                <div class="metric-pill"><strong>Security+</strong> certified</div>
+                <div class="metric-pill"><strong>50+</strong> client builds</div>
+                <div class="metric-pill"><strong>SOC</strong> alert triage</div>
+                <div class="metric-pill"><strong>CTF</strong> competitor</div>
+            </div>
             <div class="hero-cta">
                 <a href="#projects" class="btn-primary">View Projects</a>
-                <a href="#contact" class="btn-secondary">Get in Touch</a>
+                <a href="#ask" class="btn-secondary">Ask Me Anything</a>
             </div>
         </div>
     </section>
@@ -663,34 +887,49 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-label">Professional Journey</div>
-                <h2>Work Experience</h2>
+                <h2>Experience</h2>
             </div>
             <div class="timeline">
                 <div class="timeline-item">
-                    <h3>Founder / Full-Stack Web Developer</h3>
-                    <div class="meta">Independent Web Development Business · Oct 2025 – Present · Remote</div>
+                    <h3>Founder / Full-Stack Developer</h3>
+                    <div class="meta">Buildora Developers · Remote</div>
                     <ul>
-                        <li>Built and deployed production-ready applications for approximately 50 local business clients using React, Next.js, TypeScript, Node.js, Supabase, and Stripe — managing the full delivery lifecycle end-to-end</li>
-                        <li>Implemented frontend, backend, database design, authentication, and payment workflows for real customer-facing systems, applying secure coding practices throughout</li>
-                        <li>Generated approximately $5,000/month in revenue through recurring and project-based web development services while operating fully remotely</li>
+                        <li>Built and deployed client-facing websites and applications using React, Next.js, TypeScript, Node.js, Supabase, Stripe, and API integrations.</li>
+                        <li>Handled the full delivery cycle: scoping, UI decisions, implementation, deployment, client feedback, and iteration.</li>
+                        <li>Learned to ship under real constraints: unclear requirements, tight timelines, production bugs, and clients who care about outcomes more than tech stacks.</li>
                     </ul>
+                    <div class="tag-row">
+                        <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Node.js</span><span class="tag">Supabase</span><span class="tag">Stripe</span>
+                    </div>
                 </div>
                 <div class="timeline-item">
-                    <h3>Cyber Security Intern</h3>
-                    <div class="meta">Centrient Pharma · Oct 2025 – Dec 2025 · Gurugram, India</div>
+                    <h3>Cybersecurity Intern</h3>
+                    <div class="meta">Centrient Pharma · SOC / Security Operations</div>
                     <ul>
-                        <li>Supported SOC operations across 5,000+ enterprise endpoints using Microsoft Defender and Mimecast, monitoring and triaging 200+ daily security alerts to identify and escalate threats</li>
-                        <li>Investigated security events to assess severity, identify indicators of suspicious or malicious behavior, and escalate confirmed threats for response and containment</li>
-                        <li>Performed log analysis across Active Directory and cloud-connected environments to support incident investigations and improve operational security visibility</li>
-                        <li>Learned enterprise ticketing and escalation workflows end-to-end — following incidents from alert generation through analyst handling, triage, and coordinated response</li>
-                        <li>Collaborated with IT teams to enforce 3 key security policies, strengthening baseline mitigations and security hygiene across enterprise systems</li>
+                        <li>Supported SOC operations across thousands of enterprise endpoints using tools such as Microsoft Defender, Mimecast, Active Directory, and cloud-connected logs.</li>
+                        <li>Triaged daily security alerts, reviewed suspicious events, documented findings, and escalated issues through enterprise ticketing workflows.</li>
+                        <li>Built practical intuition for noisy alerts, severity, containment, and the difference between textbook security and production security.</li>
                     </ul>
+                    <div class="tag-row">
+                        <span class="tag">Microsoft Defender</span><span class="tag">Mimecast</span><span class="tag">Active Directory</span><span class="tag">Log Analysis</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <h3>Research Builder</h3>
+                    <div class="meta">Cybersecurity + Formal Reasoning Projects</div>
+                    <ul>
+                        <li>Working on vulnerability triage ideas that connect advisory data with app-level evidence such as imports, callsites, reachability, guards, and source/sink signals.</li>
+                        <li>Interested in tools that do not just say “this dependency is vulnerable,” but explain whether the specific application is actually exposed.</li>
+                    </ul>
+                    <div class="tag-row">
+                        <span class="tag">OSV</span><span class="tag">VEX</span><span class="tag">Static Analysis</span><span class="tag">Z3-style Reasoning</span>
+                    </div>
                 </div>
             </div>
 
             <div class="cert-badge">
-                <h3>CompTIA Security+ (SY0-701)</h3>
-                <p>Certified January 2026</p>
+                <h3>CompTIA Security+</h3>
+                <p>Security fundamentals, threat analysis, risk, identity, architecture, and operations.</p>
             </div>
         </div>
     </section>
@@ -701,57 +940,75 @@
                 <div class="section-label">Featured Work</div>
                 <h2>Projects</h2>
             </div>
-            <div class="projects-grid">
+            <div class="spotlight-grid">
+                <div class="spotlight-card">
+                    <h3>VulnSwarm-VEX</h3>
+                    <p>
+                        A research prototype for dependency vulnerability triage. The goal is to combine vulnerability intelligence
+                        with application-level evidence so teams can separate “package is vulnerable” from “this app is actually affected.”
+                    </p>
+                    <p>
+                        Evidence includes dependency files, OSV/GHSA/NVD advisories, imports, callsites, reachable risky usage,
+                        source/sink signals, and guard conditions. The output is a VEX-style verdict with justification.
+                    </p>
+                    <div class="code-line">verdict = affected if advisory ∧ reachable_usage ∧ no_guard else under_investigation</div>
+                    <div class="project-tags">
+                        <span class="tag">Cybersecurity Research</span><span class="tag">Python</span><span class="tag">OSV</span><span class="tag">Program Analysis</span>
+                    </div>
+                </div>
+                <div class="spotlight-card">
+                    <h3>Prompt Optimiser</h3>
+                    <p>
+                        A browser extension that improves rough prompts through a multi-stage AI workflow and injects the improved
+                        version into real AI chat surfaces.
+                    </p>
+                    <p>
+                        Built around practical browser-side engineering: DOM handling, API calls, state, UX, and compatibility across
+                        tools like ChatGPT, Claude, and Gemini.
+                    </p>
+                    <div class="code-line">rough_prompt → rewrite → structure → constraints → final_prompt</div>
+                    <div class="project-tags">
+                        <span class="tag">Browser Extension</span><span class="tag">LLM Tooling</span><span class="tag">JavaScript</span><span class="tag">Groq API</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="projects-grid" style="margin-top: 30px;">
                 <div class="project-card">
                     <h3>Adversary Emulation & Detection Lab</h3>
-                    <div class="date">January 2026 · MITRE ATT&CK | Wazuh, Elastic, Sigma</div>
+                    <div class="date">MITRE ATT&CK · Wazuh · Elastic · Sigma</div>
                     <ul>
-                        <li>Designed and executed a full adversary emulation environment simulating 10+ MITRE ATT&CK techniques across Discovery, Persistence, Lateral Movement, and Collection on Windows and Linux hosts</li>
-                        <li>Deployed Wazuh and Elastic SIEM to ingest and correlate endpoint telemetry, enabling end-to-end behavioral visibility of simulated attacker activity</li>
-                        <li>Authored 10+ custom Sigma detection rules mapped to specific ATT&CK technique IDs, building a reusable detection content library and strengthening detection engineering skills</li>
+                        <li>Simulated attacker behavior across Windows and Linux hosts to practice detection engineering from telemetry to rule writing.</li>
+                        <li>Mapped activity to ATT&CK techniques and wrote custom detections for discovery, persistence, lateral movement, and collection-style behavior.</li>
                     </ul>
+                    <div class="project-tags"><span class="tag">Wazuh</span><span class="tag">Elastic</span><span class="tag">Sigma</span><span class="tag">Detection Engineering</span></div>
                 </div>
                 <div class="project-card">
                     <h3>TinyVulnScanner</h3>
-                    <div class="date">Sep 2025 – Nov 2025 · Python Security Automation</div>
+                    <div class="date">Python · Security Automation</div>
                     <ul>
-                        <li>Engineered a multi-threaded Python scanner capable of probing 500+ ports concurrently (~70% faster than sequential), automating detection of reflected XSS and SQL injection vulnerabilities</li>
-                        <li>Implemented detection across critical OWASP Top 10 categories and generated structured HTML and JSON reports with per-vulnerability severity ratings for clear remediation workflows</li>
+                        <li>Built a multi-threaded scanner for port probing and basic reflected XSS / SQL injection checks.</li>
+                        <li>Generated structured findings so the output was closer to a remediation report than a noisy script dump.</li>
                     </ul>
-                </div>
-                <div class="project-card">
-                    <h3>Prompt Optimiser</h3>
-                    <div class="date">2026 · Chrome/Edge Extension | Llama 3.3 70B, Groq</div>
-                    <ul>
-                        <li>Built and shipped a production browser extension running user prompts through a 6-stage AI optimization pipeline powered by Llama 3.3 70B via Groq API</li>
-                        <li>Designed the full browser-side architecture including real-time DOM injection, API integration, and state management — compatible across ChatGPT, Claude, and Gemini</li>
-                        <li>Strengthened hands-on experience in browser-side engineering, applied LLM tooling, and user-focused software design</li>
-                    </ul>
+                    <div class="project-tags"><span class="tag">Python</span><span class="tag">OWASP</span><span class="tag">Automation</span></div>
                 </div>
                 <div class="project-card">
                     <h3>Proto Paper</h3>
-                    <div class="date">January 2026 · Hackathon | React, Python</div>
+                    <div class="date">Hackathon-style Build · Research Tooling</div>
                     <ul>
-                        <li>Built a full-stack tool that converts uploaded research PDFs into actionable experiment guides — including required materials lists and runnable Python simulation code</li>
-                        <li>Led frontend development and contributed to backend implementation, delivering a working product under hackathon time constraints</li>
-                        <li>Reduced research operationalization time from hours to under 2 minutes by automating the translation of dense technical content into reproducible workflows</li>
+                        <li>Built a tool that turns research PDFs into experiment guides, materials lists, and starter simulation code.</li>
+                        <li>Designed the output around reproducibility instead of generic summarization.</li>
                     </ul>
+                    <div class="project-tags"><span class="tag">React</span><span class="tag">Python</span><span class="tag">AI Workflow</span></div>
                 </div>
                 <div class="project-card">
-                    <h3>EDUAI – AI-Powered Study Scheduler</h3>
-                    <div class="date">Jan 2025 – Apr 2025 · Python, ML, Canvas LMS</div>
+                    <h3>EDUAI Study Scheduler</h3>
+                    <div class="date">ML · Scheduling · Canvas LMS</div>
                     <ul>
-                        <li>Built an AI-assisted scheduling system ingesting data from 5+ courses and 30+ tasks via Canvas LMS, applying ML techniques to estimate assignment effort and optimize study allocation</li>
-                        <li>Evaluated real-world limitations of predictive modeling on subjective workload data, developing practical intuition for data quality, model reliability, and applied ML challenges</li>
+                        <li>Built an AI-assisted scheduler that uses course and assignment data to estimate study effort and plan workload.</li>
+                        <li>Learned where predictive systems break when the data is subjective, sparse, or user-dependent.</li>
                     </ul>
-                </div>
-                <div class="project-card">
-                    <h3>AI Outfit Recommender</h3>
-                    <div class="date">2025 · Python, Machine Learning</div>
-                    <ul>
-                        <li>Developed an AI-powered outfit recommender generating top-N clothing combinations using item attributes and user preferences across occasion and seasonal context</li>
-                        <li>Identified key system limitations related to data sparsity and personalization depth, informing future ML-driven improvements in preference modeling</li>
-                    </ul>
+                    <div class="project-tags"><span class="tag">Python</span><span class="tag">ML</span><span class="tag">Product Design</span></div>
                 </div>
             </div>
         </div>
@@ -765,36 +1022,28 @@
             </div>
             <div class="skills-grid">
                 <div class="skill-item">
-                    <h3>SIEM & Detection Engineering</h3>
-                    <p>Wazuh, Elastic, Sigma Rules, Custom Detection Rules, Log Analysis, Threat Hunting, MITRE ATT&CK Mapping</p>
+                    <h3>Security Operations</h3>
+                    <p>Alert triage, SOC workflows, Microsoft Defender, Mimecast, Active Directory, log review, severity judgment, escalation notes.</p>
                 </div>
                 <div class="skill-item">
-                    <h3>Endpoint & Email Security</h3>
-                    <p>Microsoft Defender, Mimecast, EDR/XDR Platforms, Alert Triage, Incident Escalation, Enterprise SOC Operations</p>
+                    <h3>Detection Engineering</h3>
+                    <p>Wazuh, Elastic, Sigma-style logic, MITRE ATT&CK mapping, adversary emulation, endpoint telemetry, suspicious behavior analysis.</p>
                 </div>
                 <div class="skill-item">
-                    <h3>Application & Web Security</h3>
-                    <p>OWASP Top 10, Vulnerability Scanning, Reflected XSS, SQL Injection, Web App Pen Testing, Security Automation</p>
-                </div>
-                <div class="skill-item">
-                    <h3>Programming & Scripting</h3>
-                    <p>Python, JavaScript, TypeScript, Bash, PowerShell, SQL — security tooling, automation, and full-stack development</p>
+                    <h3>Application Security</h3>
+                    <p>OWASP Top 10, dependency vulnerabilities, reflected XSS, SQL injection, vulnerability scanning, source/sink thinking, secure coding.</p>
                 </div>
                 <div class="skill-item">
                     <h3>Full-Stack Development</h3>
-                    <p>React, Next.js, Vite, Tailwind CSS, Node.js, Supabase, Stripe — production-grade client-facing systems</p>
+                    <p>React, Next.js, TypeScript, Node.js, Supabase, Stripe, REST APIs, authentication flows, deployment, client-facing production builds.</p>
                 </div>
                 <div class="skill-item">
-                    <h3>Systems & Networking</h3>
-                    <p>Windows, Linux, Active Directory, DNS, DHCP, TCP/IP, TLS/SSL, Routing Fundamentals, Cloud Environments</p>
+                    <h3>Programming</h3>
+                    <p>Python, JavaScript, TypeScript, Bash, PowerShell, SQL, automation scripts, scanners, browser tooling, and backend workflows.</p>
                 </div>
                 <div class="skill-item">
-                    <h3>AI & LLM Tooling</h3>
-                    <p>Groq API, Llama 3.3 70B, Browser Extension Development, Prompt Engineering, AI-powered Automation, API Integration</p>
-                </div>
-                <div class="skill-item">
-                    <h3>Offensive Security</h3>
-                    <p>CTF Competitions, Hack The Box, Adversary Emulation, Reverse Engineering, OSINT, Pwn, Cryptography Challenges</p>
+                    <h3>AI + Builder Tools</h3>
+                    <p>LLM workflows, prompt systems, AI browser extensions, Groq API, research-to-code workflows, rapid prototyping, demo design.</p>
                 </div>
             </div>
         </div>
@@ -809,41 +1058,62 @@
             <div class="timeline">
                 <div class="timeline-item">
                     <h3>CTF Competitions</h3>
-                    <div class="meta">2026 · Solo Competitor</div>
+                    <div class="meta">Solo Competitor</div>
                     <ul>
-                        <li><strong>LACTF 2026</strong> — Solo · Top 100 · Feb 7–9, 2026 · Solved challenges across web, crypto, reverse engineering, pwn, and miscellaneous categories; published writeups on GitHub</li>
-                        <li><strong>0xFun CTF 2026</strong> — Solo · Top 110+ · Feb 12–14, 2026 · Completed challenges spanning web, pwn, crypto, forensics, and OSINT-oriented problem solving</li>
-                        <li><strong>BSides CTF</strong> — Solo · Mar 20, 2026 · Participated primarily in web-focused security challenges</li>
+                        <li>Competed in CTFs including LACTF, practicing web, crypto, reverse engineering, pwn, forensics, OSINT, and miscellaneous problem solving.</li>
+                        <li>Use CTFs to build the uncomfortable skills: reading weird code, forming hypotheses fast, failing cleanly, and documenting what worked.</li>
                     </ul>
                 </div>
                 <div class="timeline-item">
-                    <h3>Hack The Box</h3>
-                    <div class="meta">Ongoing · Hands-On Offensive Security</div>
+                    <h3>Hack The Box + Labs</h3>
+                    <div class="meta">Hands-On Offensive Security</div>
                     <ul>
-                        <li>Completed the WingData machine, strengthening practical skills in offensive security analysis, enumeration, and system investigation</li>
-                        <li>Practiced across challenge categories including web exploitation, binary exploitation, cryptography, forensics, and OSINT</li>
+                        <li>Practice enumeration, exploitation paths, Linux/Windows investigation, and post-exploitation reasoning in controlled lab environments.</li>
+                        <li>Pair offensive labs with detection work so the same behavior can be understood from both attacker and defender perspectives.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <h3>Cybersecurity Club Leadership</h3>
+                    <div class="meta">KBDAV · Chandigarh, India</div>
+                    <ul>
+                        <li>Led cybersecurity awareness initiatives covering phishing, hacking concepts, account safety, and practical security habits.</li>
+                        <li>Organized student-focused sessions that made security less abstract and more useful.</li>
                     </ul>
                 </div>
             </div>
-            <div class="section-header" style="margin-top: 80px; margin-bottom: 40px;">
-                <div class="section-label">Community</div>
-                <h2>Leadership</h2>
+        </div>
+    </section>
+
+    <section id="ask">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Ask Me Anything</div>
+                <h2>Curious? Ask directly.</h2>
             </div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Head of Cybersecurity Club</h3>
-                    <div class="meta">KBDAV · Jan 2022 – Mar 2023 · Chandigarh, India</div>
+            <div class="ask-panel">
+                <div class="ask-card">
+                    <h3>Good questions get real answers.</h3>
+                    <p>
+                        Ask about cybersecurity, projects, internships, hackathons, startup builds, CTFs, or why a tool failed at 2 AM.
+                        I prefer direct questions over vague networking messages.
+                    </p>
                     <ul>
-                        <li>Led cybersecurity awareness initiatives for students and teachers, covering phishing, hacking techniques, and core security fundamentals</li>
-                        <li>Organized workshops and events to promote practical security knowledge and digital safety across the school community</li>
+                        <li>What are you building right now?</li>
+                        <li>Can you demo one of your security projects?</li>
+                        <li>How would you approach this product/security problem?</li>
+                        <li>Want to collaborate on a hackathon or research build?</li>
                     </ul>
+                    <div class="status-line"><span class="status-dot"></span>Open to hackathons, research, internships, and serious builds.</div>
                 </div>
-                <div class="timeline-item">
-                    <h3>Volunteer</h3>
-                    <div class="meta">Local NGO · Jun 2024 – Aug 2024 · Chandigarh, India</div>
-                    <ul>
-                        <li>Supported community outreach programs focused on digital literacy and online safety education</li>
-                    </ul>
+                <div class="ask-card">
+                    <h3>Send a question</h3>
+                    <form class="ask-form" id="askForm">
+                        <input type="text" id="askName" placeholder="Your name" required>
+                        <input type="email" id="askEmail" placeholder="Your email" required>
+                        <textarea id="askMessage" placeholder="Ask me anything..." required></textarea>
+                        <button type="submit" class="btn-primary">Open Email Draft</button>
+                        <div class="form-note">This opens your email app with the message filled in. No backend needed.</div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -853,32 +1123,32 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-label">Get In Touch</div>
-                <h2>Let's Connect</h2>
+                <h2>Contact</h2>
             </div>
             <div class="contact-grid">
                 <div class="contact-item">
                     <div class="label">Email</div>
-                    <a href="mailto:atharvm2005@gmail.com">atharvm2005@gmail.com</a>
-                </div>
-                <div class="contact-item">
-                    <div class="label">Phone</div>
-                    <a href="tel:4258329409">425-832-9409</a>
+                    <a href="mailto:abm7096@psu.edu">abm7096@psu.edu</a>
                 </div>
                 <div class="contact-item">
                     <div class="label">GitHub</div>
-                    <a href="https://github.com/atharv109/" target="_blank">github.com/atharv109</a>
+                    <a href="https://github.com/abm7096" target="_blank">github.com/abm7096</a>
+                </div>
+                <div class="contact-item">
+                    <div class="label">Website</div>
+                    <a href="https://buildoradevelopers.com" target="_blank">Buildora Developers</a>
                 </div>
                 <div class="contact-item">
                     <div class="label">Location</div>
                     <a>State College, PA</a>
                 </div>
                 <div class="contact-item">
-                    <div class="label">Languages</div>
-                    <a>English · Hindi · Punjabi</a>
+                    <div class="label">Education</div>
+                    <a>Penn State · B.S. Cybersecurity</a>
                 </div>
                 <div class="contact-item">
-                    <div class="label">Education</div>
-                    <a>Penn State · B.S. Cybersecurity · 2028</a>
+                    <div class="label">Languages</div>
+                    <a>English · Hindi · Punjabi</a>
                 </div>
             </div>
         </div>
@@ -1006,6 +1276,20 @@
         document.querySelectorAll('.section-header, .timeline-item, .project-card, .skill-item, .contact-item').forEach(el => {
             observer.observe(el);
         });
+
+        // Ask form: opens a mailto draft without needing a backend
+        const askForm = document.getElementById('askForm');
+        if (askForm) {
+            askForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const name = encodeURIComponent(document.getElementById('askName').value.trim());
+                const email = encodeURIComponent(document.getElementById('askEmail').value.trim());
+                const message = encodeURIComponent(document.getElementById('askMessage').value.trim());
+                const subject = encodeURIComponent('Question from personal website');
+                const body = encodeURIComponent('Name: ') + name + encodeURIComponent('\nEmail: ') + email + encodeURIComponent('\n\nQuestion:\n') + message;
+                window.location.href = `mailto:abm7096@psu.edu?subject=${subject}&body=${body}`;
+            });
+        }
 
         // Smooth scroll
         document.querySelectorAll('nav a').forEach(anchor => {
