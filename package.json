@@ -1,0 +1,27 @@
+{
+  "name": "atharv-mittal-portfolio",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.185.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.185.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12"
+  }
+}
