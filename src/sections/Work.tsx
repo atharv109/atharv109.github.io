@@ -147,16 +147,23 @@ function ProjectCase({
           {/* left: meta */}
           <div className="lg:col-span-4">
             <div className="flex items-baseline gap-4 mb-4">
-              <span className="text-[clamp(3rem,8vw,7rem)] font-bold leading-none text-[var(--accent)]/20">
+              <span
+                className="text-[clamp(3rem,8vw,7rem)] font-bold leading-none"
+                style={{ color: meta.color, opacity: 0.18 }}
+              >
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <span className="mono text-xs" style={{ color: meta.color }}>
+              <span
+                className="mono text-[10px] px-2 py-1 border"
+                style={{ color: meta.color, borderColor: meta.color, opacity: 0.6 }}
+              >
                 {meta.label}
               </span>
             </div>
             <h3 className="text-[clamp(2rem,4vw,4rem)] font-bold leading-[0.95] tracking-tight mb-3">
               {project.name}
             </h3>
+            <div className="w-12 h-px mb-6" style={{ backgroundColor: meta.color }} />
             <span className="mono text-xs text-[var(--muted)] block mb-6">{project.role}</span>
 
             {project.hook && (

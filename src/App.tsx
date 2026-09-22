@@ -2,15 +2,19 @@ import { Suspense, lazy, createContext } from 'react'
 import type Lenis from 'lenis'
 import { Nav } from './components/Nav'
 import { Hero } from './sections/Hero'
-import { Work } from './sections/Work'
-import { About } from './sections/About'
-import { Contact } from './sections/Contact'
-import { Footer } from './components/Footer'
 import { useLenis } from './hooks/useLenis'
 
 const CustomCursor = lazy(() => import('./components/CustomCursor').then((m) => ({ default: m.CustomCursor })))
+const Work = lazy(() => import('./sections/Work').then((m) => ({ default: m.Work })))
+const About = lazy(() => import('./sections/About').then((m) => ({ default: m.About })))
+const Contact = lazy(() => import('./sections/Contact').then((m) => ({ default: m.Contact })))
+const Footer = lazy(() => import('./components/Footer').then((m) => ({ default: m.Footer })))
 
 export const LenisContext = createContext<Lenis | null>(null)
+
+function SectionFallback() {
+  return <div className="min-h-[50vh]" />
+}
 
 export default function App() {
   const lenis = useLenis().current
@@ -24,11 +28,19 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        <Work />
-        <About />
-        <Contact />
+        <Suspense fallback={<SectionFallback />}>
+          <Work />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <About />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Contact />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
     </LenisContext.Provider>
   )
 }
