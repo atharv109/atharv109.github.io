@@ -1,6 +1,7 @@
 import { Suspense, lazy, createContext } from 'react'
 import type Lenis from 'lenis'
 import { Nav } from './components/Nav'
+import { ScrollSpy } from './components/ScrollSpy'
 import { Hero } from './sections/Hero'
 import { useLenis } from './hooks/useLenis'
 
@@ -26,6 +27,7 @@ export default function App() {
       </Suspense>
       <div className="grain" aria-hidden="true" />
       <Nav />
+      <ScrollSpy />
       <main>
         <Hero />
         <Suspense fallback={<SectionFallback />}>
