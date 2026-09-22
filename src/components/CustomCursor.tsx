@@ -26,6 +26,21 @@ export function CustomCursor() {
       targetY = e.clientY
     }
 
+    const isInteractive = (el: HTMLElement) =>
+      el.matches('a, button, [data-cursor-hover], a *, button *')
+
+    const onOver = (e: MouseEvent) => {
+      if (e.target instanceof HTMLElement && isInteractive(e.target)) {
+        cursor.classList.add('hover')
+      }
+    }
+
+    const onOut = (e: MouseEvent) => {
+      if (e.target instanceof HTMLElement && isInteractive(e.target)) {
+        cursor.classList.remove('hover')
+      }
+    }
+
     const animate = () => {
       x += (targetX - x) * 0.15
       y += (targetY - y) * 0.15
@@ -34,25 +49,17 @@ export function CustomCursor() {
       raf = requestAnimationFrame(animate)
     }
 
-    const onEnter = () => cursor.classList.add('hover')
-    const onLeave = () => cursor.classList.remove('hover')
-
-    window.addEventListener('mousemove', onMove)
-    const interactive = document.querySelectorAll('a, button, [data-cursor-hover]')
-    interactive.forEach((el) => {
-      el.addEventListener('mouseenter', onEnter)
-      el.addEventListener('mouseleave', onLeave)
-    })
+    window.addEventListener('mousemove', onMove, { passive: true })
+    document.addEventListener('mouseover', onOver, { passive: true })
+    document.addEventListener('mouseout', onOut, { passive: true })
 
     raf = requestAnimationFrame(animate)
 
     return () => {
       window.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseover', onOver)
+      document.removeEventListener('mouseout', onOut)
       cancelAnimationFrame(raf)
-      interactive.forEach((el) => {
-        el.removeEventListener('mouseenter', onEnter)
-        el.removeEventListener('mouseleave', onLeave)
-      })
     }
   }, [])
 

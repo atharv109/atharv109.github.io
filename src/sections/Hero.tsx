@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger)
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const bridgeRef = useRef<HTMLDivElement>(null)
   const leftRef = useRef<HTMLDivElement>(null)
   const centerRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
@@ -42,6 +43,18 @@ export function Hero() {
           scrub: 1,
         },
       })
+
+      gsap.to(bridgeRef.current, {
+        scale: 1.08,
+        opacity: 0.35,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
     }, sectionRef)
 
     return () => ctx.revert()
@@ -53,13 +66,15 @@ export function Hero() {
       ref={sectionRef}
       className="relative h-screen w-full flex items-center justify-center px-6 md:px-12 overflow-hidden"
     >
-      <Suspense
-        fallback={
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--surface)_0%,var(--bg)_70%)]" />
-        }
-      >
-        <BridgeField />
-      </Suspense>
+      <div ref={bridgeRef} className="absolute inset-0 -z-10">
+        <Suspense
+          fallback={
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--surface)_0%,var(--bg)_70%)]" />
+          }
+        >
+          <BridgeField />
+        </Suspense>
+      </div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/40 via-transparent to-[var(--bg)] z-10 pointer-events-none" />
 
