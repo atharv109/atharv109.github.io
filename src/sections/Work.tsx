@@ -1,11 +1,77 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { projects, archiveProjects, type Project } from '../data/projects'
+import { projects, archiveProjects, type Project, type ProjectNode } from '../data/projects'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const caseStudyLabels = ['Problem', 'Solution', 'Impact']
+
+const NODE_META: Record<
+  ProjectNode,
+  { label: string; short: string; color: string; desc: string }
+> = {
+  threat: {
+    label: 'THREAT',
+    short: 'Find the break',
+    color: 'var(--muted)',
+    desc: 'See where it breaks before it breaks',
+  },
+  build: {
+    label: 'BUILD',
+    short: 'Build the fix',
+    color: 'var(--text)',
+    desc: 'Turn the finding into something usable',
+  },
+  ship: {
+    label: 'SHIP',
+    short: 'Ship it',
+    color: 'var(--accent)',
+    desc: 'Release something safe enough to adopt',
+  },
+  impact: {
+    label: 'IMPACT',
+    short: 'Prove it',
+    color: 'var(--accent)',
+    desc: 'Show the loop actually closed',
+  },
+}
+
+function NodeIcon({ node, active }: { node: ProjectNode; active: boolean }) {
+  const strokeWidth = 1.5
+  const className = `w-full h-full transition-all duration-500 ${active ? 'scale-110' : 'scale-100 opacity-60'}`
+
+  switch (node) {
+    case 'threat':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} className={className}>
+          <path d="M10 4 L8 11 L15 12 L12 20" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )
+    case 'build':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} className={className}>
+          <rect x="4" y="8" width="6" height="8" rx="1" />
+          <rect x="14" y="8" width="6" height="8" rx="1" />
+          <path d="M10 12 L14 12" strokeDasharray={active ? '0' : '2 2'} className="transition-all duration-500" />
+        </svg>
+      )
+    case 'ship':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} className={className}>
+          <path d="M12 3 L20 7 V12 C20 17 12 21 12 21 C12 21 4 17 4 12 V7 Z" />
+          <path d="M9 12 L11.5 14.5 L16 10" />
+        </svg>
+      )
+    case 'impact':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} className={className}>
+          <circle cx="12" cy="12" r="2" fill="currentColor" />
+          <path d="M12 6 V9 M12 15 V18 M6 12 H9 M15 12 H18" />
+        </svg>
+      )
+  }
+}
 
 function CaseStudyItem({ label, text, delay }: { label: string; text: string; delay: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -45,46 +111,38 @@ function CaseStudyItem({ label, text, delay }: { label: string; text: string; de
   )
 }
 
-function ProjectCase({ project, index }: { project: Project; index: number }) {
+function ProjectCase({
+  project,
+  index,
+  onActive,
+  isActive,
+}: {
+  project: Project
+  index: number
+  onActive: (index: number) => void
+  isActive: boolean
+}) {
   const sectionRef = useRef<HTMLElement>(null)
-  const lineRef = useRef<HTMLDivElement>(null)
+  const node = project.node ?? 'threat'
+  const meta = NODE_META[node]
 
   useEffect(() => {
-    if (!sectionRef.current || !lineRef.current) return
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!sectionRef.current) return
 
-    const tween = gsap.fromTo(
-      lineRef.current,
-      { scaleY: prefersReducedMotion ? 1 : 0, transformOrigin: 'top' },
-      {
-        scaleY: 1,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-          toggleActions: 'play none none reverse',
-        },
-      }
-    )
+    const trigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      onEnter: () => onActive(index),
+      onEnterBack: () => onActive(index),
+    })
 
-    return () => {
-      tween.scrollTrigger?.kill()
-      tween.kill()
-    }
-  }, [])
+    return () => trigger.kill()
+  }, [index, onActive])
 
   return (
-    <section
-      ref={sectionRef}
-      className="min-h-screen flex items-center py-16 md:py-24 relative"
-    >
-      {/* timeline spine */}
-      <div className="absolute left-6 md:left-12 top-0 bottom-0 w-px bg-[var(--border)]">
-        <div ref={lineRef} className="absolute inset-0 bg-[var(--accent)]" />
-      </div>
-
-      <div className="max-w-[1600px] mx-auto w-full pl-16 md:pl-28 pr-6 md:pr-12">
+    <section ref={sectionRef} className="min-h-screen flex items-center py-16 md:py-24 relative">
+      <div className="max-w-[1600px] mx-auto w-full pl-20 md:pl-32 lg:pl-40 pr-6 md:pr-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
           {/* left: meta */}
           <div className="lg:col-span-4">
@@ -92,12 +150,20 @@ function ProjectCase({ project, index }: { project: Project; index: number }) {
               <span className="text-[clamp(3rem,8vw,7rem)] font-bold leading-none text-[var(--accent)]/20">
                 {String(index + 1).padStart(2, '0')}
               </span>
-              <span className="mono text-xs text-[var(--accent)]">{project.timeframe}</span>
+              <span className="mono text-xs" style={{ color: meta.color }}>
+                {meta.label}
+              </span>
             </div>
             <h3 className="text-[clamp(2rem,4vw,4rem)] font-bold leading-[0.95] tracking-tight mb-3">
               {project.name}
             </h3>
             <span className="mono text-xs text-[var(--muted)] block mb-6">{project.role}</span>
+
+            {project.hook && (
+              <p className="text-[var(--text)] text-base md:text-lg leading-relaxed max-w-sm mb-8 border-l-2 pl-4" style={{ borderColor: meta.color }}>
+                {project.hook}
+              </p>
+            )}
 
             <div className="flex flex-wrap gap-2 mb-8">
               {project.techStack.map((tech) => (
@@ -138,46 +204,267 @@ function ProjectCase({ project, index }: { project: Project; index: number }) {
   )
 }
 
-export function Work() {
+function LoopSpine({
+  projects,
+  activeIndex,
+  isImpact,
+  opacity,
+}: {
+  projects: Project[]
+  activeIndex: number
+  isImpact: boolean
+  opacity: number
+}) {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const pathRef = useRef<SVGPathElement>(null)
+
+  const nodePositions = useMemo(() => {
+    const count = projects.length
+    const pad = 64
+    const available = 520 - pad * 2
+    return projects.map((_, i) => pad + (available / (count - 1)) * i)
+  }, [projects.length])
+
+  const pathD = useMemo(() => {
+    const w = 128
+    const leftX = 44
+    const rightX = 84
+    const topY = nodePositions[0]
+    const bottomY = nodePositions[nodePositions.length - 1]
+
+    let d = `M ${leftX} ${topY}`
+    nodePositions.slice(1).forEach((y) => {
+      d += ` C ${leftX - 24} ${y - 32}, ${leftX + 24} ${y - 32}, ${leftX} ${y}`
+    })
+
+    // close the loop: bottom → right side → top return
+    d += ` C ${leftX + 48} ${bottomY + 48}, ${rightX + 48} ${bottomY - 24}, ${rightX} ${bottomY - 40}`
+    d += ` L ${rightX} ${topY + 40}`
+    d += ` C ${rightX - 32} ${topY - 8}, ${leftX + 32} ${topY - 16}, ${leftX} ${topY}`
+
+    return d
+  }, [nodePositions])
+
+  useEffect(() => {
+    if (!pathRef.current) return
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const pathLength = pathRef.current.getTotalLength()
+
+    gsap.set(pathRef.current, {
+      strokeDasharray: pathLength,
+      strokeDashoffset: prefersReducedMotion ? 0 : pathLength,
+    })
+
+    if (prefersReducedMotion) return
+
+    const tween = gsap.to(pathRef.current, {
+      strokeDashoffset: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#work',
+        start: 'top center',
+        end: 'bottom bottom',
+        scrub: 1,
+      },
+    })
+
+    return () => {
+      tween.scrollTrigger?.kill()
+      tween.kill()
+    }
+  }, [pathD])
+
   return (
-    <div id="work" className="relative">
-      <div className="px-6 md:px-12 pt-24 md:pt-32 pb-12">
+    <div
+      className="hidden md:block fixed left-0 top-1/2 -translate-y-1/2 w-36 lg:w-44 h-[600px] z-10 pointer-events-none"
+      style={{ opacity }}
+    >
+      <svg
+        ref={svgRef}
+        viewBox="0 0 160 600"
+        className="w-full h-full"
+        aria-hidden="true"
+      >
+        {/* base track */}
+        <path
+          d={pathD}
+          fill="none"
+          stroke="var(--border)"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+
+        {/* animated accent path */}
+        <path
+          ref={pathRef}
+          d={pathD}
+          fill="none"
+          stroke="var(--accent)"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+
+        {/* nodes */}
+        {projects.map((project, i) => {
+          const node = project.node ?? 'threat'
+          const meta = NODE_META[node]
+          const active = i === activeIndex && !isImpact
+          const y = nodePositions[i]
+
+          return (
+            <g key={project.id} transform={`translate(44, ${y})`}>
+              {/* outer ring */}
+              <circle
+                r="22"
+                fill="var(--bg)"
+                stroke={active ? meta.color : 'var(--border)'}
+                strokeWidth="1"
+                className="transition-all duration-500"
+                style={{
+                  filter: active ? `drop-shadow(0 0 8px ${meta.color})` : 'none',
+                }}
+              />
+
+              {/* icon group */}
+              <g transform="translate(-10, -10)" style={{ color: active ? meta.color : 'var(--muted)' }}>
+                <NodeIcon node={node} active={active} />
+              </g>
+
+              {/* label */}
+              <text
+                x="34"
+                y="4"
+                fill={active ? meta.color : 'var(--muted)'}
+                className="mono transition-colors duration-500"
+                style={{ fontSize: '10px' }}
+              >
+                {meta.label}
+              </text>
+            </g>
+          )
+        })}
+
+        {/* impact node at archive */}
+        <g transform={`translate(44, ${nodePositions[nodePositions.length - 1] + 80})`}>
+          <circle
+            r="18"
+            fill="var(--bg)"
+            stroke={isImpact ? 'var(--accent)' : 'var(--border)'}
+            strokeWidth="1"
+            className="transition-all duration-500"
+            style={{
+              filter: isImpact ? 'drop-shadow(0 0 8px var(--accent))' : 'none',
+            }}
+          />
+          <g transform="translate(-8, -8)" style={{ color: isImpact ? 'var(--accent)' : 'var(--muted)' }}>
+            <NodeIcon node="impact" active={isImpact} />
+          </g>
+          <text
+            x="30"
+            y="4"
+            fill={isImpact ? 'var(--accent)' : 'var(--muted)'}
+            className="mono transition-colors duration-500"
+            style={{ fontSize: '10px' }}
+          >
+            IMPACT
+          </text>
+        </g>
+      </svg>
+    </div>
+  )
+}
+
+export function Work() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isImpact, setIsImpact] = useState(false)
+  const [spineOpacity, setSpineOpacity] = useState(0)
+
+  const featured = projects.filter((p) => p.category === 'featured')
+
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    const fadeTrigger = ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top 85%',
+      end: 'top 55%',
+      scrub: true,
+      onUpdate: (self) => setSpineOpacity(self.progress),
+    })
+
+    const impactTrigger = ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: (self) => setIsImpact(self.progress > 0.88),
+    })
+
+    return () => {
+      fadeTrigger.kill()
+      impactTrigger.kill()
+    }
+  }, [])
+
+  return (
+    <div id="work" ref={containerRef} className="relative">
+      <LoopSpine projects={featured} activeIndex={activeIndex} isImpact={isImpact} opacity={spineOpacity} />
+
+      <div className="px-6 md:px-12 lg:pl-48 pt-24 md:pt-32 pb-12">
         <span className="mono text-[var(--accent)] block mb-4">Selected work</span>
-        <h2 className="text-[clamp(2rem,6vw,6rem)] font-bold leading-none tracking-tight"
-        >
-          Projects that
+        <h2 className="text-[clamp(2rem,6vw,6rem)] font-bold leading-none tracking-tight">
+          Security finds.
           <br />
-          <span className="text-[var(--muted)]">shipped.</span>
+          <span className="text-[var(--muted)]">Product ships.</span>
         </h2>
+        <p className="mt-6 max-w-xl text-[var(--text)]/70 text-base md:text-lg">
+          Six projects, one loop: find the break, build the fix, release it, prove it worked.
+        </p>
       </div>
 
-      {projects.map((project, index) => (
-        <ProjectCase key={project.id} project={project} index={index} />
+      {featured.map((project, index) => (
+        <ProjectCase
+          key={project.id}
+          project={project}
+          index={index}
+          onActive={setActiveIndex}
+          isActive={activeIndex === index}
+        />
       ))}
 
-      <div className="px-6 md:px-12 pt-24 pb-32">
-        <span className="mono text-[var(--muted)] block mb-12">Archive</span>
-        <div className="border-t border-[var(--border)]">
+      <div className="px-6 md:px-12 lg:pl-48 pt-24 pb-32">
+        <span className="mono text-[var(--muted)] block mb-4">Archive</span>
+        <h3 className="text-2xl md:text-3xl font-bold mb-12 max-w-2xl">
+          The rest of the loop: smaller breaks, faster fixes, shipped proof.
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {archiveProjects.map((project) => (
-            <div
+            <a
               key={project.id}
-              className="flex flex-col md:flex-row md:items-center justify-between py-6 border-b border-[var(--border)] group hover:bg-[var(--surface)] hover:px-4 transition-all duration-300"
+              href={project.links[0]?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group border border-[var(--border)] p-5 hover:border-[var(--accent)] hover:bg-[var(--surface)] transition-all duration-300"
               data-cursor-hover
             >
-              <div className="flex items-baseline gap-6 md:gap-12">
-                <span className="mono text-[var(--muted)] w-16">{project.timeframe}</span>
-                <span className="text-xl md:text-2xl font-medium group-hover:text-[var(--accent)] transition-colors">
-                  {project.name}
-                </span>
+              <div className="flex items-baseline justify-between mb-3">
+                <span className="mono text-[10px] text-[var(--muted)]">{project.timeframe}</span>
+                {project.links[0] && <span className="mono text-[10px] text-[var(--accent)] opacity-0 group-hover:opacity-100 transition-opacity">↗</span>}
               </div>
-              <div className="flex gap-3 mt-2 md:mt-0">
+              <h4 className="text-lg font-medium mb-2 group-hover:text-[var(--accent)] transition-colors">
+                {project.name}
+              </h4>
+              <p className="text-sm text-[var(--text)]/60 leading-relaxed mb-4 line-clamp-2">
+                {project.solution}
+              </p>
+              <div className="flex flex-wrap gap-2">
                 {project.techStack.slice(0, 3).map((tech) => (
-                  <span key={tech} className="mono text-[10px] text-[var(--muted)]">
+                  <span key={tech} className="mono text-[9px] text-[var(--muted)] px-1.5 py-0.5 border border-[var(--border)]">
                     {tech}
                   </span>
                 ))}
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
