@@ -1,4 +1,4 @@
-import { Suspense, lazy, createContext } from 'react'
+import { Suspense, lazy, createContext, useState } from 'react'
 import type Lenis from 'lenis'
 import { Nav } from './components/Nav'
 import { ScrollSpy } from './components/ScrollSpy'
@@ -12,6 +12,7 @@ const Contact = lazy(() => import('./sections/Contact').then((m) => ({ default: 
 const Footer = lazy(() => import('./components/Footer').then((m) => ({ default: m.Footer })))
 
 export const LenisContext = createContext<Lenis | null>(null)
+export const ActiveSectionContext = createContext<string>('hero')
 
 function SectionFallback() {
   return <div className="min-h-[50vh]" />
@@ -19,30 +20,33 @@ function SectionFallback() {
 
 export default function App() {
   const lenis = useLenis().current
+  const [activeSection, setActiveSection] = useState('hero')
 
   return (
     <LenisContext.Provider value={lenis}>
-      <Suspense fallback={null}>
-        <CustomCursor />
-      </Suspense>
-      <div className="grain" aria-hidden="true" />
-      <Nav />
-      <ScrollSpy />
-      <main>
-        <Hero />
-        <Suspense fallback={<SectionFallback />}>
-          <Work />
+      <ActiveSectionContext.Provider value={activeSection}>
+        <Suspense fallback={null}>
+          <CustomCursor />
         </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <About />
+        <div className="grain" aria-hidden="true" />
+        <Nav />
+        <ScrollSpy onChange={setActiveSection} />
+        <main>
+          <Hero />
+          <Suspense fallback={<SectionFallback />}>
+            <Work />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <About />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <Contact />
+          </Suspense>
+        </main>
+        <Suspense fallback={null}>
+          <Footer />
         </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Contact />
-        </Suspense>
-      </main>
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
+      </ActiveSectionContext.Provider>
     </LenisContext.Provider>
   )
 }

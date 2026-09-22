@@ -1,10 +1,11 @@
 import { useEffect, useState, useContext } from 'react'
-import { LenisContext } from '../App'
+import { LenisContext, ActiveSectionContext } from '../App'
 
 export function Nav() {
   const [visible, setVisible] = useState(false)
   const [progress, setProgress] = useState(0)
   const lenis = useContext(LenisContext)
+  const activeSection = useContext(ActiveSectionContext)
 
   useEffect(() => {
     const onScroll = () => {
@@ -41,22 +42,28 @@ export function Nav() {
 
       <button
         onClick={() => scrollTo('hero')}
-        className="mono text-xs text-white/80 hover:text-[var(--accent)] transition-colors"
+        className={`mono text-xs transition-colors ${activeSection === 'hero' ? 'text-[var(--accent)]' : 'text-white/80 hover:text-[var(--accent)]'}`}
         data-cursor-hover
       >
         ATHARV MITTAL
       </button>
       <nav className="flex gap-8" aria-label="Primary">
-        {['work', 'about', 'contact'].map((item) => (
-          <button
-            key={item}
-            onClick={() => scrollTo(item)}
-            className="mono text-xs text-white/60 hover:text-white transition-colors uppercase"
-            data-cursor-hover
-          >
-            {item}
-          </button>
-        ))}
+        {['work', 'about', 'contact'].map((item) => {
+          const isActive = activeSection === item
+          return (
+            <button
+              key={item}
+              onClick={() => scrollTo(item)}
+              className={`mono text-xs transition-colors uppercase relative ${
+                isActive ? 'text-[var(--accent)]' : 'text-white/60 hover:text-white'
+              }`}
+              data-cursor-hover
+            >
+              {item}
+              {isActive && <span className="absolute -bottom-1 left-0 right-0 h-px bg-[var(--accent)]" />}
+            </button>
+          )
+        })}
       </nav>
     </header>
   )

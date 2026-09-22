@@ -13,20 +13,26 @@ function updateHash(id: string) {
   }
 }
 
-export function ScrollSpy() {
+export function ScrollSpy({ onChange }: { onChange?: (id: string) => void }) {
   useEffect(() => {
     const triggers = sections.map((id) =>
       ScrollTrigger.create({
         trigger: `#${id}`,
         start: 'top center',
         end: 'bottom center',
-        onEnter: () => updateHash(id),
-        onEnterBack: () => updateHash(id),
+        onEnter: () => {
+          updateHash(id)
+          onChange?.(id)
+        },
+        onEnterBack: () => {
+          updateHash(id)
+          onChange?.(id)
+        },
       })
     )
 
     return () => triggers.forEach((t) => t.kill())
-  }, [])
+  }, [onChange])
 
   return null
 }
