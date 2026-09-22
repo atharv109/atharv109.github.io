@@ -1,23 +1,28 @@
+import { Suspense, lazy } from 'react'
 import { Nav } from './components/Nav'
-import { Footer } from './components/Footer'
 import { Hero } from './sections/Hero'
-import { Projects } from './sections/Projects'
-import { Experience } from './sections/Experience'
-import { Skills } from './sections/Skills'
+import { Work } from './sections/Work'
+import { About } from './sections/About'
 import { Contact } from './sections/Contact'
+import { Footer } from './components/Footer'
 
-function App() {
+const CustomCursor = lazy(() => import('./components/CustomCursor').then((m) => ({ default: m.CustomCursor })))
+
+export default function App() {
   return (
-    <div className="app">
+    <>
+      <Suspense fallback={null}>
+        <CustomCursor />
+      </Suspense>
+      <div className="grain" aria-hidden="true" />
       <Nav />
-      <Hero />
-      <Projects />
-      <Experience />
-      <Skills />
-      <Contact />
+      <main>
+        <Hero />
+        <Work />
+        <About />
+        <Contact />
+      </main>
       <Footer />
-    </div>
+    </>
   )
 }
-
-export default App

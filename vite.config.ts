@@ -11,5 +11,13 @@ export default defineConfig({
     target: "es2022",
     cssMinify: true,
     minify: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ["three"],
+          gsap: ["gsap"],
+        },
+      },
+    },
   },
 });

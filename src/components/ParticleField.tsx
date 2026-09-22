@@ -1,184 +1,144 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-export function ParticleField({ className }: { className?: string }) {
+export function ParticleField() {
   const containerRef = useRef<HTMLDivElement>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
-  const rafRef = useRef<number | null>(null)
-  const mouseRef = useRef({ x: 0, y: 0, active: false })
 
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    const isMobile = window.matchMedia('(pointer: coarse)').matches
+    const particleCount = isMobile ? 40 : 90
+    const connectionDistance = isMobile ? 60 : 90
 
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 100)
-    camera.position.z = 5
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    camera.position.z = 55
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    renderer.setSize(container.clientWidth, container.clientHeight)
-    renderer.setClearColor(0x000000, 0)
     container.appendChild(renderer.domElement)
     rendererRef.current = renderer
 
-    const count = isTouch ? 50 : 120
-    const positions = new Float32Array(count * 3)
+    const geometry = new THREE.BufferGeometry()
+    const positions = new Float32Array(particleCount * 3)
     const velocities: { x: number; y: number; z: number }[] = []
-    const palette = [new THREE.Color('#E85A2D'), new THREE.Color('#7A1F1F'), new THREE.Color('#ff7a4d')]
-    const colors = new Float32Array(count * 3)
+    const colors = new Float32Array(particleCount * 3)
 
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 8
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 8
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 4
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 120
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 80
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 40
       velocities.push({
-        x: (Math.random() - 0.5) * 0.003,
-        y: (Math.random() - 0.5) * 0.003,
-        z: (Math.random() - 0.5) * 0.001,
+        x: (Math.random() - 0.5) * 0.03,
+        y: (Math.random() - 0.5) * 0.03,
+        z: (Math.random() - 0.5) * 0.015,
       })
-      const c = palette[Math.floor(Math.random() * palette.length)]
-      colors[i * 3] = c.r
-      colors[i * 3 + 1] = c.g
-      colors[i * 3 + 2] = c.b
+      const isAccent = Math.random() > 0.9
+      colors[i * 3] = isAccent ? 1 : 0.75
+      colors[i * 3 + 1] = isAccent ? 0.3 : 0.35
+      colors[i * 3 + 2] = isAccent ? 0 : 0.25
     }
 
-    const geometry = new THREE.BufferGeometry()
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
 
     const material = new THREE.PointsMaterial({
-      size: 0.09,
+      size: isMobile ? 0.12 : 0.18,
       vertexColors: true,
       transparent: true,
-      opacity: 1,
-      sizeAttenuation: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending,
     })
 
     const points = new THREE.Points(geometry, material)
     scene.add(points)
 
     const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0xE85A2D,
+      color: 0xff4d00,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.06,
+      blending: THREE.AdditiveBlending,
     })
 
     const lineGeometry = new THREE.BufferGeometry()
-    const linePositions = new Float32Array(count * count * 3)
-    lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3))
-    const lines = new THREE.LineSegments(lineGeometry, lineMaterial)
-    scene.add(lines)
+    const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial)
+    scene.add(lineMesh)
 
-    const handleMove = (x: number, y: number) => {
-      mouseRef.current.x = (x / container.clientWidth) * 2 - 1
-      mouseRef.current.y = -(y / container.clientHeight) * 2 + 1
-      mouseRef.current.active = true
+    let mouseX = 0
+    let mouseY = 0
+    const onMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1
     }
-
-    const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY)
-    const onTouchMove = (e: TouchEvent) => {
-      if (e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY)
-    }
-
-    if (!isTouch) {
-      window.addEventListener('mousemove', onMouseMove)
-    } else {
-      window.addEventListener('touchmove', onTouchMove, { passive: true })
-    }
-
-    const resize = () => {
-      if (!container) return
-      camera.aspect = container.clientWidth / container.clientHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(container.clientWidth, container.clientHeight)
-    }
-    window.addEventListener('resize', resize)
+    window.addEventListener('mousemove', onMove, { passive: true })
 
     let frame = 0
     const animate = () => {
-      rafRef.current = requestAnimationFrame(animate)
-      frame++
-
+      frame = requestAnimationFrame(animate)
       const pos = geometry.attributes.position.array as Float32Array
-      const mouse = mouseRef.current
 
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < particleCount; i++) {
         const ix = i * 3
-        if (!prefersReducedMotion) {
-          pos[ix] += velocities[i].x
-          pos[ix + 1] += velocities[i].y
-          pos[ix + 2] += velocities[i].z
+        pos[ix] += velocities[i].x + mouseX * 0.01
+        pos[ix + 1] += velocities[i].y + mouseY * 0.01
+        pos[ix + 2] += velocities[i].z
 
-          if (mouse.active && !isTouch) {
-            const dx = pos[ix] - mouse.x * 4
-            const dy = pos[ix + 1] - mouse.y * 4
-            const dz = pos[ix + 2]
-            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-            if (dist < 3.5) {
-              const force = (3.5 - dist) * 0.0008
-              pos[ix] += dx * force
-              pos[ix + 1] += dy * force
-              pos[ix + 2] += dz * force
-            }
-          }
-
-          if (pos[ix] < -4.5 || pos[ix] > 4.5) velocities[i].x *= -1
-          if (pos[ix + 1] < -4.5 || pos[ix + 1] > 4.5) velocities[i].y *= -1
-          if (pos[ix + 2] < -2.5 || pos[ix + 2] > 2.5) velocities[i].z *= -1
-        }
+        if (Math.abs(pos[ix]) > 70) velocities[i].x *= -1
+        if (Math.abs(pos[ix + 1]) > 50) velocities[i].y *= -1
+        if (Math.abs(pos[ix + 2]) > 25) velocities[i].z *= -1
       }
       geometry.attributes.position.needsUpdate = true
 
-      if (!prefersReducedMotion && frame % 2 === 0) {
-        let lineIndex = 0
-        const linePos = lineGeometry.attributes.position.array as Float32Array
-        const threshold = 1.4
-        for (let i = 0; i < count; i++) {
-          for (let j = i + 1; j < count; j++) {
-            const dx = pos[i * 3] - pos[j * 3]
-            const dy = pos[i * 3 + 1] - pos[j * 3 + 1]
-            const dz = pos[i * 3 + 2] - pos[j * 3 + 2]
-            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
-            if (dist < threshold) {
-              linePos[lineIndex++] = pos[i * 3]
-              linePos[lineIndex++] = pos[i * 3 + 1]
-              linePos[lineIndex++] = pos[i * 3 + 2]
-              linePos[lineIndex++] = pos[j * 3]
-              linePos[lineIndex++] = pos[j * 3 + 1]
-              linePos[lineIndex++] = pos[j * 3 + 2]
-            }
+      const linePositions: number[] = []
+      for (let i = 0; i < particleCount; i++) {
+        for (let j = i + 1; j < particleCount; j++) {
+          const dx = pos[i * 3] - pos[j * 3]
+          const dy = pos[i * 3 + 1] - pos[j * 3 + 1]
+          const dz = pos[i * 3 + 2] - pos[j * 3 + 2]
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
+          if (dist < connectionDistance) {
+            const opacity = 1 - dist / connectionDistance
+            linePositions.push(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2])
+            linePositions.push(pos[j * 3], pos[j * 3 + 1], pos[j * 3 + 2])
           }
         }
-        lineGeometry.setDrawRange(0, lineIndex / 3)
-        lineGeometry.attributes.position.needsUpdate = true
       }
+      lineGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions), 3))
 
-      points.rotation.y += 0.0005
-      lines.rotation.y += 0.0005
+      camera.position.x += (mouseX * 2 - camera.position.x) * 0.02
+      camera.position.y += (mouseY * 2 - camera.position.y) * 0.02
+      camera.lookAt(0, 0, 0)
+
       renderer.render(scene, camera)
     }
-
     animate()
 
+    const onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+    window.addEventListener('resize', onResize)
+
     return () => {
-      window.removeEventListener('resize', resize)
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('touchmove', onTouchMove)
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      geometry.dispose()
-      lineGeometry.dispose()
-      material.dispose()
-      lineMaterial.dispose()
+      cancelAnimationFrame(frame)
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('resize', onResize)
       renderer.dispose()
-      if (renderer.domElement.parentElement === container) {
+      geometry.dispose()
+      material.dispose()
+      lineGeometry.dispose()
+      lineMaterial.dispose()
+      if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement)
       }
     }
   }, [])
 
-  return <div ref={containerRef} className={className} style={{ width: '100%', height: '100%', minHeight: 'inherit' }} />
+  return <div ref={containerRef} className="absolute inset-0 -z-10" />
 }
