@@ -4,9 +4,10 @@ export interface Project {
   category: 'featured' | 'archive'
   role: string
   timeframe: string
-  description: string
+  problem: string
+  solution: string
+  impact: string
   techStack: string[]
-  metrics: string[]
   links: { label: string; url: string }[]
 }
 
@@ -17,10 +18,13 @@ export const projects: Project[] = [
     category: 'featured',
     role: 'Research / Lead Developer',
     timeframe: '2026',
-    description:
-      'Deterministic dependency vulnerability triage that turns OSV advisories into VEX-style verdicts with Z3-backed evidence.',
+    problem:
+      'Dependency vulnerability scanners flood teams with advisories; LLM triage is non-deterministic and hard to audit.',
+    solution:
+      'Built a deterministic pipeline that turns OSV advisories into VEX-style verdicts using Z3-backed evidence and confined LLM reviewer notes.',
+    impact:
+      '91.7% agreement with ground truth across 14 benchmark apps and 2,705 hydration queries.',
     techStack: ['Python', 'Z3', 'OSV', 'VEX'],
-    metrics: ['91.7% agreement', '14 apps', '2,705 queries'],
     links: [],
   },
   {
@@ -29,10 +33,13 @@ export const projects: Project[] = [
     category: 'featured',
     role: 'Full-Stack Developer',
     timeframe: '2026',
-    description:
-      'Cinematic career platform for combat sports — role dashboards, podcasts, apparel, and scroll-driven motion.',
+    problem:
+      'Combat-sports athletes, managers, and promotions need a single cinematic platform for careers, content, and commerce.',
+    solution:
+      'Built a role-specific career platform with dashboards, podcasts, apparel integration, and scroll-driven motion.',
+    impact:
+      'Shipped as a paid Buildora client product with a live public site.',
     techStack: ['React', 'Vite', 'GSAP', 'Three.js'],
-    metrics: ['Paid Buildora client'],
     links: [{ label: 'Live site', url: 'https://eleventh-rnd.com/' }],
   },
   {
@@ -41,10 +48,13 @@ export const projects: Project[] = [
     category: 'featured',
     role: 'Solo Developer',
     timeframe: '2026',
-    description:
-      'Browser extension that adds an Optimize button to ChatGPT, Claude, and Gemini and rewrites prompts through a 6-stage Groq pipeline.',
+    problem:
+      'Writing strong prompts across ChatGPT, Claude, and Gemini is repetitive and most users do not optimize their inputs.',
+    solution:
+      'Created a browser extension that injects an Optimize button and rewrites prompts through a 6-stage Groq pipeline.',
+    impact:
+      'Works across 3 major AI interfaces; open source on GitHub.',
     techStack: ['JavaScript', 'Chrome APIs', 'Groq'],
-    metrics: ['3 AI interfaces', '6-stage pipeline'],
     links: [{ label: 'GitHub', url: 'https://github.com/atharv109/Chatgpt-prompt-optimiser' }],
   },
   {
@@ -53,10 +63,13 @@ export const projects: Project[] = [
     category: 'featured',
     role: 'Solo Security Researcher',
     timeframe: '2026',
-    description:
-      'MITRE ATT&CK emulation lab on Windows and Linux with Wazuh/Elastic telemetry and custom Sigma detections.',
+    problem:
+      'Security theory means little without hands-on validation of detection and response workflows.',
+    solution:
+      'Simulated 10+ MITRE ATT&CK techniques across Windows and Linux, collecting telemetry in Wazuh and Elastic.',
+    impact:
+      'Authored 10+ custom Sigma rules mapped to technique IDs.',
     techStack: ['MITRE ATT&CK', 'Sigma', 'Wazuh', 'Elastic'],
-    metrics: ['10+ techniques', '10+ rules'],
     links: [],
   },
   {
@@ -65,10 +78,13 @@ export const projects: Project[] = [
     category: 'featured',
     role: 'Founder / Full-Stack Developer',
     timeframe: '2026',
-    description:
-      'Agentic invoice ingestion and bookkeeping automation for accounting firms using local OCR and vision models.',
+    problem:
+      'Accounting firms waste hours manually extracting and categorizing invoice data from inconsistent documents.',
+    solution:
+      'Built an agentic ingestion pipeline using local OCR and vision models with a GREEN/RED state machine for human review.',
+    impact:
+      'Multi-tenant architecture ready for accounting-firm workflows.',
     techStack: ['React', 'PostgreSQL', 'PaddleOCR', 'n8n'],
-    metrics: ['Multi-tenant', 'GREEN/RED state machine'],
     links: [{ label: 'Website', url: 'https://acctomatic.com' }],
   },
   {
@@ -77,10 +93,13 @@ export const projects: Project[] = [
     category: 'featured',
     role: 'Co-Founder & CTO',
     timeframe: '2026',
-    description:
-      'Zero-trust cryptographic identity platform around trusted devices, challenge-response, and WebAuthn.',
+    problem:
+      'Passwords and OTPs are weak links; identity should bind to trusted devices, not shared secrets.',
+    solution:
+      'Architected a zero-trust platform with device-centric keys, challenge-response verification, and independent device revocation.',
+    impact:
+      'Moved into early access with about 10 beta users.',
     techStack: ['Rust', 'Axum', 'Redis', 'WebAuthn'],
-    metrics: ['~10 beta users'],
     links: [{ label: 'GitHub', url: 'https://github.com/Aryanvirpsu/Crypton-DI' }],
   },
 ]
@@ -92,9 +111,10 @@ export const archiveProjects: Project[] = [
     category: 'archive',
     role: 'Solo Developer',
     timeframe: '2025',
-    description: 'Multithreaded Python vulnerability scanner.',
+    problem: 'Sequential port and vulnerability scans are slow for small-scope testing.',
+    solution: 'Built a multithreaded Python scanner with banner grabbing and basic XSS/SQLi checks.',
+    impact: '500+ concurrent ports; ~70% faster than sequential scanning.',
     techStack: ['Python'],
-    metrics: ['500+ ports'],
     links: [{ label: 'GitHub', url: 'https://github.com/atharv109/TinyVulnScanner' }],
   },
   {
@@ -103,9 +123,10 @@ export const archiveProjects: Project[] = [
     category: 'archive',
     role: 'Solo Developer',
     timeframe: '2025',
-    description: 'AI study scheduler ingesting Canvas LMS data.',
+    problem: 'Students struggle to allocate study time across courses and deadlines.',
+    solution: 'Built an AI study scheduler that ingests Canvas LMS data and generates weekly plans.',
+    impact: 'Used across 5+ courses with 30+ tracked tasks.',
     techStack: ['Python'],
-    metrics: ['5+ courses'],
     links: [{ label: 'GitHub', url: 'https://github.com/atharv109/EDUAI' }],
   },
   {
@@ -114,9 +135,10 @@ export const archiveProjects: Project[] = [
     category: 'archive',
     role: 'Frontend Lead',
     timeframe: '2026',
-    description: 'Turns research PDFs into experiment checklists and runnable scaffolds.',
+    problem: 'Research PDFs are dense and hard to turn into executable experiment plans.',
+    solution: 'Led the frontend for a hackathon tool that converts PDFs into checklists, seeding plans, and code scaffolds.',
+    impact: 'Reduced hours of manual reading to under 2 minutes.',
     techStack: ['Next.js', 'TypeScript', 'Groq'],
-    metrics: ['Hours → 2 min'],
     links: [{ label: 'GitHub', url: 'https://github.com/atharv109/Protopaper' }],
   },
   {
@@ -125,12 +147,61 @@ export const archiveProjects: Project[] = [
     category: 'archive',
     role: 'Solo Developer',
     timeframe: '2026',
-    description: 'Healthcare billing dispute workflow automation.',
+    problem: 'Patients lack tooling to dispute and track confusing healthcare bills.',
+    solution: 'Built a dispute workflow product with dashboard UX and AI-assisted patient communication concepts.',
+    impact: 'Live demo deployed on Vercel.',
     techStack: ['React', 'Vite', 'Tailwind'],
-    metrics: [],
     links: [
       { label: 'GitHub', url: 'https://github.com/atharv109/Billshield' },
       { label: 'Live demo', url: 'https://billshield-mu.vercel.app' },
     ],
+  },
+  {
+    id: 'ai-outfit',
+    name: 'AI Outfit Recommender',
+    category: 'archive',
+    role: 'Solo Developer',
+    timeframe: '2025',
+    problem: 'Sparse clothing datasets make personalized outfit recommendations unreliable.',
+    solution: 'Built an ML recommender using clothing attributes, occasion, season, and preferences.',
+    impact: 'Evaluated under sparse-data conditions.',
+    techStack: ['Python', 'Machine Learning'],
+    links: [],
+  },
+  {
+    id: 'blinks',
+    name: 'A Voice Made of Blinks',
+    category: 'archive',
+    role: 'Hackathon Builder',
+    timeframe: '2026',
+    problem: 'Nonverbal ICU patients need a way to communicate without fine motor control.',
+    solution: 'Built a real-time webcam blink-detection interface for switch-scanning communication.',
+    impact: 'Built at the Claude Life Sciences hackathon.',
+    techStack: ['Webcam', 'Blink Detection', 'Switch Scanning'],
+    links: [],
+  },
+  {
+    id: 'buildora-agent-pipeline',
+    name: 'Buildora Agent Pipeline',
+    category: 'archive',
+    role: 'Founder / Architect',
+    timeframe: '2026',
+    problem: 'Lead generation, site building, and outreach are repetitive and slow to scale.',
+    solution: 'Architected a 12-agent LangGraph pipeline with a real-time Next.js dashboard.',
+    impact: '12 coordinated agents for lead gen, site building, video pitch creation, and cold outreach.',
+    techStack: ['LangGraph', 'Stagehand', 'Browserbase', 'Apify', 'Firecrawl', 'Claude API', 'Supabase'],
+    links: [],
+  },
+  {
+    id: 'android-app',
+    name: 'Android App',
+    category: 'archive',
+    role: 'Solo Developer',
+    timeframe: 'High School',
+    problem: 'First hands-on mobile project after learning Java.',
+    solution: 'Built an Android app in Java to apply high school computer science concepts.',
+    impact: 'First shipped mobile app.',
+    techStack: ['Java', 'Android'],
+    links: [],
   },
 ]
