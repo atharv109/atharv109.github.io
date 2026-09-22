@@ -9,14 +9,7 @@ export default defineConfig({
     outDir: "../dist",
     emptyOutDir: true,
     target: "es2022",
-    cssMinify: false,
-    minify: false,
-    rollupOptions: {
-      external: (id) =>
-        id === "three" ||
-        id === "react" ||
-        id === "react-dom/client" ||
-        id.startsWith("react/"),
-    },
+    cssMinify: true,
+    minify: true,
   },
 });

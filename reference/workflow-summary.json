@@ -1,0 +1,437 @@
+{
+  "research": [
+    {
+      "id": "adversary-lab",
+      "name": "Adversary Emulation & Detection Lab",
+      "role": "Solo Security Researcher",
+      "timeframe": "January 2026",
+      "oneLiner": "Simulated attacks + custom detections across MITRE ATT&CK.",
+      "description": "Simulated 10+ MITRE ATT&CK techniques across Discovery, Persistence, Lateral Movement, and Collection on Windows and Linux hosts. Collected endpoint telemetry with Wazuh and Elastic, then authored 10+ custom Sigma rules mapped to technique IDs. Validated detection logic against generated telemetry to connect offensive actions to analyst response.",
+      "techStack": [
+        "MITRE ATT&CK",
+        "Sigma",
+        "Wazuh",
+        "Elastic",
+        "Windows",
+        "Linux"
+      ],
+      "keyMetrics": [
+        "10+ ATT&CK techniques simulated",
+        "10+ Sigma rules authored"
+      ],
+      "links": [],
+      "visualTheme": "SOC alerts, kill chain, detection coverage",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "vulnswarm-vex",
+      "name": "VulnSwarm-VEX",
+      "role": "Research / Lead Developer",
+      "timeframe": "2026",
+      "oneLiner": "Deterministic dependency vulnerability triage with VEX verdicts.",
+      "description": "Turns OSV advisories into affected / not_affected / manual_review VEX-style verdicts using application-specific evidence. Uses Z3 for selected checks and keeps LLMs confined to reviewer notes. Paper under review.",
+      "techStack": [
+        "Python",
+        "Z3",
+        "OSV",
+        "CVE",
+        "GHSA",
+        "PYSEC",
+        "VEX",
+        "Static Analysis"
+      ],
+      "keyMetrics": [
+        "14 controlled benchmark applications",
+        "181 independent holdout findings",
+        "9 of 13 decisive predictions correct",
+        "168 explicit deferrals",
+        "91.7% blinded labeling agreement",
+        "2,705 snapshot hydration queries"
+      ],
+      "links": [
+        {
+          "label": "Repository",
+          "url": "https://github.com/atharv109/Vulnswarm-VexAuto"
+        }
+      ],
+      "visualTheme": "Dependency graph / network nodes \u2014 evidence flowing into verdict decisions",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "acctomatic",
+      "name": "Acctomatic",
+      "role": "Founder / Full-Stack Developer",
+      "timeframe": "2026 \u2014 In Progress",
+      "oneLiner": "Agentic document automation for accounting firms.",
+      "description": "Acctomatic ingests invoices and extracts structured fields using local OCR and vision models, flags uncertain items for review, and exports validated data into accounting-system formats. It is built around a multi-tenant architecture with a GREEN/RED validation state machine and a pluggable extraction pipeline designed to keep bookkeepers in the loop.",
+      "techStack": [
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "PaddleOCR-VL 1.6",
+        "Qwen3-VL-2B",
+        "n8n"
+      ],
+      "keyMetrics": [
+        "Multi-tenant architecture",
+        "GREEN/RED validation state machine"
+      ],
+      "links": [
+        {
+          "label": "Live Site",
+          "url": "https://acctomatic.com"
+        }
+      ],
+      "visualTheme": "Documents / invoices \u2014 structured extraction, automation pipeline",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "ai-outfit",
+      "name": "AI Outfit Recommender",
+      "role": "Solo Developer",
+      "timeframe": "2025",
+      "oneLiner": "ML outfit recommendations from clothing attributes.",
+      "description": "Built a machine learning recommender that suggests outfits by matching clothing attributes to occasion, season and user preferences. Ranked top-N combinations and evaluated results under sparse-data conditions.",
+      "techStack": [
+        "Python",
+        "Machine Learning"
+      ],
+      "keyMetrics": [],
+      "links": [],
+      "visualTheme": "Fashion attribute recommendation mesh",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "eleventh-round",
+      "name": "Eleventh Round",
+      "role": "Full-Stack Developer (Buildora client engagement)",
+      "timeframe": "2026",
+      "oneLiner": "Career infrastructure platform for combat sports.",
+      "description": "Paid Buildora client engagement building a cinematic career platform for fighters, managers, and promotions. Delivered role-specific dashboards, a podcast section, and apparel integration using React, TypeScript, Vite, and Tailwind. Motion work includes GSAP, Framer Motion, Lenis, and Three.js for an Awwwards-quality scroll-driven experience.",
+      "techStack": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "GSAP",
+        "Framer Motion",
+        "Lenis",
+        "Three.js"
+      ],
+      "keyMetrics": [],
+      "links": [
+        {
+          "label": "Live Site",
+          "url": "https://eleventh-rnd.com/"
+        }
+      ],
+      "visualTheme": "Cinematic combat sports \u2014 bold motion, high contrast",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "buildora-agent-pipeline",
+      "name": "Buildora Agent Pipeline",
+      "role": "Founder / Architect",
+      "timeframe": "2026",
+      "oneLiner": "12-agent LangGraph pipeline for lead gen and outreach.",
+      "description": "Replaced a no-code lead-gen workflow with a 12-agent LangGraph pipeline that automates lead generation, site building, video pitch creation, and cold outreach. Agents are orchestrated through a real-time Next.js dashboard an operator can monitor and interrupt. The system combines web scraping, browser automation, LLM reasoning, and email orchestration into one autonomous workflow.",
+      "techStack": [
+        "LangGraph",
+        "Stagehand",
+        "Browserbase",
+        "Apify",
+        "Firecrawl",
+        "Claude API",
+        "Supabase"
+      ],
+      "keyMetrics": [
+        "12 agents"
+      ],
+      "links": [],
+      "visualTheme": "Agents / pipeline \u2014 graph of autonomous workers",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "blinks",
+      "name": "A Voice Made of Blinks",
+      "role": "Hackathon Builder",
+      "timeframe": "July 2026",
+      "oneLiner": "Webcam blink interface for nonverbal ICU patients.",
+      "description": "Built at the Claude Life Sciences hackathon, this project gives nonverbal ICU patients a way to communicate through real-time webcam blink detection. It pairs switch-scanning selection with per-patient scan-speed calibration and adaptive need-list reordering. This is a hackathon prototype, not a medical device.",
+      "techStack": [
+        "Webcam",
+        "Blink Detection",
+        "Switch Scanning"
+      ],
+      "keyMetrics": [],
+      "links": [],
+      "visualTheme": "Medical accessibility scan grid",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "prompt-optimiser",
+      "name": "Prompt Optimiser",
+      "role": "Solo Developer",
+      "timeframe": "2026",
+      "oneLiner": "Production browser extension with a 6-stage AI pipeline.",
+      "description": "A Chrome/Edge extension that injects a real-time Optimize button into ChatGPT, Claude, and Gemini, scrapes the current prompt plus the last two conversation turns for context, and runs a 6-stage classification and rewrite pipeline through the Groq API before replacing the user's text in-place. The Manifest V3 extension uses a background service worker to bypass CORS, stores the Groq API key locally, and ships with per-site DOM adapters and a popup configuration UI.",
+      "techStack": [
+        "JavaScript",
+        "Chrome Extension APIs",
+        "Groq API",
+        "Llama 3.3 70B",
+        "DOM Injection"
+      ],
+      "keyMetrics": [
+        "6-stage pipeline",
+        "3 AI interfaces supported"
+      ],
+      "links": [
+        {
+          "label": "GitHub Repo",
+          "url": "https://github.com/atharv109/Chatgpt-prompt-optimiser"
+        }
+      ],
+      "visualTheme": "Browser extension with a flowing stage pipeline",
+      "colorHints": [
+        "#E85A2D",
+        "#7A1F1F",
+        "#0D0404"
+      ]
+    },
+    {
+      "id": "tinyvulnscanner",
+      "name": "TinyVulnScanner",
+      "role": "Solo Developer",
+      "timeframe": "September 2025 \u2013 November 2025",
+      "oneLiner": "Multithreaded Python vulnerability scanner with 500+ concurrent ports.",
+      "description": "Lightweight multithreaded Python vulnerability scanner bundled with a demo lab and modular checks. It combines fast TCP port discovery with banner grabbing, security-header checks, reflected XSS and boolean-based SQLi tests, plus TLS/SSH inspection, producing severity-rated HTML/JSON reports. The scanner probes 500+ ports concurrently and runs about 70% faster than a sequential scan.",
+      "techStack": [
+        "Python",
+        "Multithreading",
+        "Socket Scanning",
+        "HTML/JSON Reports"
+      ],
+      "keyMetrics": [
+        "500+ ports probed concurrently",
+        "~70% faster than sequential"
+      ],
+      "links": [
+        {
+          "label": "Source code",
+          "url": "https://github.com/atharv109/TinyVulnScanner"
+        }
+      ],
+      "visualTheme": "Port scan radar",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "android-app",
+      "name": "Android App",
+      "role": "Solo Developer",
+      "timeframe": "High School",
+      "oneLiner": "Android app built in Java after high school CS.",
+      "description": "Built an Android application in Java after learning the language in high school computer science. The project was a hands-on way to apply object-oriented programming and mobile-development fundamentals as a solo developer.",
+      "techStack": [
+        "Java",
+        "Android"
+      ],
+      "keyMetrics": [],
+      "links": [],
+      "visualTheme": "Mobile / Java \u2014 early build",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "description": "EDUAI ingests course and task data through the Canvas LMS API, then applies predictive scheduling to estimate effort and distribute daily and weekly study time. It balances deadlines, difficulty, workload, and availability, with documented limits around subjective workload labels and sparse data.",
+      "id": "eduai",
+      "name": "EDUAI",
+      "oneLiner": "AI study scheduler using Canvas LMS data.",
+      "role": "Solo Developer",
+      "techStack": [
+        "Python",
+        "Canvas LMS API",
+        "Predictive Scheduling"
+      ],
+      "timeframe": "January 2025 \u2013 April 2025",
+      "visualTheme": "Calendar / schedule \u2014 adaptive study planning",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ],
+      "keyMetrics": [
+        "5+ courses",
+        "30+ tasks"
+      ],
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/atharv109/EDUAI"
+        }
+      ]
+    },
+    {
+      "id": "billshield",
+      "name": "BillShield",
+      "role": "Solo Developer",
+      "timeframe": "2026",
+      "oneLiner": "Healthcare billing dispute and workflow automation.",
+      "description": "BillShield is a Vite-based React frontend with Tailwind CSS and a server folder backend built for healthcare billing disputes and workflow automation. It includes dashboard UX, dispute-management flows, patient-facing communication concepts, and a PRD for an AI-powered medical billing integrity platform.",
+      "techStack": [
+        "React",
+        "AI-assisted Communication",
+        "Dashboard UX"
+      ],
+      "keyMetrics": [],
+      "links": [
+        {
+          "label": "Repository",
+          "url": "https://github.com/atharv109/Billshield"
+        },
+        {
+          "label": "Live Demo",
+          "url": "https://billshield-mu.vercel.app"
+        }
+      ],
+      "visualTheme": "Healthcare / billing \u2014 clean forms, dispute flow",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "crypton",
+      "name": "Crypton",
+      "role": "Co-Founder & CTO",
+      "timeframe": "2026 \u2014 Present",
+      "oneLiner": "Zero-trust cryptographic identity and trusted-device auth.",
+      "description": "Crypton is a zero-trust hardware device identity and authentication infrastructure. I co-founded it and lead technical direction across a monorepo that pairs a Rust/Axum backend trust engine with Redis/PostgreSQL, an SDK-first enrollment flow, WebAuthn/passkey support, JWT session management, and an admin panel for audit logs, security policies and device revocation. The platform is in early access with about 10 beta users.",
+      "techStack": [
+        "Rust",
+        "Axum",
+        "Redis",
+        "PostgreSQL",
+        "WebAuthn",
+        "JWT",
+        "JavaScript"
+      ],
+      "keyMetrics": [
+        "~10 beta users"
+      ],
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/Aryanvirpsu/Crypton-DI"
+        }
+      ],
+      "visualTheme": "Cryptographic identity \u2014 keys, trust rings, device verification",
+      "colorHints": [
+        "#0D0404",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    },
+    {
+      "id": "protopaper",
+      "name": "Proto Paper",
+      "role": "Frontend Lead / Team Hackathon",
+      "timeframe": "January 2026",
+      "oneLiner": "Turns research PDFs into runnable experiment guides.",
+      "description": "A full-stack hackathon tool that ingests research papers via PDF upload, URL, or pasted text and uses the Groq API (Llama 3.3 70B) to generate experiment checklists, seeding plans, pseudocode, and runnable code scaffolds. I led the frontend in Next.js 16, TypeScript, and Tailwind CSS and contributed to the backend generation pipeline, including JSON schema validation, quality scoring, and automatic retries.",
+      "techStack": [
+        "Next.js 16",
+        "TypeScript",
+        "Tailwind CSS",
+        "React",
+        "Groq API",
+        "Llama 3.3 70B",
+        "PDF Parsing",
+        "Python"
+      ],
+      "keyMetrics": [
+        "Hours \u2192 under 2 minutes"
+      ],
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/atharv109/Protopaper"
+        }
+      ],
+      "visualTheme": "Research-paper-to-prototype pipeline",
+      "colorHints": [
+        "#201186",
+        "#E85A2D",
+        "#7A1F1F"
+      ]
+    }
+  ],
+  "visuals": [
+    {
+      "projectId": "eleventh-round",
+      "componentName": "ProjectEleventhRoundVisual",
+      "description": "Abstract boxing-ring visual: arena spotlight, perspective ring floor, corner posts, glowing ropes, bold \"ROUND 11\" type, and punch motion streaks. Uses only SVG and CSS keyframes."
+    },
+    {
+      "projectId": "vulnswarm-vex",
+      "componentName": "ProjectVulnswarmVexVisual",
+      "description": "Abstract dependency-graph network visual for VulnSwarm-VEX: advisory sources, evidence checks, Z3 hub, and VEX verdicts flowing into a final decision node."
+    },
+    {
+      "projectId": "adversary-lab",
+      "componentName": "ProjectAdversaryLabVisual",
+      "description": "Abstract SOC-themed project card visual combining a kill-chain path, radar detection coverage rings, pulsing alert halos, and detection coverage bars in a near-black, burnt-orange, and deep-burgundy palette."
+    },
+    {
+      "projectId": "crypton",
+      "componentName": "ProjectCryptonVisual",
+      "description": "Abstract cryptographic identity visual with rotating trust rings, orbiting device nodes, a central hexagonal key-shield, and verification pulses using the Crypton palette."
+    },
+    {
+      "projectId": "prompt-optimiser",
+      "componentName": "ProjectPromptOptimiserVisual",
+      "description": "Abstract browser-extension visual: a dark glassy browser chrome with an Optimize button feeding a 6-stage geometric pipeline. Uses CSS keyframes for pulsing stages and SMIL for flowing data packets."
+    },
+    {
+      "projectId": "acctomatic",
+      "componentName": "ProjectAcctomaticVisual",
+      "description": "Abstract invoice-scanning pipeline visual: a dark document silhouette is swept by an orange scan beam, data flows along dashed pipelines into structured field cards, and validation state is shown through orange versus burgundy field borders."
+    }
+  ]
+}
