@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useMagneticButton } from '../hooks/useMagneticButton'
+import { useTextScramble } from '../hooks/useTextScramble'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -9,6 +10,7 @@ export function Contact() {
   const ctaRef = useRef<HTMLAnchorElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
   useMagneticButton(ctaRef, 0.25)
+  useTextScramble(ctaRef)
 
   useEffect(() => {
     if (!sectionRef.current) return

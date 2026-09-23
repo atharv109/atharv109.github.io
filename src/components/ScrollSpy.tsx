@@ -45,6 +45,9 @@ export function ScrollSpy({ onChange }: { onChange?: (id: string) => void }) {
   const triggersRef = useRef<ScrollTrigger[]>([])
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
     const setup = () => {
       triggersRef.current.forEach((t) => t.kill())
       triggersRef.current = createTriggers(onChange)
