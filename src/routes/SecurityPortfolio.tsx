@@ -17,7 +17,7 @@ type FsNode = {
 }
 
 const FILE_SYSTEM: Record<string, FsNode> = {
-  skills: {
+  'skills.txt': {
     type: 'file',
     content: [
       'CORE COMPETENCIES',
@@ -30,7 +30,7 @@ const FILE_SYSTEM: Record<string, FsNode> = {
       '  Method         Find break → Build fix → Ship proof',
     ],
   },
-  README: {
+  'README.md': {
     type: 'file',
     content: [
       '# Atharv Mittal — Security Portfolio',
@@ -41,7 +41,7 @@ const FILE_SYSTEM: Record<string, FsNode> = {
       'No redacted secrets. No fake CVEs. Just proof.',
     ],
   },
-  exploits: {
+  'exploits.log': {
     type: 'file',
     content: [
       '[2026-09-10] Simulated 10+ ATT&CK techniques across Windows / Linux.',
@@ -51,7 +51,7 @@ const FILE_SYSTEM: Record<string, FsNode> = {
       '[2025-12-10] SOC internship: detection engineering + incident response.',
     ],
   },
-  contact: {
+  'contact.sh': {
     type: 'file',
     executable: true,
     content: [
@@ -210,6 +210,20 @@ function scanLines(): string[] {
   ]
 }
 
+function statusLines(): string[] {
+  return [
+    'SYSTEM STATUS',
+    '─────────────',
+    '  Uptime       2y 11mo (since first CVE obsession)',
+    '  CPU          Security-Product Hybrid @ 3.8GHz  [████████░░] 80%',
+    '  Memory       8192 MB allocated to curiosity     [█████████░] 90%',
+    '  Threat level LOW — no unpatched ego detected',
+    '  Integrity    VERIFIED — shipped proof available',
+    '',
+    'Active modules: wazuh, sigma, elastic, osv, webauthn, react, gsap, three',
+  ]
+}
+
 export function SecurityPortfolio() {
   const navigate = useNavigate()
   const terminalRef = useRef<HTMLDivElement>(null)
@@ -363,6 +377,11 @@ export function SecurityPortfolio() {
         return
       }
 
+      if (lower === 'status') {
+        appendOutput({ type: 'out', lines: statusLines() })
+        return
+      }
+
       if (lower === 'tree') {
         const lines = treeLines(cwd)
         appendOutput({ type: 'out', lines })
@@ -488,6 +507,7 @@ export function SecurityPortfolio() {
             '  run <script>        Execute a script',
             '  tree                Show filesystem tree',
             '  scan                Run a mock surface scan',
+            '  status              Show system status',
             '  matrix              Toggle matrix rain overlay',
             '  history             Command history',
             '  clear               Clear terminal',
@@ -518,7 +538,7 @@ export function SecurityPortfolio() {
       const parts = input.split(/\s+/)
       if (parts.length <= 1) {
         const prefix = parts[0] || ''
-        const matches = ['help', 'whoami', 'ls', 'cd', 'pwd', 'cat', 'run', 'clear', 'exit', 'scan', 'matrix', 'tree', 'history', 'reboot'].filter((c) =>
+        const matches = ['help', 'whoami', 'ls', 'cd', 'pwd', 'cat', 'run', 'clear', 'exit', 'scan', 'status', 'matrix', 'tree', 'history', 'reboot'].filter((c) =>
           c.startsWith(prefix)
         )
         if (matches.length === 1) {
