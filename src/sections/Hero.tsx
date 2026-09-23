@@ -2,6 +2,7 @@ import { useEffect, useRef, Suspense, lazy } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrambleLink, ScrambleButton } from '../components/ScrambleLink'
 
 const BridgeField = lazy(() => import('../components/BridgeField').then((m) => ({ default: m.BridgeField })))
 
@@ -114,25 +115,24 @@ export function Hero() {
         </div>
 
         <div ref={buttonsRef} className="mt-10 md:mt-14 flex flex-wrap justify-center gap-4">
-          <a
+          <ScrambleLink
             href="#work"
-            onClick={(e) => {
-              e.preventDefault()
+            onClick={() => {
               const el = document.getElementById('work')
               el?.scrollIntoView({ behavior: 'smooth' })
             }}
-            className="group relative px-6 py-3 border border-[var(--accent)] text-[var(--accent)] mono text-xs uppercase tracking-widest hover:bg-[var(--accent)] hover:text-black transition-colors duration-300"
+            className="px-6 py-3 border border-[var(--accent)] text-[var(--accent)] mono text-xs uppercase tracking-widest hover:bg-[var(--accent)] hover:text-black transition-colors duration-300"
             data-cursor-hover
           >
             View SWE work
-          </a>
-          <button
+          </ScrambleLink>
+          <ScrambleButton
             onClick={() => navigate('/security')}
-            className="group relative px-6 py-3 border border-[#00ff41] text-[#00ff41] mono text-xs uppercase tracking-widest hover:bg-[#00ff41] hover:text-black transition-colors duration-300"
+            className="px-6 py-3 border border-[#00ff41] text-[#00ff41] mono text-xs uppercase tracking-widest hover:bg-[#00ff41] hover:text-black transition-colors duration-300"
             data-cursor-hover
           >
             Enter security shell
-          </button>
+          </ScrambleButton>
         </div>
       </div>
 
