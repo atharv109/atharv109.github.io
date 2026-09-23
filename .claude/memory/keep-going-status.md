@@ -12,8 +12,9 @@ Current status as of session:
 - Security route `/security` has a full terminal emulator with boot sequence, filesystem (`ls`, `cd`, `cat`, `run`, `tree`, `pwd`), `scan`, `matrix` rain, `status`, `secret` easter egg, tab autocomplete, command history, error glitch, `reboot`, `exit`, CRT overlays.
 - Preloader has rotating mission taglines.
 - GitHub Pages SPA fallback and deploy workflow are configured.
+- 16 local commits are ready to push.
 
-Next action: add subtle film-grain scanline overlay to SWE route and tighten terminal boot timing.
+Next action: implement film-grain scanline overlay on SWE route.
 
 Updated at: 2026-09-23 session.
 
