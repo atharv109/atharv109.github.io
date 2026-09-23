@@ -433,6 +433,7 @@ export function SecurityPortfolio() {
             appendOutput({
               type: 'out',
               lines: [`  port ${String(s.port).padStart(5)}/${s.service.padEnd(12)} ${s.state}`],
+              accent: s.state === 'OPEN' ? 'green' : 'muted',
             })
           }, 100 * (i + 1))
         })
