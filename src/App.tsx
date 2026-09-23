@@ -5,6 +5,7 @@ import { Nav } from './components/Nav'
 import { Preloader } from './components/Preloader'
 import { ScrollSpy } from './components/ScrollSpy'
 import { Spotlight } from './components/Spotlight'
+import { RouteTransition } from './components/RouteTransition'
 import { SwePortfolio } from './routes/SwePortfolio'
 import { SecurityPortfolio } from './routes/SecurityPortfolio'
 import { useLenis } from './hooks/useLenis'
@@ -40,8 +41,22 @@ function AppShell() {
             {isSwe && <Spotlight />}
 
             <Routes>
-              <Route path="/" element={<SwePortfolio />} />
-              <Route path="/security" element={<SecurityPortfolio />} />
+              <Route
+                path="/"
+                element={
+                  <RouteTransition>
+                    <SwePortfolio />
+                  </RouteTransition>
+                }
+              />
+              <Route
+                path="/security"
+                element={
+                  <RouteTransition>
+                    <SecurityPortfolio />
+                  </RouteTransition>
+                }
+              />
             </Routes>
 
             {isSwe && (
