@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import type { ProjectNode } from '../data/projects'
 
 interface ProjectVisualProps {
@@ -25,9 +25,28 @@ function seededRandom(seed: string) {
   }
 }
 
+function hexToRgb(hex: string) {
+  const m = hex.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i)
+  if (!m) return { r: 255, g: 255, b: 255 }
+  return { r: parseInt(m[1], 16), g: parseInt(m[2], 16), b: parseInt(m[3], 16) }
+}
+
 export function ProjectVisual({ id, node }: ProjectVisualProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  const params = useMemo(() => {
+    const rand = seededRandom(id)
+    return {
+      crackCount: 3 + Math.floor(rand() * 6),
+      crackSegments: 5 + Math.floor(rand() * 5),
+      buildCols: 4 + Math.floor(rand() * 4),
+      buildRows: 3 + Math.floor(rand() * 3),
+      buildFillBias: 0.55 + rand() * 0.25,
+      impactRays: 8 + Math.floor(rand() * 10),
+      hueShift: (rand() - 0.5) * 20,
+    }
+  }, [id])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -44,7 +63,11 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
     ctx.scale(dpr, dpr)
 
     const rand = seededRandom(id)
-    const palette = COLORS[node]
+    const basePalette = COLORS[node]
+    const accentRgb = hexToRgb(basePalette.accent)
+    // subtle per-project hue shift applied to accent via HSL
+    const shiftedAccent = `hsl(${(accentRgb.r / 255) * 360 + params.hueShift}, 85%, 55%)`
+    const palette = { ...basePalette, accent: shiftedAccent }
     let frame = 0
     let raf: number
 
@@ -52,27 +75,24 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
       ctx.fillStyle = palette.bg
       ctx.fillRect(0, 0, cssWidth, cssHeight)
 
-      const crackCount = 5
-      for (let i = 0; i < crackCount; i++) {
+      for (let i = 0; i < params.crackCount; i++) {
         const startX = rand() * cssWidth
-        const startY = rand() * cssHeight * 0.3
+        const startY = rand() * cssHeight * 0.25
         ctx.beginPath()
         ctx.moveTo(startX, startY)
         let x = startX
         let y = startY
-        const segments = 8 + Math.floor(rand() * 6)
-        for (let j = 0; j < segments; j++) {
-          x += (rand() - 0.5) * 60
-          y += cssHeight / segments + (rand() - 0.5) * 20
+        for (let j = 0; j < params.crackSegments; j++) {
+          x += (rand() - 0.5) * 80
+          y += cssHeight / params.crackSegments + (rand() - 0.5) * 30
           ctx.lineTo(x, y)
         }
         ctx.strokeStyle = i === 0 ? palette.accent : palette.stroke
-        ctx.lineWidth = i === 0 ? 2 : 1
-        ctx.globalAlpha = 0.4 + Math.sin(time * 0.002 + i) * 0.2
+        ctx.lineWidth = i === 0 ? 2.5 : 1
+        ctx.globalAlpha = 0.35 + Math.sin(time * 0.002 + i) * 0.15
         ctx.stroke()
       }
 
-      // scan lines
       ctx.globalAlpha = 0.08
       ctx.fillStyle = palette.accent
       for (let y = 0; y < cssHeight; y += 4) {
@@ -85,38 +105,37 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
       ctx.fillStyle = palette.bg
       ctx.fillRect(0, 0, cssWidth, cssHeight)
 
-      const cols = 6
-      const rows = 4
+      const cols = params.buildCols
+      const rows = params.buildRows
       const cellW = cssWidth / cols
       const cellH = cssHeight / rows
-      const offset = Math.sin(time * 0.001) * 6
+      const offset = Math.sin(time * 0.001) * 8
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          if (rand() > 0.55) {
+          if (rand() > 0.4) {
             const x = c * cellW + 8
             const y = r * cellH + 8
             const w = cellW - 16
             const h = cellH - 16
-            const filled = rand() > 0.7
+            const filled = rand() > params.buildFillBias
 
             ctx.strokeStyle = filled ? palette.accent : palette.stroke
             ctx.lineWidth = 1.5
             ctx.strokeRect(x, y, w, h)
 
             if (filled) {
-              ctx.fillStyle = `${palette.accent}20`
+              ctx.fillStyle = `${palette.accent}25`
               ctx.fillRect(x, y, w, h)
             }
           }
         }
       }
 
-      // connecting lines
       ctx.strokeStyle = palette.stroke
       ctx.globalAlpha = 0.25
       ctx.beginPath()
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 6; i++) {
         const x1 = rand() * cssWidth
         const y1 = rand() * cssHeight
         const x2 = rand() * cssWidth
@@ -135,13 +154,12 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
       const cx = cssWidth / 2
       const cy = cssHeight / 2
       const size = Math.min(cssWidth, cssHeight) * 0.28
-      const pulse = 1 + Math.sin(time * 0.0015) * 0.03
+      const pulse = 1 + Math.sin(time * 0.0015) * 0.04
 
       ctx.save()
       ctx.translate(cx, cy)
       ctx.scale(pulse, pulse)
 
-      // shield outline
       ctx.beginPath()
       ctx.moveTo(0, -size)
       ctx.bezierCurveTo(size * 0.8, -size * 0.6, size, -size * 0.2, size, size * 0.4)
@@ -153,7 +171,6 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
       ctx.lineWidth = 2.5
       ctx.stroke()
 
-      // inner check
       ctx.beginPath()
       ctx.moveTo(-size * 0.25, 0)
       ctx.lineTo(-size * 0.05, size * 0.25)
@@ -173,8 +190,8 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
 
       const cx = cssWidth / 2
       const cy = cssHeight / 2
-      const rays = 12
-      const maxRadius = Math.min(cssWidth, cssHeight) * 0.45
+      const rays = params.impactRays
+      const maxRadius = Math.min(cssWidth, cssHeight) * 0.46
 
       ctx.save()
       ctx.translate(cx, cy)
@@ -191,14 +208,12 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
         ctx.stroke()
       }
 
-      // core
       ctx.beginPath()
       ctx.arc(0, 0, 8, 0, Math.PI * 2)
       ctx.fillStyle = palette.accent
       ctx.globalAlpha = 1
       ctx.fill()
 
-      // ring
       const ringR = 20 + Math.sin(time * 0.002) * 4
       ctx.beginPath()
       ctx.arc(0, 0, ringR, 0, Math.PI * 2)
@@ -230,11 +245,12 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
     }
 
     return () => cancelAnimationFrame(frame)
-  }, [id, node, prefersReducedMotion])
+  }, [id, node, params, prefersReducedMotion])
 
   return (
-    <div className="w-full aspect-[16/10] border border-[var(--border)] bg-[var(--surface)] overflow-hidden relative">
-      <canvas ref={canvasRef} className="w-full h-full" aria-hidden="true" />
+    <div className="w-full aspect-[16/10] border border-[var(--border)] bg-[var(--surface)] overflow-hidden relative group">
+      <canvas ref={canvasRef} className="w-full h-full transition-transform duration-700 group-hover:scale-105" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       <div className="absolute top-3 left-3 mono text-[10px] text-[var(--muted)] uppercase">{node}</div>
     </div>
   )
