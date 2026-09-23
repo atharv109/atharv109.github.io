@@ -463,6 +463,32 @@ export function SecurityPortfolio() {
         return
       }
 
+      if (lower === 'neofetch') {
+        appendOutput({
+          type: 'out',
+          lines: [
+            '                 .___                 ',
+            '               __| _/___________       ',
+            '              / __ |/ __ \_  __\\      ',
+            '             / /_/ \\  ___/|  | \/      ',
+            '             \\____ | \\___  >__|        ',
+            '                   \\/    \\/            ',
+            '    atharv@security                    ',
+            '    ────────────────────────────────── ',
+            '    OS        Security-Product Hybrid   ',
+            '    Kernel    wazuh-sigma-elastic-osv   ',
+            '    Uptime    2y 11mo                   ',
+            '    Shell     bash-mindset              ',
+            '    WM         Find → Build → Ship      ',
+            '    Theme     threat-orange / product-bw',
+            '    CPU        Security+ trained         ',
+            '    Memory     8192 MB curiosity        ',
+            '    ████████░░ 8/10 shipped proof        ',
+          ],
+        })
+        return
+      }
+
       if (lower === 'whoami') {
         appendOutput({
           type: 'out',
@@ -584,6 +610,7 @@ export function SecurityPortfolio() {
           lines: [
             'Available commands:',
             '  whoami              Show operator identity',
+            '  neofetch            Show stylized system info',
             '  ls                  List directory contents',
             '  cd <dir> | cd ..    Change directory',
             '  pwd                 Print working directory',
@@ -599,7 +626,7 @@ export function SecurityPortfolio() {
             '  reboot              Reboot terminal',
             '  exit                Return to SWE portfolio',
             '',
-            'Try: cat skills.txt, cat projects/vex.log, run contact.sh',
+            'Try: cat skills.txt, neofetch, scan, run contact.sh',
           ],
         })
         return
