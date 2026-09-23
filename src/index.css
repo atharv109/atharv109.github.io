@@ -171,6 +171,15 @@ a {
   }
 }
 
+@keyframes scaleX {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .terminal-cursor {
     animation: none;

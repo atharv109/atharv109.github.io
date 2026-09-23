@@ -62,7 +62,9 @@ export function Nav() {
               data-cursor-hover
             >
               {item}
-              {isActive && <span className="absolute -bottom-1 left-0 right-0 h-px bg-[var(--accent)]" />}
+              {isActive && (
+                <span className="absolute -bottom-1 left-0 right-0 h-px bg-[var(--accent)] origin-left animate-[scaleX_0.3s_ease-out_forwards]" />
+              )}
             </button>
           )
         })}
