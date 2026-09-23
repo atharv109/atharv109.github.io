@@ -142,7 +142,7 @@ function ProjectCase({
 
   return (
     <section ref={sectionRef} className="min-h-screen flex items-center py-16 md:py-24 relative">
-      <div className="max-w-[1600px] mx-auto w-full pl-20 md:pl-32 lg:pl-40 pr-6 md:pr-12">
+      <div className="max-w-[1600px] mx-auto w-full pl-6 md:pl-12 xl:pl-48 pr-6 md:pr-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
           {/* left: meta */}
           <div className="lg:col-span-4">
@@ -200,7 +200,7 @@ function ProjectCase({
           </div>
 
           {/* right: case study */}
-          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             <CaseStudyItem label={caseStudyLabels[0]} text={project.problem} delay={0.1} />
             <CaseStudyItem label={caseStudyLabels[1]} text={project.solution} delay={0.25} />
             <CaseStudyItem label={caseStudyLabels[2]} text={project.impact} delay={0.4} />
@@ -283,7 +283,7 @@ function LoopSpine({
 
   return (
     <div
-      className="hidden md:block fixed left-0 top-1/2 -translate-y-1/2 w-36 lg:w-44 h-[600px] z-10 pointer-events-none"
+      className="hidden xl:block fixed left-0 top-1/2 -translate-y-1/2 w-36 h-[600px] z-10 pointer-events-none"
       style={{ opacity }}
     >
       <svg
@@ -417,7 +417,7 @@ export function Work() {
     <div id="work" ref={containerRef} className="relative">
       <LoopSpine projects={featured} activeIndex={activeIndex} isImpact={isImpact} opacity={spineOpacity} />
 
-      <div className="px-6 md:px-12 lg:pl-48 pt-24 md:pt-32 pb-12">
+      <div className="pl-6 md:pl-12 xl:pl-48 pr-6 md:pr-12 pt-24 md:pt-32 pb-12">
         <span className="mono text-[var(--accent)] block mb-4">Selected work</span>
         <h2 className="text-[clamp(2rem,6vw,6rem)] font-bold leading-none tracking-tight">
           Security finds.
@@ -439,7 +439,7 @@ export function Work() {
         />
       ))}
 
-      <div className="px-6 md:px-12 lg:pl-48 pt-24 pb-32">
+      <div className="pl-6 md:pl-12 xl:pl-48 pr-6 md:pr-12 pt-24 pb-32">
         <span className="mono text-[var(--muted)] block mb-4">Archive</span>
         <h3 className="text-2xl md:text-3xl font-bold mb-12 max-w-2xl">
           The rest of the loop: smaller breaks, faster fixes, shipped proof.

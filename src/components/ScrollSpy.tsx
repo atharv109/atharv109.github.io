@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -13,11 +13,16 @@ function updateHash(id: string) {
   }
 }
 
-export function ScrollSpy({ onChange }: { onChange?: (id: string) => void }) {
-  useEffect(() => {
-    const triggers = sections.map((id) =>
+function createTriggers(onChange?: (id: string) => void) {
+  const triggers: ScrollTrigger[] = []
+
+  sections.forEach((id) => {
+    const el = document.getElementById(id)
+    if (!el) return
+
+    triggers.push(
       ScrollTrigger.create({
-        trigger: `#${id}`,
+        trigger: el,
         start: 'top center',
         end: 'bottom center',
         onEnter: () => {
@@ -30,8 +35,35 @@ export function ScrollSpy({ onChange }: { onChange?: (id: string) => void }) {
         },
       })
     )
+  })
 
-    return () => triggers.forEach((t) => t.kill())
+  return triggers
+}
+
+export function ScrollSpy({ onChange }: { onChange?: (id: string) => void }) {
+  const trackedRef = useRef<Set<string>>(new Set())
+  const triggersRef = useRef<ScrollTrigger[]>([])
+
+  useEffect(() => {
+    const setup = () => {
+      triggersRef.current.forEach((t) => t.kill())
+      triggersRef.current = createTriggers(onChange)
+      trackedRef.current = new Set(sections.filter((id) => document.getElementById(id)))
+    }
+
+    setup()
+
+    const observer = new MutationObserver(() => {
+      const newlyPresent = sections.some((id) => !trackedRef.current.has(id) && document.getElementById(id))
+      if (newlyPresent) setup()
+    })
+
+    observer.observe(document.body, { childList: true, subtree: true })
+
+    return () => {
+      observer.disconnect()
+      triggersRef.current.forEach((t) => t.kill())
+    }
   }, [onChange])
 
   return null

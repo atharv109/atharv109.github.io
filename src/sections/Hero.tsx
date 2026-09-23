@@ -79,19 +79,19 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/40 via-transparent to-[var(--bg)] z-10 pointer-events-none" />
 
       <div ref={contentRef} className="relative z-20 w-full max-w-[1600px] mx-auto text-center">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-1 md:gap-4 lg:gap-8">
-          <div ref={leftRef} className="text-center md:text-right">
-            <span className="text-[clamp(3rem,12vw,10rem)] font-bold leading-none tracking-tighter text-[var(--muted)]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-2 lg:gap-6">
+          <div ref={leftRef} className="text-center lg:text-right">
+            <span className="text-[clamp(2.5rem,12vw,7rem)] lg:text-[clamp(2.5rem,8vw,6rem)] font-bold leading-none tracking-tighter text-[var(--muted)]">
               SECURITY
             </span>
           </div>
           <div ref={centerRef} className="flex justify-center items-center">
-            <span className="text-[clamp(4rem,18vw,14rem)] font-bold leading-none text-[var(--accent)]">
+            <span className="text-[clamp(3rem,16vw,8rem)] lg:text-[clamp(3rem,10vw,7rem)] font-bold leading-none text-[var(--accent)]">
               ×
             </span>
           </div>
-          <div ref={rightRef} className="text-center md:text-left">
-            <span className="text-[clamp(3rem,12vw,10rem)] font-bold leading-none tracking-tighter text-[var(--text)]">
+          <div ref={rightRef} className="text-center lg:text-left">
+            <span className="text-[clamp(2.5rem,12vw,7rem)] lg:text-[clamp(2.5rem,8vw,6rem)] font-bold leading-none tracking-tighter text-[var(--text)]">
               PRODUCT
             </span>
           </div>
