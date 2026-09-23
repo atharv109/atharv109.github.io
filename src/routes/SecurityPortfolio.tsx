@@ -4,6 +4,17 @@ import { gsap } from 'gsap'
 
 const GLYPHS = '!<>-_\\/[]{}—=+*^?#_\ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
+function useIdleHint(delay = 12000) {
+  const [showHint, setShowHint] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowHint(true), delay)
+    return () => clearTimeout(timer)
+  }, [delay])
+
+  return showHint
+}
+
 function DecryptedLine({ text, className }: { text: string; className: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -293,6 +304,7 @@ export function SecurityPortfolio() {
   const [cwd, setCwd] = useState<string[]>([])
   const [glitch, setGlitch] = useState(false)
   const [matrix, setMatrix] = useState(false)
+  const showHint = useIdleHint()
 
   useEffect(() => {
     document.title = 'atharv.mittal // secure shell'
@@ -822,6 +834,12 @@ export function SecurityPortfolio() {
               aria-label="Terminal input"
             />
             <span className="inline-block w-2 h-4 bg-[#00ff41] terminal-cursor ml-1" />
+          </div>
+        )}
+
+        {bootDone && showHint && history.length === 0 && (
+          <div className="mt-4 text-[#00e5ff]/70 text-xs mono">
+            Hint: try `help`, `neofetch`, or `cat skills.txt`
           </div>
         )}
       </div>
