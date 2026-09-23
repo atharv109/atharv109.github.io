@@ -602,6 +602,24 @@ export function SecurityPortfolio() {
         return
       }
 
+      if (lower === 'cowsay') {
+        appendOutput({
+          type: 'out',
+          lines: [
+            ' _______________________________________',
+            '/ The only secure system is one that    \\',
+            '\\ ships. Everything else is theory.     /',
+            ' ---------------------------------------',
+            '        \\   ^__^',
+            '         \\  (oo)\\_______',
+            '            (__)\\       )\\/\\',
+            '                ||----w |',
+            '                ||     ||',
+          ],
+        })
+        return
+      }
+
       if (lower === 'secret') {
         appendOutput({
           type: 'out',
@@ -633,12 +651,13 @@ export function SecurityPortfolio() {
             '  status              Show system status',
             '  matrix              Toggle matrix rain overlay',
             '  history             Command history',
+            '  cowsay              Classic security wisdom',
             '  secret              Hidden message',
             '  clear               Clear terminal',
             '  reboot              Reboot terminal',
             '  exit                Return to SWE portfolio',
             '',
-            'Try: cat skills.txt, neofetch, scan, run contact.sh',
+            'Try: cat skills.txt, neofetch, scan, cowsay, run contact.sh',
           ],
         })
         return
