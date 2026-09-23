@@ -14,7 +14,7 @@ Current status as of session:
 - GitHub Pages SPA fallback and deploy workflow are configured.
 - 16 local commits are ready to push.
 
-Next action: implement cinematic Work project panels, terminal file decryption scramble, blinking cursor, progressive color-coded port scan, scroll-triggered Work header reveal, hover lift/glow across cards, animated nav underline, cls alias, CNAME removal for live domain, route transition animation, clean build warnings, neofetch command, idle hint, and keyboard shortcuts on the SWE route.
+Next action: implement cinematic Work project panels, terminal file decryption scramble, blinking cursor, progressive color-coded port scan, scroll-triggered Work header reveal, hover lift/glow across cards, animated nav underline, cls alias, CNAME removal for live domain, route transition animation, clean build warnings, neofetch command, idle hint, keyboard shortcuts on the SWE route, and cowsay easter egg in the security terminal.
 
 Updated at: 2026-09-23 session.
 

@@ -3,10 +3,49 @@ import { useNavigate } from 'react-router-dom'
 import { Hero } from '../sections/Hero'
 import { useLenis } from '../hooks/useLenis'
 
+function ShortcutHint({ onOpen }: { onOpen: () => void }) {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion || window.matchMedia('(pointer: coarse)').matches) return
+    if (sessionStorage.getItem('shortcut-hint-dismissed')) return
+
+    const showTimer = setTimeout(() => setVisible(true), 2500)
+    const hideTimer = setTimeout(() => {
+      setVisible(false)
+      sessionStorage.setItem('shortcut-hint-dismissed', '1')
+    }, 9500)
+
+    return () => {
+      clearTimeout(showTimer)
+      clearTimeout(hideTimer)
+    }
+  }, [])
+
+  if (!visible) return null
+
+  return (
+    <button
+      onClick={() => {
+        setVisible(false)
+        onOpen()
+      }}
+      className="fixed bottom-6 right-6 z-40 mono text-[10px] px-3 py-2 border border-[var(--border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] bg-[var(--bg)]/80 backdrop-blur-sm transition-colors"
+      data-cursor-hover
+    >
+      Press <span className="text-[var(--text)] mx-1">?</span> for shortcuts
+    </button>
+  )
+}
+
 function KeyboardShortcuts() {
   const [visible, setVisible] = useState(false)
   const navigate = useNavigate()
   const lenis = useLenis().current
+
+  const open = () => setVisible(true)
+  const close = () => setVisible(false)
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -45,10 +84,10 @@ function KeyboardShortcuts() {
         case '?':
         case '/':
           e.preventDefault()
-          setVisible((v) => !v)
+          open()
           break
         case 'escape':
-          setVisible(false)
+          close()
           break
       }
     }
@@ -64,7 +103,7 @@ function KeyboardShortcuts() {
       <div className="border border-[var(--border)] bg-[var(--surface)] p-6 md:p-8 max-w-sm w-full shadow-2xl">
         <div className="flex items-center justify-between mb-6">
           <span className="mono text-xs text-[var(--accent)]">KEYBOARD SHORTCUTS</span>
-          <button onClick={() => setVisible(false)} className="mono text-xs text-[var(--muted)] hover:text-white">ESC</button>
+          <button onClick={close} className="mono text-xs text-[var(--muted)] hover:text-white">ESC</button>
         </div>
         <div className="space-y-3 mono text-xs">
           {[
@@ -142,6 +181,7 @@ export function SwePortfolio() {
   return (
     <VelocitySkew>
       <KeyboardShortcuts />
+      <ShortcutHint onOpen={open} />
       <Hero />
       <Suspense fallback={<SectionFallback />}>
         <Work />
