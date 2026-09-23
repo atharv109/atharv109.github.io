@@ -430,11 +430,40 @@ function LoopSpine({
 
 export function Work() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [isImpact, setIsImpact] = useState(false)
   const [spineOpacity, setSpineOpacity] = useState(0)
 
   const featured = projects.filter((p) => p.category === 'featured')
+
+  useEffect(() => {
+    if (!headerRef.current) return
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const elements = headerRef.current.querySelectorAll('.work-header-reveal')
+
+    const tween = gsap.fromTo(
+      elements,
+      { opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 48 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    )
+
+    return () => {
+      tween.scrollTrigger?.kill()
+      tween.kill()
+    }
+  }, [])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -464,14 +493,13 @@ export function Work() {
     <div id="work" ref={containerRef} className="relative">
       <LoopSpine projects={featured} activeIndex={activeIndex} isImpact={isImpact} opacity={spineOpacity} />
 
-      <div className="pl-6 md:pl-12 xl:pl-48 pr-6 md:pr-12 pt-24 md:pt-32 pb-12">
-        <span className="mono text-[var(--accent)] block mb-4">Selected work</span>
+      <div ref={headerRef} className="pl-6 md:pl-12 xl:pl-48 pr-6 md:pr-12 pt-24 md:pt-32 pb-12">
+        <span className="work-header-reveal mono text-[var(--accent)] block mb-4">Selected work</span>
         <h2 className="text-[clamp(2rem,6vw,6rem)] font-bold leading-none tracking-tight">
-          Security finds.
-          <br />
-          <span className="text-[var(--muted)]">Product ships.</span>
+          <span className="work-header-reveal block">Security finds.</span>
+          <span className="work-header-reveal block text-[var(--muted)]">Product ships.</span>
         </h2>
-        <p className="mt-6 max-w-xl text-[var(--text)]/70 text-base md:text-lg">
+        <p className="work-header-reveal mt-6 max-w-xl text-[var(--text)]/70 text-base md:text-lg">
           Six projects, one loop: find the break, build the fix, release it, prove it worked.
         </p>
       </div>

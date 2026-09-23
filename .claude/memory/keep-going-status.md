@@ -14,7 +14,7 @@ Current status as of session:
 - GitHub Pages SPA fallback and deploy workflow are configured.
 - 16 local commits are ready to push.
 
-Next action: implement cinematic Work project panels (metric badges, 3D hover tilt, scanlines/vignette, sliding info drawer), terminal file decryption scramble, blinking cursor, and progressive port-scan animation.
+Next action: implement cinematic Work project panels (metric badges, 3D hover tilt, scanlines/vignette, sliding info drawer), terminal file decryption scramble, blinking cursor, progressive port-scan animation, and scroll-triggered Work header reveal.
 
 Updated at: 2026-09-23 session.
 
