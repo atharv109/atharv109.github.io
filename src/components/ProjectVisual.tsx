@@ -1,9 +1,16 @@
-import { useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo, useState } from 'react'
+import { gsap } from 'gsap'
 import type { ProjectNode } from '../data/projects'
 
 interface ProjectVisualProps {
   id: string
   node: ProjectNode
+  name?: string
+  metric?: string
+  role?: string
+  timeframe?: string
+  techStack?: string[]
+  links?: { label: string; url: string }[]
 }
 
 const COLORS = {
@@ -31,9 +38,12 @@ function hexToRgb(hex: string) {
   return { r: parseInt(m[1], 16), g: parseInt(m[2], 16), b: parseInt(m[3], 16) }
 }
 
-export function ProjectVisual({ id, node }: ProjectVisualProps) {
+export function ProjectVisual({ id, node, name, metric, role, timeframe, techStack = [], links = [] }: ProjectVisualProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [hovered, setHovered] = useState(false)
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const basePalette = COLORS[node]
 
   const params = useMemo(() => {
     const rand = seededRandom(id)
@@ -47,6 +57,38 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
       hueShift: (rand() - 0.5) * 20,
     }
   }, [id])
+
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card || prefersReducedMotion || window.matchMedia('(pointer: coarse)').matches) return
+
+    const onMove = (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width - 0.5
+      const y = (e.clientY - rect.top) / rect.height - 0.5
+      gsap.to(card, {
+        rotateY: x * 8,
+        rotateX: -y * 8,
+        translateZ: 28,
+        duration: 0.4,
+        ease: 'power2.out',
+      })
+    }
+    const onEnter = () => setHovered(true)
+    const onLeave = () => {
+      setHovered(false)
+      gsap.to(card, { rotateX: 0, rotateY: 0, translateZ: 0, duration: 0.6, ease: 'power2.out' })
+    }
+
+    card.addEventListener('mousemove', onMove)
+    card.addEventListener('mouseenter', onEnter)
+    card.addEventListener('mouseleave', onLeave)
+    return () => {
+      card.removeEventListener('mousemove', onMove)
+      card.removeEventListener('mouseenter', onEnter)
+      card.removeEventListener('mouseleave', onLeave)
+    }
+  }, [prefersReducedMotion])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -63,9 +105,7 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
     ctx.scale(dpr, dpr)
 
     const rand = seededRandom(id)
-    const basePalette = COLORS[node]
     const accentRgb = hexToRgb(basePalette.accent)
-    // subtle per-project hue shift applied to accent via HSL
     const shiftedAccent = `hsl(${(accentRgb.r / 255) * 360 + params.hueShift}, 85%, 55%)`
     const palette = { ...basePalette, accent: shiftedAccent }
     let frame = 0
@@ -245,13 +285,120 @@ export function ProjectVisual({ id, node }: ProjectVisualProps) {
     }
 
     return () => cancelAnimationFrame(frame)
-  }, [id, node, params, prefersReducedMotion])
+  }, [id, node, params, basePalette])
 
   return (
-    <div className="w-full aspect-[16/10] border border-[var(--border)] bg-[var(--surface)] overflow-hidden relative group">
-      <canvas ref={canvasRef} className="w-full h-full transition-transform duration-700 group-hover:scale-105" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="absolute top-3 left-3 mono text-[10px] text-[var(--muted)] uppercase">{node}</div>
+    <div className="w-full aspect-[16/10] relative group" style={{ perspective: '1200px' }}>
+      <div
+        ref={cardRef}
+        className="w-full h-full relative border border-[var(--border)] bg-[var(--surface)] overflow-hidden"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full transition-transform duration-700 group-hover:scale-105"
+          aria-hidden="true"
+        />
+
+        {/* scanlines */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10"
+          style={{
+            opacity: 0.08,
+            background: 'linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.12) 50%)',
+            backgroundSize: '100% 4px',
+          }}
+        />
+
+        {/* vignette */}
+        <div
+          className="absolute inset-0 pointer-events-none z-10"
+          style={{
+            background: 'radial-gradient(circle at center, transparent 40%, var(--bg) 130%)',
+            opacity: 0.7,
+          }}
+        />
+
+        {/* node badge */}
+        <div
+          className="absolute top-3 left-3 z-20 mono text-[10px] uppercase px-2 py-1 border"
+          style={{
+            color: basePalette.accent,
+            borderColor: basePalette.accent,
+            backgroundColor: 'rgba(0,0,0,0.35)',
+            transform: 'translateZ(24px)',
+          }}
+        >
+          {node}
+        </div>
+
+        {/* metric badge */}
+        {metric && (
+          <div
+            className="absolute top-3 right-3 z-20 mono text-[10px] px-2 py-1 border"
+            style={{
+              color: basePalette.accent,
+              borderColor: basePalette.accent,
+              backgroundColor: 'rgba(0,0,0,0.35)',
+              transform: 'translateZ(24px)',
+            }}
+          >
+            {metric}
+          </div>
+        )}
+
+        {/* bottom info panel */}
+        <div
+          className="absolute bottom-0 left-0 right-0 z-20 p-5 transition-transform duration-500 ease-out"
+          style={{
+            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)',
+            transform: hovered ? 'translateY(0) translateZ(28px)' : 'translateY(12px) translateZ(28px)',
+          }}
+        >
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              {name && <h4 className="text-lg md:text-xl font-bold leading-tight mb-1">{name}</h4>}
+              {role && timeframe && (
+                <span className="mono text-[10px] text-[var(--muted)] block mb-3">
+                  {role} · {timeframe}
+                </span>
+              )}
+
+              <div
+                className="flex flex-wrap gap-1.5 transition-all duration-500"
+                style={{ opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(8px)' }}
+              >
+                {techStack.slice(0, 5).map((tech) => (
+                  <span
+                    key={tech}
+                    className="mono text-[9px] px-1.5 py-0.5 border border-[var(--border)] text-[var(--muted)]"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className="flex gap-3 transition-all duration-500"
+              style={{ opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(8px)' }}
+            >
+              {links.map((link) => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mono text-[10px] text-[var(--text)] hover:text-[var(--accent)] transition-colors"
+                  data-cursor-hover
+                >
+                  {link.label} ↗
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -125,6 +125,7 @@ function ProjectCase({
   isActive: boolean
 }) {
   const sectionRef = useRef<HTMLElement>(null)
+  const visualRef = useRef<HTMLDivElement>(null)
   const node = project.node ?? 'threat'
   const meta = NODE_META[node]
 
@@ -141,6 +142,33 @@ function ProjectCase({
 
     return () => trigger.kill()
   }, [index, onActive])
+
+  useEffect(() => {
+    if (!visualRef.current) return
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const tween = gsap.fromTo(
+      visualRef.current,
+      { opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 40, scale: prefersReducedMotion ? 1 : 0.96 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.9,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: visualRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    )
+
+    return () => {
+      tween.scrollTrigger?.kill()
+      tween.kill()
+    }
+  }, [])
 
   return (
     <section ref={sectionRef} className="min-h-screen flex items-center py-16 md:py-24 relative">
@@ -203,9 +231,18 @@ function ProjectCase({
 
           {/* right: case study */}
           <div className="lg:col-span-8">
-            <div className="mb-8 lg:mb-10">
+            <div ref={visualRef} className="mb-8 lg:mb-10">
               <Suspense fallback={<div className="w-full aspect-[16/10] border border-[var(--border)] bg-[var(--surface)]" />}>
-                <ProjectVisual id={project.id} node={node} />
+                <ProjectVisual
+                  id={project.id}
+                  node={node}
+                  name={project.name}
+                  metric={project.metric}
+                  role={project.role}
+                  timeframe={project.timeframe}
+                  techStack={project.techStack}
+                  links={project.links}
+                />
               </Suspense>
             </div>
 
