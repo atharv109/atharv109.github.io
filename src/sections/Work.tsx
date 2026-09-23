@@ -526,7 +526,7 @@ export function Work() {
               href={project.links[0]?.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group border border-[var(--border)] p-5 hover:border-[var(--accent)] hover:bg-[var(--surface)] transition-all duration-300"
+              className="group border border-[var(--border)] p-5 hover:border-[var(--accent)] hover:bg-[var(--surface)] hover:-translate-y-1 hover:shadow-[0_8px_30px_-12px_rgba(255,77,0,0.15)] transition-all duration-300"
               data-cursor-hover
             >
               <div className="flex items-baseline justify-between mb-3">
