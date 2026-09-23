@@ -238,18 +238,30 @@ function treeLines(path: string[], prefix = ''): string[] {
   return lines
 }
 
-function scanLines(): string[] {
+function scanPorts() {
   const ports = [22, 80, 443, 8080, 8443, 3306, 5432, 6379, 9200, 9300]
-  const states = ports.map((p) => ({
+  return ports.map((p) => ({
     port: p,
     state: p === 443 || p === 9200 ? 'OPEN' : 'FILTERED',
-    service: p === 22 ? 'ssh' : p === 80 ? 'http' : p === 443 ? 'https' : p === 8080 ? 'http-alt' : p === 8443 ? 'https-alt' : p === 3306 ? 'mysql' : p === 5432 ? 'postgresql' : p === 6379 ? 'redis' : 'wazuh',
+    service:
+      p === 22
+        ? 'ssh'
+        : p === 80
+          ? 'http'
+          : p === 443
+            ? 'https'
+            : p === 8080
+              ? 'http-alt'
+              : p === 8443
+                ? 'https-alt'
+                : p === 3306
+                  ? 'mysql'
+                  : p === 5432
+                    ? 'postgresql'
+                    : p === 6379
+                      ? 'redis'
+                      : 'wazuh',
   }))
-  return [
-    'Starting portfolio surface scan ...',
-    ...states.map((s) => `  port ${String(s.port).padStart(5)}/${s.service.padEnd(12)} ${s.state}`),
-    'Scan complete. 2 open ports, 8 filtered. Risk: LOW.',
-  ]
 }
 
 function statusLines(): string[] {
@@ -414,8 +426,23 @@ export function SecurityPortfolio() {
       }
 
       if (lower === 'scan') {
-        const lines = scanLines()
-        appendOutput({ type: 'out', lines })
+        const ports = scanPorts()
+        appendOutput({ type: 'system', lines: ['Starting portfolio surface scan ...'], accent: 'green' })
+        ports.forEach((s, i) => {
+          setTimeout(() => {
+            appendOutput({
+              type: 'out',
+              lines: [`  port ${String(s.port).padStart(5)}/${s.service.padEnd(12)} ${s.state}`],
+            })
+          }, 100 * (i + 1))
+        })
+        setTimeout(() => {
+          appendOutput({
+            type: 'system',
+            lines: ['Scan complete. 2 open ports, 8 filtered. Risk: LOW.'],
+            accent: 'green',
+          })
+        }, 100 * (ports.length + 2))
         return
       }
 
