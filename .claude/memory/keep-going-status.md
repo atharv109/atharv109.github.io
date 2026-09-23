@@ -13,6 +13,8 @@ Current status as of session:
 - Preloader has rotating mission taglines.
 - GitHub Pages SPA fallback and deploy workflow are configured.
 
-Next awaited signal: two background route audits to identify the single highest-impact remaining gap on each route.
+Next action: add subtle film-grain scanline overlay to SWE route and tighten terminal boot timing.
+
+Updated at: 2026-09-23 session.
 
 [[portfolio-rebuild-grill-state]]
