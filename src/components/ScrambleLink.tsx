@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from 'react'
 import { useTextScramble } from '../hooks/useTextScramble'
+import { useMagneticButton } from '../hooks/useMagneticButton'
 
 interface ScrambleLinkProps {
   children: ReactNode
@@ -8,12 +9,14 @@ interface ScrambleLinkProps {
   href?: string
   target?: string
   rel?: string
+  magnetic?: boolean
   'data-cursor-hover'?: boolean
 }
 
-export function ScrambleLink({ children, href, className = '', ...rest }: ScrambleLinkProps) {
+export function ScrambleLink({ children, href, magnetic = true, className = '', ...rest }: ScrambleLinkProps) {
   const ref = useRef<HTMLAnchorElement>(null)
   useTextScramble(ref)
+  if (magnetic) useMagneticButton(ref, 0.25)
 
   return (
     <a ref={ref} href={href} className={`inline-block ${className}`} {...rest}>
@@ -22,9 +25,10 @@ export function ScrambleLink({ children, href, className = '', ...rest }: Scramb
   )
 }
 
-export function ScrambleButton({ children, className = '', ...rest }: Omit<ScrambleLinkProps, 'href' | 'target' | 'rel'>) {
+export function ScrambleButton({ children, magnetic = true, className = '', ...rest }: Omit<ScrambleLinkProps, 'href' | 'target' | 'rel'>) {
   const ref = useRef<HTMLButtonElement>(null)
   useTextScramble(ref)
+  if (magnetic) useMagneticButton(ref, 0.25)
 
   return (
     <button ref={ref} className={`inline-block ${className}`} {...rest}>
