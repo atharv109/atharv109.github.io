@@ -14,7 +14,7 @@ Current status as of session:
 - GitHub Pages SPA fallback and deploy workflow are configured.
 - 16 local commits are ready to push.
 
-Next action: implement film-grain scanline overlay on SWE route.
+Next action: implemented film-grain scanline overlay on SWE route.
 
 Updated at: 2026-09-23 session.
 

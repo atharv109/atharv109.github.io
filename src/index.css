@@ -138,6 +138,20 @@ a {
   background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
 }
 
+.scanline-swe {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 1px,
+    rgba(255, 255, 255, 0.02) 1px,
+    rgba(255, 255, 255, 0.02) 2px
+  );
+}
+
 .terminal-dot {
   box-shadow: 0 0 8px rgba(255, 77, 0, 0.6);
 }

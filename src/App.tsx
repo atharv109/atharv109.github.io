@@ -33,6 +33,7 @@ function AppShell() {
               <CustomCursor />
             </Suspense>
             <div className="grain" aria-hidden="true" />
+            {isSwe && <div className="scanline-swe" aria-hidden="true" />}
 
             {isSwe && <Nav />}
             {isSwe && <ScrollSpy onChange={setActiveSection} />}
