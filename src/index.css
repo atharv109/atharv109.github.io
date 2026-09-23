@@ -158,6 +158,23 @@ a {
 
 .terminal-cursor {
   box-shadow: 0 0 6px rgba(0, 255, 65, 0.6);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor {
+    animation: none;
+  }
 }
 
 @keyframes slideUp {

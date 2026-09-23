@@ -14,7 +14,7 @@ Current status as of session:
 - GitHub Pages SPA fallback and deploy workflow are configured.
 - 16 local commits are ready to push.
 
-Next action: implemented film-grain scanline overlay on SWE route.
+Next action: implement cinematic Work project panels (metric badges, 3D hover tilt, scanlines/vignette, sliding info drawer) and terminal file decryption scramble + blinking cursor.
 
 Updated at: 2026-09-23 session.
 

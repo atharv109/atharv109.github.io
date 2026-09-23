@@ -2,11 +2,53 @@ import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
 
+const GLYPHS = '!<>-_\\/[]{}—=+*^?#_\ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+function DecryptedLine({ text, className }: { text: string; className: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || prefersReducedMotion) return
+
+    let frame = 0
+    let counter = 0
+    const final = text
+
+    const scramble = () => {
+      let output = ''
+      let complete = 0
+      for (let i = 0; i < final.length; i++) {
+        if (i < counter) {
+          output += final[i]
+          complete++
+        } else {
+          output += GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+        }
+      }
+      el.textContent = output
+      if (complete === final.length) {
+        cancelAnimationFrame(frame)
+        return
+      }
+      counter += 1 / 2
+      frame = requestAnimationFrame(scramble)
+    }
+
+    scramble()
+    return () => cancelAnimationFrame(frame)
+  }, [text, prefersReducedMotion])
+
+  return <div ref={ref} className={className}>{prefersReducedMotion ? text : ''}</div>
+}
+
 type Entry = {
   type: 'in' | 'out' | 'system'
   lines: string[]
   error?: boolean
   accent?: 'green' | 'red' | 'cyan' | 'muted'
+  scramble?: boolean
 }
 
 type FsNode = {
@@ -455,7 +497,7 @@ export function SecurityPortfolio() {
         const dir = directoryAt(lookupPath)
         const node = dir?.[fileName]
         if (node?.type === 'file' && node.content) {
-          appendOutput({ type: 'out', lines: node.content })
+          appendOutput({ type: 'out', lines: node.content, scramble: true })
         } else if (node?.type === 'dir') {
           appendOutput({ type: 'out', lines: [`cat: ${rest}: Is a directory`] })
         } else {
@@ -475,7 +517,7 @@ export function SecurityPortfolio() {
         const dir = directoryAt(lookupPath)
         const node = dir?.[fileName]
         if (node?.type === 'file' && node.executable && node.content) {
-          appendOutput({ type: 'out', lines: node.content })
+          appendOutput({ type: 'out', lines: node.content, scramble: true })
         } else if (node?.type === 'file') {
           appendOutput({ type: 'out', lines: [`run: ${rest}: permission denied (not executable)`] })
         } else {
@@ -696,9 +738,13 @@ export function SecurityPortfolio() {
               </div>
             ) : (
               <div className={`whitespace-pre-wrap ${lineColor(entry)}`}>
-                {entry.lines.map((line, j) => (
-                  <div key={j}>{line}</div>
-                ))}
+                {entry.lines.map((line, j) =>
+                  entry.scramble ? (
+                    <DecryptedLine key={j} text={line} className={lineColor(entry)} />
+                  ) : (
+                    <div key={j}>{line}</div>
+                  )
+                )}
               </div>
             )}
           </div>
