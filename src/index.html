@@ -16,6 +16,22 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Restore path after GitHub Pages 404 redirect.
+      try {
+        const redirect = sessionStorage.getItem('gh-pages-redirect')
+        if (redirect) {
+          const data = JSON.parse(redirect)
+          sessionStorage.removeItem('gh-pages-redirect')
+          if (data.pathname && data.pathname !== '/') {
+            const url = data.pathname + (data.search || '') + (data.hash || '')
+            window.history.replaceState(null, '', url)
+          }
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    </script>
     <script type="module" src="/main.tsx"></script>
   </body>
 </html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <script>
+      // Store the requested path so the SPA can restore it on load.
+      sessionStorage.setItem(
+        'gh-pages-redirect',
+        JSON.stringify({
+          pathname: window.location.pathname,
+          search: window.location.search,
+          hash: window.location.hash,
+        })
+      )
+      window.location.replace(window.location.origin + '/')
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>

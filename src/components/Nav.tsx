@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { LenisContext, ActiveSectionContext } from '../App'
 
 export function Nav() {
@@ -6,6 +7,7 @@ export function Nav() {
   const [progress, setProgress] = useState(0)
   const lenis = useContext(LenisContext)
   const activeSection = useContext(ActiveSectionContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => {
@@ -64,6 +66,15 @@ export function Nav() {
             </button>
           )
         })}
+        <button
+          onClick={() => navigate('/security')}
+          className="mono text-xs text-white/60 hover:text-[#00ff41] transition-colors uppercase flex items-center gap-2"
+          data-cursor-hover
+          title="Enter security terminal"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41]" />
+          SEC
+        </button>
       </nav>
     </header>
   )
