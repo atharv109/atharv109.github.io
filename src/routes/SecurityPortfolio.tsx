@@ -494,6 +494,20 @@ export function SecurityPortfolio() {
         return
       }
 
+      if (lower === 'secret') {
+        appendOutput({
+          type: 'out',
+          lines: [
+            '╔═══════════════════════════════════════╗',
+            '║  EASTER EGG UNLOCKED                  ║',
+            '║  "The only secure system is one that   ║',
+            '║   ships. Everything else is theory."   ║',
+            '╚═══════════════════════════════════════╝',
+          ],
+        })
+        return
+      }
+
       if (lower === 'help') {
         appendOutput({
           type: 'out',
@@ -510,6 +524,7 @@ export function SecurityPortfolio() {
             '  status              Show system status',
             '  matrix              Toggle matrix rain overlay',
             '  history             Command history',
+            '  secret              Hidden message',
             '  clear               Clear terminal',
             '  reboot              Reboot terminal',
             '  exit                Return to SWE portfolio',
@@ -538,7 +553,7 @@ export function SecurityPortfolio() {
       const parts = input.split(/\s+/)
       if (parts.length <= 1) {
         const prefix = parts[0] || ''
-        const matches = ['help', 'whoami', 'ls', 'cd', 'pwd', 'cat', 'run', 'clear', 'exit', 'scan', 'status', 'matrix', 'tree', 'history', 'reboot'].filter((c) =>
+        const matches = ['help', 'whoami', 'ls', 'cd', 'pwd', 'cat', 'run', 'clear', 'exit', 'scan', 'status', 'matrix', 'tree', 'history', 'secret', 'reboot'].filter((c) =>
           c.startsWith(prefix)
         )
         if (matches.length === 1) {
