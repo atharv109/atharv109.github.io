@@ -13,6 +13,7 @@ export interface Project {
   links: { label: string; url: string }[]
   node?: ProjectNode
   hook?: string
+  metric?: string
 }
 
 export const projects: Project[] = [
@@ -24,6 +25,7 @@ export const projects: Project[] = [
     timeframe: '2026',
     node: 'threat',
     hook: 'Most vulnerability alerts are noise. I wanted to know which ones actually matter.',
+    metric: '91.7%',
     problem:
       'Dependency vulnerability scanners flood teams with advisories; LLM triage is non-deterministic and hard to audit.',
     solution:
@@ -41,6 +43,7 @@ export const projects: Project[] = [
     timeframe: '2026',
     node: 'threat',
     hook: 'Security theory is useless if you can’t prove detection works under pressure.',
+    metric: '10+',
     problem:
       'Security theory means little without hands-on validation of detection and response workflows.',
     solution:
@@ -58,6 +61,7 @@ export const projects: Project[] = [
     timeframe: '2026',
     node: 'build',
     hook: 'People copy-paste prompts into three AI chats and hope for the best. I built the optimizer I wished existed.',
+    metric: '3 platforms',
     problem:
       'Writing strong prompts across ChatGPT, Claude, and Gemini is repetitive and most users do not optimize their inputs.',
     solution:
@@ -75,6 +79,7 @@ export const projects: Project[] = [
     timeframe: '2026',
     node: 'build',
     hook: 'Combat sports had no platform that treated athletes, managers, and promoters as product stakeholders.',
+    metric: 'Live',
     problem:
       'Combat-sports athletes, managers, and promotions need a single cinematic platform for careers, content, and commerce.',
     solution:
@@ -92,6 +97,7 @@ export const projects: Project[] = [
     timeframe: '2026',
     node: 'ship',
     hook: 'Passwords and OTPs are the weakest link in every stack. I shipped an identity system that removes them.',
+    metric: '10 beta',
     problem:
       'Passwords and OTPs are weak links; identity should bind to trusted devices, not shared secrets.',
     solution:
@@ -109,6 +115,7 @@ export const projects: Project[] = [
     timeframe: '2026',
     node: 'ship',
     hook: 'Accounting firms still transcribe invoices by hand. I shipped a pipeline that reads, classifies, and flags them.',
+    metric: 'GREEN / RED',
     problem:
       'Accounting firms waste hours manually extracting and categorizing invoice data from inconsistent documents.',
     solution:

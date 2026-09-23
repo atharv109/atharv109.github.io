@@ -200,10 +200,23 @@ function ProjectCase({
           </div>
 
           {/* right: case study */}
-          <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-            <CaseStudyItem label={caseStudyLabels[0]} text={project.problem} delay={0.1} />
-            <CaseStudyItem label={caseStudyLabels[1]} text={project.solution} delay={0.25} />
-            <CaseStudyItem label={caseStudyLabels[2]} text={project.impact} delay={0.4} />
+          <div className="lg:col-span-8">
+            {project.metric && (
+              <div className="mb-8 lg:mb-12">
+                <span className="mono text-[10px] text-[var(--muted)] block mb-2">Proof of impact</span>
+                <span
+                  className="text-[clamp(2.5rem,6vw,5rem)] font-bold leading-none"
+                  style={{ color: meta.color }}
+                >
+                  {project.metric}
+                </span>
+              </div>
+            )}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+              <CaseStudyItem label={caseStudyLabels[0]} text={project.problem} delay={0.1} />
+              <CaseStudyItem label={caseStudyLabels[1]} text={project.solution} delay={0.25} />
+              <CaseStudyItem label={caseStudyLabels[2]} text={project.impact} delay={0.4} />
+            </div>
           </div>
         </div>
       </div>
