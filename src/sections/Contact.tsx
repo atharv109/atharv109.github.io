@@ -53,7 +53,7 @@ export function Contact() {
         <a
           ref={ctaRef}
           href="mailto:atharvm2005@gmail.com"
-          className="contact-reveal inline-block px-10 py-5 border border-[var(--accent)] text-[var(--accent)] mono text-sm hover:bg-[var(--accent)] hover:text-black transition-colors duration-300"
+          className="contact-reveal inline-block px-10 py-5 border border-[var(--accent)] text-[var(--accent)] mono text-sm hover:bg-[var(--accent)] hover:text-black hover:shadow-[0_8px_30px_-12px_rgba(255,77,0,0.35)] transition-all duration-300"
           data-cursor-hover
         >
           atharvm2005@gmail.com
