@@ -475,6 +475,31 @@ export function SecurityPortfolio() {
         return
       }
 
+      if (lower === 'stats') {
+        const featured = 6
+        const archive = 3
+        const total = featured + archive
+        const bar = (n: number, label: string) => {
+          const filled = Math.round((n / total) * 24)
+          return `  ${label.padEnd(10)} ${'█'.repeat(filled)}${'░'.repeat(24 - filled)} ${n}`
+        }
+        appendOutput({
+          type: 'out',
+          lines: [
+            'PORTFOLIO STATS',
+            '───────────────',
+            bar(featured, 'featured'),
+            bar(archive, 'archive'),
+            '',
+            '  threat     ████████████░░░░░░░░░░░░ 2',
+            '  build      ████████████░░░░░░░░░░░░ 2',
+            '  ship       ████████████░░░░░░░░░░░░ 2',
+            '  impact     ████████████████████████ 9',
+          ],
+        })
+        return
+      }
+
       if (lower === 'neofetch') {
         appendOutput({
           type: 'out',
@@ -650,6 +675,7 @@ export function SecurityPortfolio() {
             '  scan                Run a mock surface scan',
             '  status              Show system status',
             '  matrix              Toggle matrix rain overlay',
+            '  stats               Project loop statistics',
             '  history             Command history',
             '  cowsay              Classic security wisdom',
             '  secret              Hidden message',
@@ -657,7 +683,7 @@ export function SecurityPortfolio() {
             '  reboot              Reboot terminal',
             '  exit                Return to SWE portfolio',
             '',
-            'Try: cat skills.txt, neofetch, scan, cowsay, run contact.sh',
+            'Try: cat skills.txt, neofetch, scan, stats, cowsay, run contact.sh',
           ],
         })
         return
