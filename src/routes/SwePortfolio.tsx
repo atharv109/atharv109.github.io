@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { Hero } from '../sections/Hero'
 
 const Work = lazy(() => import('../sections/Work').then((m) => ({ default: m.Work })))
@@ -10,6 +10,10 @@ function SectionFallback() {
 }
 
 export function SwePortfolio() {
+  useEffect(() => {
+    document.title = 'Atharv Mittal — Full-Stack Engineer'
+  }, [])
+
   return (
     <main>
       <Hero />

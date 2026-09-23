@@ -1,4 +1,5 @@
 import { useEffect, useRef, Suspense, lazy } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -7,6 +8,7 @@ const BridgeField = lazy(() => import('../components/BridgeField').then((m) => (
 gsap.registerPlugin(ScrollTrigger)
 
 export function Hero() {
+  const navigate = useNavigate()
   const sectionRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const bridgeRef = useRef<HTMLDivElement>(null)
@@ -15,6 +17,7 @@ export function Hero() {
   const rightRef = useRef<HTMLDivElement>(null)
   const nameRef = useRef<HTMLDivElement>(null)
   const metaRef = useRef<HTMLDivElement>(null)
+  const buttonsRef = useRef<HTMLDivElement>(null)
   const scrollCueRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -29,6 +32,7 @@ export function Hero() {
         .fromTo(rightRef.current, { x: 100, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2 }, 0)
         .fromTo(nameRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 0.9)
         .fromTo(metaRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 1.1)
+        .fromTo(buttonsRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 1.25)
         .fromTo(scrollCueRef.current, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 1.6)
 
       gsap.to(contentRef.current, {
@@ -107,6 +111,28 @@ export function Hero() {
           <span>Security-trained</span>
           <span className="text-[var(--accent)]">●</span>
           <span>Product-obsessed</span>
+        </div>
+
+        <div ref={buttonsRef} className="mt-10 md:mt-14 flex flex-wrap justify-center gap-4">
+          <a
+            href="#work"
+            onClick={(e) => {
+              e.preventDefault()
+              const el = document.getElementById('work')
+              el?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="group relative px-6 py-3 border border-[var(--accent)] text-[var(--accent)] mono text-xs uppercase tracking-widest hover:bg-[var(--accent)] hover:text-black transition-colors duration-300"
+            data-cursor-hover
+          >
+            View SWE work
+          </a>
+          <button
+            onClick={() => navigate('/security')}
+            className="group relative px-6 py-3 border border-[#00ff41] text-[#00ff41] mono text-xs uppercase tracking-widest hover:bg-[#00ff41] hover:text-black transition-colors duration-300"
+            data-cursor-hover
+          >
+            Enter security shell
+          </button>
         </div>
       </div>
 

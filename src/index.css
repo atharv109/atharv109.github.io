@@ -105,27 +105,45 @@ a {
 }
 
 /* terminal / security route */
-.crt {
-  animation: flicker 0.15s infinite;
+.crt-subtle {
+  position: relative;
 }
 
-@keyframes flicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.985; }
+.crt-subtle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.25;
 }
 
 .scanlines {
   background: repeating-linear-gradient(
     to bottom,
     transparent,
-    transparent 2px,
-    rgba(0, 255, 65, 0.03) 2px,
-    rgba(0, 255, 65, 0.03) 4px
+    transparent 3px,
+    rgba(0, 255, 65, 0.035) 3px,
+    rgba(0, 255, 65, 0.035) 6px
   );
+  pointer-events: none;
 }
 
 .vignette {
-  background: radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.6) 100%);
+  background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.terminal-dot {
+  box-shadow: 0 0 8px rgba(255, 77, 0, 0.6);
+}
+
+.terminal-cursor {
+  box-shadow: 0 0 6px rgba(0, 255, 65, 0.6);
 }
 
 /* terminal scrollbars */
