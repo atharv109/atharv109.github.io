@@ -88,9 +88,13 @@ export function About() {
           {cells.map((cell) => (
             <div
               key={cell.label}
-              className={`bento-cell p-6 md:p-8 border border-[var(--border)] flex flex-col justify-between min-h-[180px] ${
+              className={`bento-cell p-6 md:p-8 border border-[var(--border)] flex flex-col justify-between min-h-[180px] transition-all duration-300 hover:-translate-y-1 ${
                 cell.span ? 'md:col-span-2' : ''
-              } ${cell.accent ? 'bg-[var(--accent)] text-black border-[var(--accent)]' : 'bg-[var(--surface)]'}`}
+              } ${
+                cell.accent
+                  ? 'bg-[var(--accent)] text-black border-[var(--accent)] hover:shadow-[0_8px_30px_-12px_rgba(255,77,0,0.35)]'
+                  : 'bg-[var(--surface)] hover:border-[var(--accent)] hover:shadow-[0_8px_30px_-12px_rgba(255,77,0,0.12)]'
+              }`}
             >
               <span className={`mono text-xs ${cell.accent ? 'text-black/60' : 'text-[var(--muted)]'}`}>
                 {cell.label}
