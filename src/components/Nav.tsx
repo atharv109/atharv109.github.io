@@ -68,12 +68,12 @@ export function Nav() {
         })}
         <button
           onClick={() => navigate('/security')}
-          className="mono text-xs text-white/60 hover:text-[#00ff41] transition-colors uppercase flex items-center gap-2"
+          className="mono text-xs text-[#00ff41] border border-[#00ff41]/40 hover:border-[#00ff41] hover:bg-[#00ff41]/10 px-3 py-1.5 transition-colors uppercase flex items-center gap-2"
           data-cursor-hover
           title="Enter security terminal"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41]" />
-          SEC
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41] terminal-dot" />
+          SECURITY
         </button>
       </nav>
     </header>
