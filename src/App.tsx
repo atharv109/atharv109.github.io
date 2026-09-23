@@ -4,6 +4,7 @@ import type Lenis from 'lenis'
 import { Nav } from './components/Nav'
 import { Preloader } from './components/Preloader'
 import { ScrollSpy } from './components/ScrollSpy'
+import { Spotlight } from './components/Spotlight'
 import { SwePortfolio } from './routes/SwePortfolio'
 import { SecurityPortfolio } from './routes/SecurityPortfolio'
 import { useLenis } from './hooks/useLenis'
@@ -35,6 +36,7 @@ function AppShell() {
 
             {isSwe && <Nav />}
             {isSwe && <ScrollSpy onChange={setActiveSection} />}
+            {isSwe && <Spotlight />}
 
             <Routes>
               <Route path="/" element={<SwePortfolio />} />
