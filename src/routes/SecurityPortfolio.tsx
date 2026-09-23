@@ -397,7 +397,7 @@ export function SecurityPortfolio() {
       const [name, ...args] = lower.split(/\s+/)
       const rest = lower.slice(name.length).trim()
 
-      if (lower === 'clear') {
+      if (lower === 'clear' || lower === 'cls') {
         setHistory([])
         return
       }
