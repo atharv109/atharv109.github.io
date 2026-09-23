@@ -1,7 +1,9 @@
-import { useEffect, useRef, useMemo, useState } from 'react'
+import { useEffect, useRef, useMemo, useState, Suspense, lazy } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { projects, archiveProjects, type Project, type ProjectNode } from '../data/projects'
+
+const ProjectVisual = lazy(() => import('../components/ProjectVisual').then((m) => ({ default: m.ProjectVisual })))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -201,17 +203,12 @@ function ProjectCase({
 
           {/* right: case study */}
           <div className="lg:col-span-8">
-            {project.metric && (
-              <div className="mb-8 lg:mb-12">
-                <span className="mono text-[10px] text-[var(--muted)] block mb-2">Proof of impact</span>
-                <span
-                  className="text-[clamp(2.5rem,6vw,5rem)] font-bold leading-none"
-                  style={{ color: meta.color }}
-                >
-                  {project.metric}
-                </span>
-              </div>
-            )}
+            <div className="mb-8 lg:mb-10">
+              <Suspense fallback={<div className="w-full aspect-[16/10] border border-[var(--border)] bg-[var(--surface)]" />}>
+                <ProjectVisual id={project.id} node={node} />
+              </Suspense>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
               <CaseStudyItem label={caseStudyLabels[0]} text={project.problem} delay={0.1} />
               <CaseStudyItem label={caseStudyLabels[1]} text={project.solution} delay={0.25} />
