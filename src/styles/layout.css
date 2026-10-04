@@ -1,0 +1,28 @@
+/* layout.css — sidebar + main shell. Window scrolls natively; sidebar stays put (sticky). */
+
+body {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  align-items: start;
+  background: var(--color-base);
+  color: var(--color-subtext0);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  background: var(--color-base);
+}
+
+main {
+  background: var(--color-surface0);
+  min-height: 100svh;
+  min-width: 0;
+}
+
+@media (width <= 50rem) {
+  body {
+    grid-template-columns: 1fr;
+    --line-numbers-width: 0ch;
+  }
+}

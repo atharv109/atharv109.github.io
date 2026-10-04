@@ -1,34 +1,25 @@
 {
   "name": "atharv-mittal-portfolio",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@types/react-router-dom": "^5.3.3",
-    "gsap": "^3.13.0",
-    "lenis": "^1.3.26",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.18.4",
-    "three": "^0.185.0"
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.13.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@types/three": "^0.185.0",
-    "@vitejs/plugin-react": "^5.0.4",
-    "autoprefixer": "^10.6.1",
-    "postcss": "^8.5.28",
-    "tailwindcss": "^3.4.19",
+    "@playwright/test": "^1.55.0",
     "typescript": "^5.9.3",
-    "vite": "^7.1.12"
+    "vitest": "^3.2.4"
   }
 }

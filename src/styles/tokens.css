@@ -1,0 +1,89 @@
+/* tokens.css — colour palette verbatim from digital-meadow ref spec §4.1 (dark = default).
+   "light is opt-in only": [data-theme="light"] applied explicitly, never from OS preference. */
+
+@font-face {
+  font-family: "Iosevka Term NF";
+  src: url("/fonts/IosevkaTermNF-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* palette anchors (theme-invariant) */
+  --color-white: #f6f2e5;
+  --color-black: #3e3832;
+
+  /* dark theme (default) */
+  --color-red: #f57f82;
+  --color-orange: #f7a182;
+  --color-yellow: #f5d098;
+  --color-lime: #dbe6af;
+  --color-green: #cbe3b3;
+  --color-aqua: #b3e3ca;
+  --color-skye: #b3e6db;
+  --color-snow: #afd9e6;
+  --color-blue: #b2caed;
+  --color-purple: #d2bdf3;
+  --color-pink: #f3c0e5;
+  --color-cherry: #fae6ef;
+  --color-crust: #171c1f;
+  --color-mantle: #171c1f;
+  --color-base: #1c2225;
+  --color-surface0: #232a2e;
+  --color-surface1: #2b3337;
+  --color-surface2: #374145;
+  --color-overlay0: #4a585c;
+  --color-overlay1: #58686d;
+  --color-overlay2: #6f8788;
+  --color-subtext0: #839e9a;
+  --color-subtext1: #96b4aa;
+  --color-subtext2: #adc9bc;
+  --color-text: #f8f9e8;
+  /* aliases */
+  --color-background: var(--color-base);
+  --color-shape-stroke: var(--color-overlay0);
+
+  /* rhythm / metrics */
+  --line-height: 19px;
+  --sidebar-width: 36ch;
+  --line-numbers-width: 5ch;
+  --margin: 3ch;
+  --pad-xs: 2px;
+  --pad-sm: 5px;
+  --pad-md: 9px;
+  --font-ui: "Iosevka Term NF", "Iosevka", ui-monospace, monospace;
+}
+
+[data-theme="light"] {
+  --color-red: #9b4d4e;
+  --color-orange: #9b6045;
+  --color-yellow: #9b7a3d;
+  --color-lime: #6e7a3d;
+  --color-green: #4a6e3a;
+  --color-aqua: #3d6e52;
+  --color-skye: #3d6e62;
+  --color-snow: #3d6e6e;
+  --color-blue: #4d607d;
+  --color-purple: #6d5e85;
+  --color-pink: #8d5e7a;
+  --color-cherry: #8d5e6e;
+  --color-crust: #e8ded5;
+  --color-mantle: #f2eae1;
+  --color-base: #f5efe6;
+  --color-surface0: #ede8dd;
+  --color-surface1: #e6e1d3;
+  --color-surface2: #ceccbd;
+  --color-overlay0: #acb5a4;
+  --color-overlay1: #829084;
+  --color-overlay2: #707d76;
+  --color-subtext0: #576869;
+  --color-subtext1: #455355;
+  --color-subtext2: #39444e;
+  --color-text: #2b3034;
+}
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-base);
+}
