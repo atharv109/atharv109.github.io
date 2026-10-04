@@ -28,6 +28,7 @@ const UNICODES = [
   'U+F09EB', // mailto
   'U+E709', // GitHub
   'U+F16D', // Instagram
+  'U+EA76', // popup close
   'U+F09E', // RSS
   'U+F0A54', // 404 button
   'U+F1A25', // lamp on
