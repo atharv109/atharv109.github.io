@@ -62,9 +62,9 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | T7 ASCII engine | `4ce66aa` | surface.ts (cells, dirty rows, run-length w/ trailing-blank trim), renderer.ts (metric probe, dirty-row diffing, insertRule class cache, fps cap, visibility pause), rain.ts (injectable rng, spawn/top-up, onCell/onBottomHit hooks) — 6 tests |
 | T11 Terminal | `b1dc418` | fs.ts (faithful port; stats archive 3→8 corrected), machine.ts PURE (13 tests: cd/cat/run/clear/exit/secret/200-char etc.), site-terminal.ts (boot seq, scramble reveal, tab complete, history arrows, glitch, Ctrl+L), matrix.ts canvas overlay, shell.astro route, terminal e2e 4/4 |
 
-**T7+T11 task review was DISPATCHED at checkpoint time** (sonnet agent, combined review
-of `review-062ed85..b1dc418.diff`). If it returns findings, fix per §6 loop; if the
-session/model changed, re-dispatch the review — briefs + diff file are in the workspace.
+**T7+T11 review COMPLETED after checkpoint — 1 Critical + 2 Important findings, UNFIXED.**
+The fixes are spelled out in the Resume Prompt (§9) step 1 and recorded verbatim in the
+ledger section "T7+T11 review landed". Nothing else from that review blocks work.
 
 ## 4. Task 5 (all routes + markdown pipeline) — IN FLIGHT
 
@@ -147,5 +147,11 @@ surface 3, rain 3, terminal-machine 13). `npx playwright test` → 12 e2e green
 > .superpowers/sdd/2026-10-04-astro-meadow-redesign/progress.md (the ledger), then the
 > plan docs/superpowers/plans/2026-10-04-astro-meadow-redesign.md. Use
 > superpowers:subagent-driven-development; if subagent dispatches 429, implement inline
-> per HANDOFF §6. First actions: (1) check/finish the outstanding T7+T11 combined review
-> (diff review-062ed85..b1dc418.diff already generated), (2) continue Task 5 per HANDOFF §4.
+> per HANDOFF §6. First actions: (1) **fix the two landing-blocker findings from the
+> already-completed T7+T11 review** (recorded in the ledger's "T7+T11 review landed"
+> section): T7 Critical — add CSS for `.ascii-overlay`/`.ascii-row` (absolute pre,
+> block rows) or Task 8 is unbuildable; T7 Important — renderer fps-cap freeze (assign
+> `last` only on painted frames); T11 Important — `resolvePath` must strip the `~`
+> segment (`cd ~/projects` currently fails). Then verify build+vitest+playwright green,
+> commit as T7/T11 fix round, scoped re-review, close both in the ledger. (2) Continue
+> Task 5 per HANDOFF §4.
