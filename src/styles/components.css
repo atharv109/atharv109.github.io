@@ -82,6 +82,10 @@ feature-block[collapsed] {
 feature-block[collapsed] .fb-inner {
   outline: none;
 }
+feature-block[data-kind='embed'] .fb-inner {
+  height: calc(30 * var(--line-height));
+  background: var(--color-surface1);
+}
 feature-block .fb-inner img {
   width: 100%;
   height: 100%;

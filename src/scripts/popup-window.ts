@@ -112,7 +112,10 @@ if (typeof window !== 'undefined' && typeof customElements !== 'undefined') {
       }
       border.appendChild(content);
 
+      const titleId = `popup-title-${Math.random().toString(36).slice(2, 8)}`;
       const titleChip = document.createElement('button');
+      titleChip.id = titleId;
+      this.setAttribute('aria-labelledby', titleId);
       titleChip.setAttribute('data-popup-title', '');
       titleChip.textContent = title;
       titleChip.setAttribute('aria-label', `Open ${title} in new tab`);
