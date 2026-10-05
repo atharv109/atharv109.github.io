@@ -1,0 +1,127 @@
+---
+// PageLayout.astro — editor shell: head + boot script + sidebar + buffer slot.
+import '../styles/tokens.css';
+import '../styles/reset.css';
+import '../styles/layout.css';
+import Sidebar from '../components/Sidebar.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Atharv Mittal — full-stack developer portfolio',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1c2225" />
+    <title>{title} ~ Atharv Mittal</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/IosevkaTermNF-Regular.woff2"
+    />
+    <script is:inline>
+      // Boot script — dependency-free, runs before any module or style paint.
+      try {
+        if (localStorage.getItem('am-theme') === 'Light')
+          document.documentElement.dataset.theme = 'light';
+        var fs = localStorage.getItem('am-font-size');
+        if (fs) document.documentElement.style.fontSize = fs + 'px';
+        if (window.self !== window.top) document.documentElement.dataset.embedded = '';
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('wave-pending');
+          if (location.pathname === '/')
+            document.documentElement.classList.add('intro-pending');
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <button type="button" class="menu-button" aria-expanded="false">
+      Menu <toggle-indicator></toggle-indicator>
+    </button>
+    <Sidebar />
+    <main id="main-content">
+      <slot />
+    </main>
+    <script>
+      import '../scripts/tree-folder';
+      import '../scripts/nav-tree';
+      import '../scripts/line-numbers';
+      import '../scripts/site-sidebar';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    padding: var(--pad-sm) var(--pad-md);
+    background: var(--color-base);
+    color: var(--color-text);
+    z-index: 200;
+  }
+  .skip-link:focus-visible {
+    top: 0;
+  }
+
+  .menu-button {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 99;
+    padding: var(--pad-sm);
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--color-subtext2);
+    cursor: pointer;
+  }
+  .menu-button[aria-expanded='true'] {
+    color: var(--color-subtext0);
+  }
+  toggle-indicator::after {
+    content: '[+]';
+  }
+  .menu-button[aria-expanded='true'] toggle-indicator::after {
+    content: '[-]';
+  }
+  @media (width <= 50rem) {
+    .menu-button {
+      display: block;
+    }
+  }
+
+  /* Embedded (inside a popup iframe): no chrome, single column. */
+  html[data-embedded] body {
+    grid-template-columns: 1fr;
+  }
+  html[data-embedded] .sidebar,
+  html[data-embedded] .menu-button {
+    display: none;
+  }
+
+  /* Arrival choreography flags (revealed by later tasks' scripts). */
+  html.wave-pending .content-lines {
+    opacity: 0;
+  }
+  html.intro-pending .sidebar,
+  html.intro-pending .menu-button {
+    opacity: 0;
+  }
+</style>

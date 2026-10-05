@@ -1,0 +1,61 @@
+---
+// NavItem.astro — one-line leaf entry in the sidebar tree (page or external link).
+import type { NavNode } from '../data/nav';
+
+interface Props {
+  node: NavNode;
+  depth: number;
+  current: string; // normalized pathname (trailing slash stripped, '/' kept)
+}
+
+const { node, depth, current } = Astro.props;
+
+const normalize = (p: string) => (p !== '/' && p.endsWith('/') ? p.slice(0, -1) : p);
+const href = node.href ?? '#';
+const isExternal = /^[a-z][a-z0-9+.-]*:/i.test(href);
+const isCurrent = !isExternal && normalize(href) === current;
+---
+<a
+  class:list={['nav-item', 'nav-item--page', { 'is-current': isCurrent }]}
+  role="treeitem"
+  href={href}
+  tabindex={isCurrent ? '0' : '-1'}
+  style={`--nav-icon:"${node.icon ?? ''}";padding-left:calc(var(--pad-sm) + ${2 * depth}ch)`}
+  {...(isCurrent ? { 'aria-current': 'page' } : {})}
+  {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+>
+  {node.label}
+</a>
+
+<style>
+  .nav-item {
+    display: block;
+    height: var(--line-height);
+    line-height: var(--line-height);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-subtext2);
+    text-decoration: none;
+    user-select: none;
+  }
+  .nav-item::before {
+    content: var(--nav-icon);
+    display: inline-block;
+    min-width: 1ch;
+    text-align: center;
+    margin-right: 1.25ch;
+  }
+  @media (hover: hover) {
+    .nav-item:hover {
+      background: var(--color-surface2);
+    }
+  }
+  .nav-item:focus-visible {
+    background: var(--color-surface0);
+  }
+  .nav-item.is-current {
+    background: var(--color-green);
+    color: var(--color-background);
+  }
+</style>

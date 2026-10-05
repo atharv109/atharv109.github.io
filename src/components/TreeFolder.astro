@@ -1,0 +1,104 @@
+---
+// TreeFolder.astro — recursive folder node; renders <tree-folder> custom element.
+// Open-state is resolved server-side: a folder containing the current route is
+// forced open (no flash); all others carry data-persist and are hydrated from
+// the am-nav-open map by tree-folder.ts before first paint.
+import type { NavNode } from '../data/nav';
+import NavItem from './NavItem.astro';
+import TreeFolder from './TreeFolder.astro';
+
+interface Props {
+  node: NavNode;
+  depth: number;
+  current: string; // normalized pathname
+}
+
+const { node, depth, current } = Astro.props;
+
+// Folder open/closed glyphs (Nerd Font). Icon swap on [open] happens in CSS below.
+const FOLDER_CLOSED = '\u{E5FF}';
+const FOLDER_OPEN = '\u{E5FE}';
+
+const normalize = (p: string) => (p !== '/' && p.endsWith('/') ? p.slice(0, -1) : p);
+const containsCurrent = (n: NavNode): boolean =>
+  (!!n.href && normalize(n.href) === current) || !!n.children?.some(containsCurrent);
+
+const forceOpen = containsCurrent(node);
+const summaryId = `tf-${node.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${depth}`;
+---
+<tree-folder
+  label={node.label}
+  open={forceOpen}
+  data-persist={forceOpen ? undefined : ''}
+  style={`--nav-icon:"${FOLDER_CLOSED}";--nav-icon-open:"${FOLDER_OPEN}"`}
+>
+  <button
+    type="button"
+    id={summaryId}
+    data-summary
+    role="treeitem"
+    aria-expanded={String(forceOpen)}
+    aria-owns={`${summaryId}-group`}
+    tabindex="-1"
+    style={`padding-left:calc(var(--pad-sm) + ${2 * depth}ch)`}
+  >
+    {node.label}
+  </button>
+  <ul role="group" id={`${summaryId}-group`}>
+    {
+      node.children!.map((child) => (
+        <li role="none">
+          {child.children ? (
+            <TreeFolder node={child} depth={depth + 1} current={current} />
+          ) : (
+            <NavItem node={child} depth={depth + 1} current={current} />
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</tree-folder>
+
+<style>
+  tree-folder {
+    display: block;
+  }
+  tree-folder:not([open]) > ul {
+    display: none;
+  }
+  button[data-summary] {
+    display: block;
+    width: 100%;
+    text-align: left;
+    height: var(--line-height);
+    line-height: var(--line-height);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--color-subtext0);
+    cursor: pointer;
+    user-select: none;
+  }
+  button[data-summary]::before {
+    content: var(--nav-icon);
+    display: inline-block;
+    min-width: 1ch;
+    text-align: center;
+    margin-right: 1.25ch;
+    color: var(--color-overlay2);
+  }
+  tree-folder[open] > button[data-summary]::before {
+    content: var(--nav-icon-open);
+  }
+  @media (hover: hover) {
+    button[data-summary]:hover {
+      background: var(--color-surface2);
+    }
+  }
+  button[data-summary]:focus-visible {
+    background: var(--color-surface2);
+  }
+</style>

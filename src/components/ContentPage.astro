@@ -1,0 +1,66 @@
+---
+// ContentPage.astro — buffer pane: gutter + line-gridded content.
+interface Props {
+  disableMaxWidth?: boolean; // hero-style pages (home/contact/404)
+}
+const { disableMaxWidth = false } = Astro.props;
+---
+<div class:list={['content-wrapper', { 'disable-max-width': disableMaxWidth }]}>
+  <div class="content-page">
+    <div class="content-row">
+      <div class="line-numbers" aria-hidden="true"></div>
+      <div class="content-lines">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .content-wrapper {
+    padding: var(--pad-sm) calc(var(--pad-sm) + var(--controls-width)) var(--pad-sm)
+      var(--pad-sm);
+  }
+  .content-wrapper.disable-max-width {
+    padding: var(--pad-sm);
+  }
+  .content-page {
+    position: relative;
+    min-height: 100svh;
+    font-size: 1rem;
+    line-height: var(--line-height);
+    color: var(--color-subtext0);
+  }
+  .content-row {
+    display: flex;
+    align-items: flex-start;
+  }
+  .line-numbers {
+    flex: none;
+    width: var(--line-numbers-width);
+  }
+  /* Gutter rows are built by src/scripts/line-numbers.ts at runtime — no scope id. */
+  .line-numbers > :global(div) {
+    height: var(--line-height);
+    line-height: var(--line-height);
+    text-align: right;
+    padding-right: var(--pad-md);
+    color: var(--color-overlay0);
+    user-select: none;
+  }
+  .content-lines {
+    min-width: 0;
+    max-width: 100ch;
+  }
+  .disable-max-width .content-lines {
+    max-width: none;
+  }
+  @media (width <= 50rem) {
+    .content-wrapper {
+      padding: var(--pad-md);
+    }
+    .line-numbers {
+      display: none;
+    }
+  }
+</style>

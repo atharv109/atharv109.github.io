@@ -48,6 +48,7 @@
   --line-height: 19px;
   --sidebar-width: 36ch;
   --line-numbers-width: 5ch;
+  --controls-width: 40ch; /* right padding reserved for the control panel (later tasks) */
   --margin: 3ch;
   --pad-xs: 2px;
   --pad-sm: 5px;

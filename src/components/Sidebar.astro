@@ -1,0 +1,90 @@
+---
+// Sidebar.astro — sticky left file-tree: cwd header + recursive NAV.
+import { NAV, NAV_HEADER } from '../data/nav';
+import TreeFolder from './TreeFolder.astro';
+import NavItem from './NavItem.astro';
+
+const normalize = (p: string) => (p !== '/' && p.endsWith('/') ? p.slice(0, -1) : p);
+const current = normalize(Astro.url.pathname);
+---
+<site-sidebar>
+  <aside class="sidebar">
+    <a class="cwd" href="/">{NAV_HEADER}</a>
+    <nav aria-label="Site navigation">
+      <nav-tree role="tree">
+        <ul class="tree" role="none">
+          {
+            NAV.map((node) => (
+              <li role="none" class:list={[{ end: node.end }]}>
+                {node.children ? (
+                  <TreeFolder node={node} depth={0} current={current} />
+                ) : (
+                  <NavItem node={node} depth={0} current={current} />
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </nav-tree>
+    </nav>
+    <div data-sidebar-overlay></div>
+  </aside>
+</site-sidebar>
+
+<style>
+  site-sidebar {
+    display: contents;
+  }
+  /* .sidebar base (sticky, top, base bg) lives in layout.css. */
+  .sidebar {
+    overflow: hidden auto;
+    padding: var(--pad-sm) 0;
+    user-select: none;
+  }
+  .cwd {
+    display: block;
+    height: var(--line-height);
+    line-height: var(--line-height);
+    padding: 0 var(--pad-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    color: var(--color-purple);
+    text-decoration: none;
+  }
+  .tree {
+    display: flex;
+    flex-direction: column;
+    height: calc(100svh - var(--line-height) - 2 * var(--pad-sm));
+  }
+  /* First .end entry absorbs the free space; the rest of the end-group
+     follows it, pinned to the bottom of the viewport. */
+  .tree > li.end {
+    margin-top: auto;
+  }
+
+  [data-sidebar-overlay] {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 140;
+  }
+
+  @media (width <= 50rem) {
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100svh;
+      width: min(36ch, 90vw);
+      z-index: 150;
+      background: var(--color-base);
+      transform: translateX(-100%); /* instant snap, no transition */
+    }
+    site-sidebar[open] .sidebar {
+      transform: translateX(0);
+    }
+    site-sidebar[open] [data-sidebar-overlay] {
+      display: block;
+    }
+  }
+</style>

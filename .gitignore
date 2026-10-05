@@ -6,3 +6,4 @@ dist/
 .playwright-mcp/
 portfolio-*-screenshot.png
 portfolio-v*.png
+test-results/

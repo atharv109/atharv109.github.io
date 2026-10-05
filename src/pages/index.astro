@@ -1,18 +1,13 @@
 ---
-// Placeholder index — real home page lands in Task 3+.
-import '../styles/tokens.css';
-import '../styles/reset.css';
-import '../styles/layout.css';
+// Temporary minimal home page — exercises the shell until the hero/rain lands.
+import PageLayout from '../layouts/PageLayout.astro';
+import ContentPage from '../components/ContentPage.astro';
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1c2225" />
-    <title>hello</title>
-  </head>
-  <body>
-    hello meadow
-  </body>
-</html>
+<PageLayout title="README">
+  <ContentPage>
+    <h1>Atharv Mittal</h1>
+    <p aria-hidden="true">&nbsp;</p>
+    <p>Full-stack developer — security, AI infra. Site shell under reconstruction.</p>
+    {Array.from({ length: 60 }, (_, i) => <p>// filler line {i + 1}</p>)}
+  </ContentPage>
+</PageLayout>
