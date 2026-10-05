@@ -28,9 +28,9 @@ const summaryId = `tf-${node.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${
 ---
 <tree-folder
   label={node.label}
-  open={forceOpen}
   data-persist={forceOpen ? undefined : ''}
   style={`--nav-icon:"${FOLDER_CLOSED}";--nav-icon-open:"${FOLDER_OPEN}"`}
+  {...(forceOpen ? { open: '' } : {})}
 >
   <button
     type="button"

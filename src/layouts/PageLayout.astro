@@ -44,6 +44,28 @@ const {
           if (location.pathname === '/')
             document.documentElement.classList.add('intro-pending');
         }
+        // Folder open-state restore, synchronous at parse time: defining the
+        // element here means each <tree-folder> upgrades as the parser reaches
+        // it, so folders are in their final open/closed state at first paint
+        // (no flash from a deferred module). Server-side forced-open folders
+        // (current branch) carry no data-persist and are untouched.
+        var navOpen = {};
+        try {
+          navOpen = JSON.parse(localStorage.getItem('am-nav-open') || '{}') || {};
+        } catch (e2) {}
+        customElements.define(
+          'tree-folder',
+          class extends HTMLElement {
+            connectedCallback() {
+              if (this.hasAttribute('data-persist')) {
+                var label = this.getAttribute('label');
+                if (label && Object.prototype.hasOwnProperty.call(navOpen, label))
+                  this.toggleAttribute('open', navOpen[label] === 'true');
+                this.removeAttribute('data-persist');
+              }
+            }
+          },
+        );
       } catch (e) {}
     </script>
   </head>

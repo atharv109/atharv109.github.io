@@ -71,4 +71,28 @@ test.describe('editor shell', () => {
     const bg = await current.evaluate((el) => getComputedStyle(el).backgroundColor);
     expect(bg).toBe('rgb(203, 227, 179)'); // --color-green #cbe3b3
   });
+
+  test('saved folder open state is applied synchronously at first paint', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'am-nav-open',
+        JSON.stringify({ projects: 'true', archive: 'false' }),
+      );
+    });
+    await page.goto('/');
+    // Restored by the inline boot script during parsing (custom-element
+    // upgrade), so the attributes are already correct in the received DOM.
+    const projects = page.locator('tree-folder[label="projects"]');
+    await expect(projects).toHaveAttribute('open', '');
+    await expect(projects.locator('button[data-summary]')).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    const archive = page.locator('tree-folder[label="archive"]');
+    await expect(archive).not.toHaveAttribute('open', '');
+    await expect(archive.locator('button[data-summary]')).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
+  });
 });
