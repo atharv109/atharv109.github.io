@@ -1,0 +1,17 @@
+---
+// shell.astro — /shell/ route: the security terminal, re-homed as a file in the
+// tree. The terminal owns its own scroll region inside the buffer.
+import PageLayout from '../layouts/PageLayout.astro';
+import ContentPage from '../components/ContentPage.astro';
+---
+<PageLayout
+  title="shell"
+  description="Interactive security terminal — Atharv Mittal"
+>
+  <ContentPage>
+    <site-terminal></site-terminal>
+  </ContentPage>
+  <script>
+    import '../scripts/terminal/site-terminal';
+  </script>
+</PageLayout>

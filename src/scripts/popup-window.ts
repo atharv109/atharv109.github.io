@@ -118,7 +118,7 @@ if (typeof window !== 'undefined' && typeof customElements !== 'undefined') {
       this.setAttribute('aria-labelledby', titleId);
       titleChip.setAttribute('data-popup-title', '');
       titleChip.textContent = title;
-      titleChip.setAttribute('aria-label', `Open ${title} in new tab`);
+      titleChip.title = `Open ${title} in new tab`;
 
       const close = document.createElement('button');
       close.setAttribute('data-close', '');
