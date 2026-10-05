@@ -1,0 +1,27 @@
+---
+// Button.astro — inline link chip (ref §4.4). Exactly the text box, no padding
+// by default; hero/CTA callers add padding via class. Icon is a Nerd-Font glyph
+// character, hidden from AT.
+
+interface Props {
+  href: string;
+  icon?: string;
+  color?: string; // token name without --color- prefix, e.g. 'green' | 'pink' | 'skye'
+  popup?: boolean; // open in a <popup-window> instead of navigating
+  popupType?: 'iframe' | 'image';
+  external?: boolean; // force external treatment (target=_blank)
+}
+
+const { href, icon = '󰈙', color = 'green', popup = false, popupType, external } = Astro.props;
+const isExternal = external ?? /^[a-z][a-z0-9+.-]*:/i.test(href);
+---
+
+<a
+  class="button"
+  href={href}
+  style={`--link-color:var(--color-${color})`}
+  {...(isExternal && !popup ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+  {...(popup ? { 'data-popup-src': href, 'data-popup-type': popupType ?? 'iframe' } : {})}
+>
+  <span class="button-inner"><span class="button-icon" aria-hidden="true">{icon}</span><slot /></span>
+</a>

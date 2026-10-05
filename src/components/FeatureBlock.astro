@@ -1,0 +1,30 @@
+---
+// FeatureBlock.astro — framed content block (ref §4.4). Title chip sits on the
+// top border like a <fieldset><legend>. Collapsed state shows one line; expand
+// by clicking anywhere on the collapsed block, collapse only via the chip.
+// Behavior in src/scripts/feature-block.ts; styles in src/styles/components.css.
+
+interface Props {
+  kind: 'media' | 'embed' | 'code';
+  title: string;
+  storageKey: string; // persistence suffix, e.g. "0-about-photo" → am-feature-open:0-about-photo
+  collapsed?: boolean; // server-rendered default
+  width?: string; // e.g. '480px'
+}
+
+const { kind, title, storageKey, collapsed = false, width } = Astro.props;
+---
+
+<feature-block
+  data-kind={kind}
+  data-key={storageKey}
+  {...(collapsed ? { collapsed: '' } : {})}
+  style={width ? `--fb-width:${width}` : undefined}
+>
+  <button class="fb-title" aria-expanded={String(!collapsed)}>
+    {title}<span class="fb-toggle" aria-hidden="true">{collapsed ? '[+]' : '[-]'}</span>
+  </button>
+  <div class="fb-inner">
+    <slot />
+  </div>
+</feature-block>

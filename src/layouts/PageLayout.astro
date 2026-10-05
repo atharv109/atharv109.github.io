@@ -3,6 +3,7 @@
 import '../styles/tokens.css';
 import '../styles/reset.css';
 import '../styles/layout.css';
+import '../styles/components.css';
 import Sidebar from '../components/Sidebar.astro';
 
 interface Props {
@@ -83,6 +84,10 @@ const {
       import '../scripts/nav-tree';
       import '../scripts/line-numbers';
       import '../scripts/site-sidebar';
+      import { attachPopupInterceptor } from '../scripts/popup-window';
+      import { initFeatureBlocks } from '../scripts/feature-block';
+      attachPopupInterceptor();
+      initFeatureBlocks();
     </script>
   </body>
 </html>

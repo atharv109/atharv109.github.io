@@ -1,0 +1,186 @@
+/* components.css — chrome for button chips, feature-blocks, popup windows.
+   Reference spec §4.4. No transitions, no radius, no shadows: hover/active are
+   instant, depth via 1px outlines and background steps. */
+
+/* ---- inline link chip ---- */
+.button {
+  color: var(--link-color, var(--color-green));
+  display: inline-block;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.button-inner {
+  display: inline-block;
+  background-color: var(--color-surface1);
+}
+.button-icon {
+  display: inline-block;
+  min-width: 1ch;
+  text-align: center;
+  letter-spacing: var(--link-icon-spacing, 1.5ch);
+}
+@media (hover: hover) {
+  .button:hover .button-inner {
+    background-color: var(--color-surface2);
+    transform: translateY(-1px);
+  }
+}
+.button:active .button-inner {
+  transform: translateY(0);
+}
+.button:focus-visible .button-inner {
+  background-color: var(--color-surface2);
+}
+
+/* ---- feature-block ---- */
+feature-block {
+  display: block;
+  position: relative;
+  max-width: var(--fb-width, none);
+}
+feature-block[data-kind='code'],
+feature-block[data-kind='embed'] {
+  outline: 1px solid var(--color-overlay0);
+}
+feature-block .fb-inner {
+  background: var(--color-surface1);
+  outline: 1px solid var(--color-overlay0);
+  overflow: hidden;
+  position: relative;
+}
+feature-block[data-embed-active] .fb-inner {
+  outline-color: var(--color-green);
+}
+.fb-title {
+  position: absolute;
+  top: 0;
+  right: var(--pad-sm);
+  transform: translateY(-50%);
+  padding: 0 var(--pad-sm);
+  background: var(--color-surface0);
+  color: var(--color-overlay2);
+  border: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+feature-block[collapsed] .fb-title {
+  color: var(--color-green);
+}
+.fb-title:hover {
+  background: var(--color-surface2);
+}
+.fb-toggle {
+  margin-left: 0.5ch;
+}
+feature-block[collapsed] {
+  max-height: var(--line-height);
+  overflow: hidden;
+  cursor: pointer;
+}
+feature-block[collapsed] .fb-inner {
+  outline: none;
+}
+feature-block .fb-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fb-embed-catcher {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+feature-block[data-embed-active] .fb-embed-catcher {
+  display: none;
+}
+feature-block .fb-inner iframe {
+  pointer-events: none;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+feature-block[data-embed-active] .fb-inner iframe {
+  pointer-events: auto;
+}
+
+/* ---- popup window ---- */
+popup-window {
+  position: fixed;
+  z-index: 100;
+  min-width: calc(var(--line-height) * 12.5);
+  max-width: 90vw;
+  min-height: calc(var(--line-height) * 12.5);
+  max-height: 90vh;
+  padding: var(--pad-md);
+  background: var(--color-base);
+  cursor: grab;
+  user-select: none;
+  overflow: visible;
+}
+popup-window [data-popup-border] {
+  border: 1px solid var(--color-overlay1);
+  height: 100%;
+  overflow: hidden;
+}
+popup-window [data-content] {
+  width: 100%;
+  height: 100%;
+  padding: var(--pad-md);
+}
+popup-window [data-content] iframe,
+popup-window [data-content] img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border: 0;
+  display: block;
+}
+popup-window [data-popup-title] {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-base);
+  border: 0;
+  padding: 0 var(--pad-sm);
+  color: var(--color-subtext0);
+  max-width: calc(100% - 2 * var(--pad-md));
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 2;
+}
+popup-window [data-popup-title]:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+popup-window [data-close] {
+  position: absolute;
+  top: 0;
+  right: calc(-1 * (var(--line-height) - var(--pad-xs)) / 2);
+  width: var(--line-height);
+  height: var(--line-height);
+  transform: translateY(-50%);
+  background: var(--color-base);
+  border: 0;
+  color: var(--color-subtext1);
+  cursor: pointer;
+  z-index: 2;
+}
+popup-window [data-close]:hover {
+  color: var(--color-text);
+}
+popup-window [data-resize-handle] {
+  position: absolute;
+  right: var(--pad-xs);
+  bottom: var(--pad-xs);
+  width: var(--line-height);
+  height: var(--line-height);
+  cursor: se-resize;
+  z-index: 3;
+}
