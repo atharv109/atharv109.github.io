@@ -19,6 +19,11 @@ export async function getStaticPaths() {
 
 const { entry, next } = Astro.props;
 const { Content } = await render(entry);
+// Which featured projects have an in-page story (server-side glob = the file
+// list); the block auto-starts client-side.
+const storySlugs = Object.keys(
+  import.meta.glob('../../scripts/stories/*.ts'),
+).map((f) => f.split('/').pop()!.replace('.ts', ''));
 ---
 <PageLayout title={entry.data.title} description={entry.data.tagline}>
   <ContentPage>
@@ -34,7 +39,11 @@ const { Content } = await render(entry);
         <span><span class="button" style="color:var(--color-overlay1)">{t}</span>{' '}</span>
       ))}
     </p>
+    {storySlugs.includes(entry.id) && <story-block data-story={entry.id} />}
     <Content />
+    <script>
+      import '../../scripts/story-block';
+    </script>
     {entry.data.links.length > 0 && (
       <>
         <p aria-hidden="true">&nbsp;</p>
