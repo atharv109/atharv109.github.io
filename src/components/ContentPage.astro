@@ -55,6 +55,8 @@ const { disableMaxWidth = false } = Astro.props;
     flex: 1; /* buffer fills the row — hero pages' spacer content alone collapses to max-content */
     min-width: 0;
     max-width: 100ch;
+    /* container for cqw-scaled art (experience page's full-screen snake) */
+    container-type: inline-size;
   }
   .disable-max-width .content-lines {
     max-width: none;

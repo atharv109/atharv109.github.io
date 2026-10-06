@@ -51,9 +51,8 @@ describe('nav tree', () => {
     }
   });
 
-  it('exactly one nav item carries end: true (the bottom cluster is compact; multiple flags spread the links apart)', () => {
-    const ends = NAV.filter((n) => n.end === true).map((n) => n.label);
-    expect(ends).toEqual(['contact.md']);
+  it('the tree is continuous: no end flags (nothing absorbs free space)', () => {
+    expect(NAV.filter((n) => n.end === true)).toEqual([]);
   });
 
   it('the about page shows as about.me in the tree', () => {

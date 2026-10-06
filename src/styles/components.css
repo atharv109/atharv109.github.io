@@ -425,6 +425,10 @@ pdf-pages {
 .pdf-caption {
   color: var(--color-overlay1);
 }
+.pdf-page-label {
+  /* book-footer convention: page numeral on the right */
+  text-align: right;
+}
 
 /* ---- trophies: <trophy-drawer> (trophy-drawer.ts, ref §9) ---- */
 trophy-drawer {

@@ -1,10 +1,9 @@
 ---
-// resume.astro — the experience flowchart (ASCII, the editor idiom) above the
-// resume PDF rendered page-by-page INSIDE the site's own chrome (custom
-// <pdf-pages> element + pdf.js): no PDF toolbar, no thumbnails, no page
-// widgets — just the pages, in meadow styling (user request 2026-10-06, with
-// the screenshot showing the Chrome toolbar as the thing to remove).
-// Download chip remains for the exact file.
+// resume.astro — JUST the PDF (user round 2026-10-06: "remove everything
+// except the pdf"): the document rendered page-by-page by <pdf-pages>
+// (pdf.js, no viewer chrome), page number under each page on the RIGHT.
+// The download chip and flowchart were removed per the same request; the
+// exact file itself is still served at /resume/Atharv_Mittal_Resume_Full.pdf.
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
 
@@ -13,52 +12,9 @@ const PDF = '/resume/Atharv_Mittal_Resume_Full.pdf';
 <PageLayout title="resume">
   <ContentPage>
     <h1>Resume</h1>
-    <p aria-hidden="true">&nbsp;</p>
-    <p>Not two roles. One loop — the flow of every role so far:</p>
-      <p aria-hidden="true">&nbsp;</p>
-    <pre class="exp-flow" aria-label="Flowchart of experience: Penn State cybersecurity feeds three streams — BREAK (soc intern, tinyvulnscanner, ctf), BUILD (buildora, eleventh round, crypton, acctomatic, prompt optimiser, blinks), PROVE (vulnswarm-vex paper, gowda lab research) — all merging into not two roles, one loop">
-                         +---------------+
-                         | penn state '28|
-                         | cybersec · s+ |
-                         +-------+-------+
-                                 |
-                 +---------------+---------------+
-                 v               v               v
-         +-----------+   +-----------+   +-----------+
-         |   BREAK   |   |   BUILD   |   |   PROVE   |
-         +-----+-----+   +-----+-----+   +-----+-----+
-               |               |               |
-         soc intern      buildora        vulnswarm-vex
-         centrient '25   ~50 clients     first-author
-         200+ alerts/day 11th round      ICTAI subm.
-         defender        crypton         z3 · vex
-         tinyvulnscan    acctomatic      gowda lab
-         500+ ports      prompt-opt      ocr · 8 st.
-         ctf · top100    blinks          malware prop.
-               |               |               |
-               +-------+-------+-------+-------+
-                       v
-             not two roles. one loop.</pre>
-      <p aria-hidden="true">&nbsp;</p>
-      <p class="pdf-caption">the document itself — exactly the PDF I hand out:</p>
-      <p>
-        <a class="button" href={PDF} download>Download PDF ↓</a>
-      </p>
-      <pdf-pages data-src={PDF}></pdf-pages>
-      <script>
-        import '../scripts/pdf-pages';
-      </script>
+    <pdf-pages data-src={PDF}></pdf-pages>
+    <script>
+      import '../scripts/pdf-pages';
+    </script>
   </ContentPage>
 </PageLayout>
-
-<style>
-  .exp-flow {
-    display: block;
-    font: inherit;
-    line-height: var(--line-height);
-    white-space: pre;
-    color: var(--color-green);
-    user-select: text;
-    overflow-x: auto; /* phones: the art stays crisp, scrolls if needed */
-  }
-</style>

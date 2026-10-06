@@ -9,45 +9,66 @@ import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
 
 const ART = `
+
  +---------+----------+   +--------------------+   +--------------------+   +--------------------+
  | cybersec club ·22  |==>|  tinyvulnscan ·25  |==>| centrient soc ·25  |==>| protopaper ·26 jan |
- |  led·owasp·cy100   |   | 500+ ports · -70%  |   |  200+ alerts/day   |   | hackathon ·2 mins  |
+ |   led it · owasp   |   |     500+ ports     |   |  200+ alerts/day   |   | hackathon project  |
+ |   cy100 session    |   | -70% faster · xss  |   | defender · mimecast|   | paper→lab · 2 mins |
  +--------------------+   +--------------------+   +--------------------+   +---------+----------+
                                                                                       |
+
  +--------------------+   +--------------------+   +--------------------+   +---------+----------+
  |   11th round ·26   |<==|   blinks ·26 jul   |<==| gowda lab ·26 may  |<==|  buildora ·26 jan  |
- | paid client build  |   |  icu voice · 1 wk  |   | ocr · 8 stg · 0.94 |   | ~50 paying clients |
+ | paid client build  |   |  icu voice · 1 wk  |   |   ocr · 8 stages   |   | founder · ~50 clts |
+ |  role dashboards   |   | built with claude  |   |    recall 0.94     |   |    12 ai agents    |
  +---------+----------+   +--------------------+   +--------------------+   +--------------------+
            |
+
  +---------+----------+   +--------------------+   +--------------------+   +--------------------+
  | vulnswarm-vex ·26  |==>|   prompt-opt ·26   |==>|  crypton ·26 apr   |==>|   acctomatic ·26   |
- |  1st auth · ICTAI  |   | groq 6stg·3 chats  |   | passkeys · 10 beta |   | paddleocr·tenants  |
+ |  1st author paper  |   |    groq 6-stage    |   |  cofounder & cto   |   | founder · paddleocr|
+ | ICTAI · under subm.|   | 3 ai chats · edge  |   | passkeys · 10 beta |   | green/red · tenants|
  +--------------------+   +--------------------+   +--------------------+   +---------+----------+
+           |
 
                             (the snake ends — the loop continues in the resume)`;
 ---
 <PageLayout title="experience">
-  <ContentPage>
-    <h1>Experience</h1>
-    <p aria-hidden="true">&nbsp;</p>
-    <p>every stop on the resume — the snake runs right, then doubles back, then right again:</p>
-    <p aria-hidden="true">&nbsp;</p>
-    <pre
-      class="exp-flow"
-      aria-label="Serpentine timeline of experience: cybersecurity club, tinyvulnscanner, centrient soc intern, protopaper, buildora, gowda lab research, blinks, eleventh round, vulnswarm-vex first-author paper, prompt optimiser, crypton, acctomatic."
-      set:html={ART}
-    />
+  <ContentPage disableMaxWidth>
+    <div class="exp-hero">
+      <h1>Experience</h1>
+      <p aria-hidden="true">&nbsp;</p>
+      <pre
+        class="exp-flow"
+        aria-label="Serpentine timeline of experience: cybersecurity club, tinyvulnscanner, centrient soc intern, protopaper, buildora, gowda lab research, blinks, eleventh round, vulnswarm-vex first-author paper, prompt optimiser, crypton, acctomatic."
+        set:html={ART}
+      />
+    </div>
   </ContentPage>
 </PageLayout>
 
 <style>
+  /* The snake covers the screen: the art is 97 cells wide; at 1ch = 0.5em
+     (Iosevka Term), font-size = availableWidth / 48.5 -> fluid vw scaling.
+     Line-height stays 1.357em (the 19:14 grid ratio) so cells keep the
+     7:19 aspect at every size. The hero centers the art in the viewport. */
+  .exp-hero {
+    min-height: 100svh;
+    min-width: 100%;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+  }
+  .exp-hero h1 {
+    margin-bottom: var(--line-height);
+  }
   .exp-flow {
     display: block;
     font: inherit;
-    line-height: var(--line-height);
+    font-size: 2.03cqw;
+    line-height: 1.357em;
     white-space: pre;
     color: var(--color-green);
     user-select: text;
-    overflow-x: auto;
   }
-</style>
+  </style>

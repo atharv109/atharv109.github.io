@@ -48,7 +48,7 @@ export const NAV: NavNode[] = [
   },
   { label: 'experience.md', icon: FILE, href: '/experience/' },
   { label: 'about.me', icon: FILE, href: '/about/' },
-  { label: 'contact.md', icon: MAIL, href: '/contact/', end: true },
+  { label: 'contact.md', icon: MAIL, href: '/contact/' },
   { label: 'shell', icon: FILE, href: '/shell/' },
   { label: 'resume.md', icon: FILE, href: '/resume/' },
   { label: 'github', icon: GITHUB, href: 'https://github.com/atharv109' },
