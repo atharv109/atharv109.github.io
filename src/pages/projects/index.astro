@@ -1,0 +1,24 @@
+---
+// projects/index.astro — buffer index of the featured case studies, in `order`.
+// Each entry renders as one line: chip + ": tagline".
+import PageLayout from '../../layouts/PageLayout.astro';
+import ContentPage from '../../components/ContentPage.astro';
+import Button from '../../components/Button.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+<PageLayout title="project-index">
+  <ContentPage>
+    <h1>project-index</h1>
+    {projects.map((p) => (
+      <p>
+        <Button href={`/projects/${p.id}/`} icon={'\u{F0219}'}>{p.data.title}</Button>
+        {p.data.tagline ? ` : ${p.data.tagline}` : ''}
+      </p>
+      <p aria-hidden="true">&nbsp;</p>
+    ))}
+  </ContentPage>
+</PageLayout>

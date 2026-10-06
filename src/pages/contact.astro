@@ -1,0 +1,63 @@
+---
+// contact.astro — hero-style page: visually hidden h1/h2, one centred mailto
+// CTA with the lamp glyph (off → on on hover). The boids flock and lamp-glow
+// field attach to the ASCII layer in Task 10 via [data-boid-anchor].
+import PageLayout from '../layouts/PageLayout.astro';
+import ContentPage from '../components/ContentPage.astro';
+---
+<PageLayout title="contact" description="Reach me — Atharv Mittal">
+  <ContentPage disableMaxWidth>
+    <div class="ascii-container" aria-hidden="true"></div>
+    <p id="center-spacers" aria-hidden="true">&nbsp;</p>
+    <h1 class="seo-only">Contact Atharv Mittal</h1>
+    <h2 class="seo-only">Email me directly — I read every message</h2>
+    <p class="seo-only">State College, PA — willing to relocate</p>
+    <p class="cta-row">
+      <span class="cta-align">
+        <a
+          class="button"
+          href="mailto:atharvm2005@gmail.com"
+          data-boid-anchor
+        >
+          <span class="button-inner"
+            ><span class="button-icon" aria-hidden="true"
+              ><span class="icon-rest">&#xf1a26;</span
+              ><span class="icon-hover">&#xf1a25;</span></span
+            >atharvm2005@gmail.com</span
+          >
+        </a>
+      </span>
+    </p>
+    <p aria-hidden="true">&nbsp;</p>
+    <p class="cta-row">
+      <span class="cta-align">
+        <a
+          class="button"
+          href="https://github.com/atharv109"
+          data-popup-src="https://github.com/atharv109"
+          data-popup-type="iframe"
+        >
+          <span class="button-inner"
+            ><span class="button-icon" aria-hidden="true">&#xe709;</span>GitHub</span
+          >
+        </a>
+        {' '}
+        <a
+          class="button"
+          href="https://www.linkedin.com/in/atharv-mittal/"
+          data-popup-src="https://www.linkedin.com/in/atharv-mittal/"
+          data-popup-type="iframe"
+        >
+          <span class="button-inner"
+            ><span class="button-icon" aria-hidden="true">&#xf0337;</span>LinkedIn</span
+          >
+        </a>
+      </span>
+    </p>
+  </ContentPage>
+</PageLayout>
+<script>
+  import { attachCentering } from '../scripts/center-content';
+  const el = document.querySelector('.content-lines');
+  if (el instanceof HTMLElement) attachCentering(el);
+</script>

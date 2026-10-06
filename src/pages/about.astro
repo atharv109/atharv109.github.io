@@ -1,0 +1,16 @@
+---
+// about.astro — info buffer rendered from the pages collection (about.md).
+import PageLayout from '../layouts/PageLayout.astro';
+import ContentPage from '../components/ContentPage.astro';
+import { getEntry, render } from 'astro:content';
+
+const about = await getEntry('pages', 'about');
+const { Content } = await render(about);
+---
+<PageLayout title="about" description={about.data.tagline}>
+  <ContentPage>
+    <h1>{about.data.title}</h1>
+    <p aria-hidden="true">&nbsp;</p>
+    <Content />
+  </ContentPage>
+</PageLayout>

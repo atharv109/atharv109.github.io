@@ -34,6 +34,54 @@
   background-color: var(--color-surface2);
 }
 
+/* ---- hero-page chrome (contact/404) ---- */
+/* Visually hidden but in the a11y tree — contact page's h1/h2. */
+.seo-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px 0;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* Ref §4: hero CTA placeholders an in-flow line while the actual button sits
+   absolutely centred over the whole buffer (past the line-number gutter). */
+.cta-row {
+  position: relative;
+  text-align: center;
+}
+.cta-align {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  padding-left: var(--line-numbers-width);
+  text-align: center;
+  pointer-events: none;
+}
+.cta-align a,
+.cta-align button {
+  pointer-events: auto;
+}
+.cta-row .button-inner {
+  padding: 0 var(--pad-sm);
+}
+/* Non-interactive chips (stack lists) aren't links. */
+.button:not(a) {
+  cursor: default;
+}
+/* Contact CTA lamp glyph: off at rest, on while hovered (swap inside .button-icon). */
+.button .icon-hover {
+  display: none;
+}
+.button:hover .icon-hover {
+  display: inline;
+}
+.button:hover .icon-rest {
+  display: none;
+}
+
 /* ---- feature-block ---- */
 feature-block {
   display: block;

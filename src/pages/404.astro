@@ -1,22 +1,19 @@
 ---
-// index.astro — README (home): hero buffer, vertically centred on the line
-// grid, with the ASCII rain mounting inside .ascii-container (Task 8).
-// The h1/pitch stay real text until Task 8's ASCII heading layer mounts.
+// 404.astro — hero-style buffer: lost-in-the-buffer line and a Return button;
+// Task 8 mounts the meadow rain (bloom char ×) inside .ascii-container.
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
 import Button from '../components/Button.astro';
-import { README } from '../data/readme';
 ---
-<PageLayout title="README">
+<PageLayout title="404" description="Page not found — Atharv Mittal">
   <ContentPage disableMaxWidth>
     <div class="ascii-container" aria-hidden="true"></div>
     <p id="center-spacers" aria-hidden="true">&nbsp;</p>
-    <h1>{README.name}</h1>
-    <p>{README.pitch}</p>
+    <h1>lost in the buffer</h1>
     <p aria-hidden="true">&nbsp;</p>
     <p class="cta-row"
       ><span class="cta-align"
-        ><Button href="/projects/" icon={'\u{F1860}'}>Explore</Button></span
+        ><Button href="/" icon={'\u{F0A54}'}>Return to the meadow</Button></span
       ></p
     >
   </ContentPage>

@@ -1,0 +1,16 @@
+---
+// resume.astro — placeholder buffer until a real resume source is supplied.
+import PageLayout from '../layouts/PageLayout.astro';
+import ContentPage from '../components/ContentPage.astro';
+import { getEntry, render } from 'astro:content';
+
+const resume = await getEntry('pages', 'resume');
+const { Content } = await render(resume);
+---
+<PageLayout title="resume">
+  <ContentPage>
+    <h1>{resume.data.title}</h1>
+    <p aria-hidden="true">&nbsp;</p>
+    <Content />
+  </ContentPage>
+</PageLayout>
