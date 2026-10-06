@@ -1,6 +1,6 @@
 # HANDOFF — Astro "Meadow" Portfolio Rewrite
 **Saved:** 2026-10-05 ~13:40 EDT (2nd checkpoint, supersedes 2026-10-04 version)
-**Branch:** `redesign/editor-portfolio` · **Status: T1-T7,T9-T12 all implemented; T8 fix re-review + T12 review live; T13 last**
+**Branch:** `redesign/editor-portfolio` · **Status: all 13 tasks done+reviewed; final-review requireds fixed (681801e); fix re-review live**
 
 > **Resume instructions for any future session/model are at the bottom (§9).**
 
@@ -69,6 +69,7 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | T8 Monogram | `c3a1380`+`2033832` | AM shared-stem ligature (user-picked) at U+100000 via fontTools (no FontForge), real NF subset 101KB (tofu era over), logo-mask/home (hatch→bloom, §7.2 intro, pointer rain, guarded trophy unlock), rain.ts getDrift hook, raster aspect fix (review round 1), stall-sweeper; re-review APPROVED |
 | T12 Hardening | `0228e15`+`6920cf7` | poison-pill tests (all am-* keys incl. trophy-ui pair), boot-script guards (no jsdom — inline-script extraction harness), SiteSettings reduced panel, a11y sweep + spec, webServer fold `astro build &&`; review APPROVED after fix round |
 
+| Final review | `681801e` | requireds fixed: home intro hold lift (waveRect + zero-block lift + e2e), 404 meadow (§8.4 rain+flowers, descope-d wind), SDD file untracked, manifest bg; re-review dispatched |
 **T7+T11 review COMPLETED — findings FIXED (commit e4d9a7f, scoped re-review APPROVED).**
 Fix details in the ledger ("Task 7 fix round 1/5", "Task 11 fix round 1/5"; reviewer
 note: Task 8 must pass an explicit pointerTarget — container and overlay are both
