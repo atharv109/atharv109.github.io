@@ -26,6 +26,10 @@ export interface RainOptions {
   bg?: string;
   onBottomHit?: (x: number) => void;
   onCell?: (x: number, y: number, drop: RainDrop) => void;
+  /** Sideways drift hook (home logo hatch, ref §8.3.2): returns a column
+      delta to apply to the drop's head this frame, after the vertical move
+      and before drawing (so erase stays aligned with last frame's x). */
+  getDrift?: (drop: RainDrop) => number;
   rng?: () => number;
 }
 
@@ -66,6 +70,8 @@ export function makeRain(opts: RainOptions): Rain {
       // Erase previous cells before moving (the surface has no per-frame clear).
       erase(surface, d);
       d.y += d.speed * delta;
+      const drift = opts.getDrift?.(d) ?? 0;
+      if (drift) d.x += drift;
 
       const head = Math.floor(d.y);
       if (!d.hitBottom && head >= rows - 1 && d.x >= 0 && d.x < cols) {

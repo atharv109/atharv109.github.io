@@ -52,6 +52,7 @@
 .cta-row {
   position: relative;
   text-align: center;
+  z-index: 2; /* hero chips stay above their page's ASCII field */
 }
 .cta-align {
   position: absolute;
@@ -329,6 +330,9 @@ site-terminal {
 }
 
 /* ---- ASCII engine overlay (ref §8.1: perf-critical) ---- */
+/* z 1 (ref §8.1: overlay above the buffer) — a negative z would paint the
+   overlay behind main's opaque background, hiding the rain entirely. The CTA
+   chips sit one level higher below. */
 .ascii-container {
   position: absolute;
   top: 0;
@@ -336,7 +340,7 @@ site-terminal {
   width: 100%;
   height: 100%;
   padding-left: var(--line-numbers-width);
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
 }
 .ascii-overlay {

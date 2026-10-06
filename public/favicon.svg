@@ -1,4 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#11110f"/>
-  <path d="M14 48 27.5 14h9L50 48h-9.2l-2.3-7H25.2l-2.4 7H14Zm13.8-15h8.1L32 21.1 27.8 33Z" fill="#d8ff56"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <!-- AM monogram favicon (ref §6 recipe: mark on a cream circle).
+       Same stroke geometry as assets/mark/am-monogram.svg (bevel-joined
+       A tent + crossbar + M stems/V, single crossing junction). -->
+  <circle cx="500" cy="500" r="500" fill="#F8F9E8" />
+  <g
+    fill="none"
+    stroke="#1C2225"
+    stroke-width="90"
+    stroke-linecap="butt"
+    stroke-linejoin="bevel"
+  >
+    <path d="M100 900 390 110 720 900" />
+    <path d="M240 560 610 560" />
+    <path d="M600 110 600 900" />
+    <path d="M600 110 750 560 900 110" />
+    <path d="M900 110 900 900" />
+  </g>
 </svg>

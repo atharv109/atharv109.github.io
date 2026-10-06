@@ -7,7 +7,9 @@ import { test, expect } from '@playwright/test';
 
 test.describe('text wave', () => {
   test('arrival wave splits, plays staggered, then restores the original text', async ({ page }) => {
-    await page.goto('/');
+    // Home is Task 8's ASCII intro (its CTA is waved by home.ts, not here);
+    // use /about/ to exercise the generic arrival wave.
+    await page.goto('/about/');
     await page.locator('.content-lines h1 .wv-char').first().waitFor({ state: 'attached', timeout: 2000 });
     // chars are revealed one diagonal at a time — some are still pending
     const pendingBefore = await page.evaluate(() =>
@@ -22,7 +24,7 @@ test.describe('text wave', () => {
       null,
       { timeout: 5000 },
     );
-    expect(await page.locator('.content-lines h1').textContent()).toBe('ATHARV MITTAL');
+    expect(await page.locator('.content-lines h1').textContent()).toBe('About');
   });
 
   test('wave-pending is removed even when the wave script throws', async ({ page }) => {

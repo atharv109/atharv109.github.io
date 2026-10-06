@@ -1,7 +1,12 @@
 ---
 // index.astro — README (home): hero buffer, vertically centred on the line
-// grid, with the ASCII rain mounting inside .ascii-container (Task 8).
-// The h1/pitch stay real text until Task 8's ASCII heading layer mounts.
+// grid, with the ASCII rain mounting inside .ascii-container. Task 8: the
+// heading strings (h1 + pitch) are drawn inside the ASCII grid by
+// scripts/ascii/home.ts (the DOM lines go transparent once the layer mounts
+// but stay in the a11y tree), and the intro choreography (ref §7.2) lives in
+// home.ts as well — so every visible home text block carries
+// data-text-wave="skip": PageLayout's generic arrival wave finds no blocks
+// here, and home.ts waves the CTA (then the sidebar cascade) on its own.
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
 import Button from '../components/Button.astro';
@@ -11,18 +16,44 @@ import { README } from '../data/readme';
   <ContentPage disableMaxWidth>
     <div class="ascii-container" aria-hidden="true"></div>
     <p id="center-spacers" aria-hidden="true">&nbsp;</p>
-    <h1>{README.name}</h1>
-    <p>{README.pitch}</p>
+    <h1 data-ascii-head data-text-wave="skip">{README.name}</h1>
+    <p data-ascii-head data-text-wave="skip">{README.pitch}</p>
     <p aria-hidden="true">&nbsp;</p>
-    <p class="cta-row"
+    <p class="cta-row" data-text-wave="skip"
       ><span class="cta-align"
         ><Button href="/projects/" icon={'\u{F1860}'}>Explore</Button></span
       ></p
     >
   </ContentPage>
 </PageLayout>
+<style is:global>
+  [data-ascii-head] {
+    text-align: center;
+  }
+</style>
 <script>
   import { attachCentering } from '../scripts/center-content';
-  const el = document.querySelector('.content-lines');
-  if (el instanceof HTMLElement) attachCentering(el);
+  import { startHome } from '../scripts/ascii/home';
+  const content = document.querySelector('.content-lines');
+  const container = document.querySelector('.ascii-container');
+  if (content instanceof HTMLElement) attachCentering(content);
+
+  if (
+    container instanceof HTMLElement &&
+    content instanceof HTMLElement
+  ) {
+    // §14: reduced motion keeps the ASCII home running WITHOUT introReveal
+    // (startHome checks the media query itself — no pending classes there);
+    // with motion allowed the intro owns the arrival and holds the buffer
+    // (inline opacity 0) until home.ts's CTA wave lifts it.
+    if (document.documentElement.classList.contains('intro-pending'))
+      content.style.opacity = '0';
+    // §8.3.6: container AND overlay are pointer-events:none — the cursor
+    // coordinates need the buffer pane itself.
+    startHome({
+      container,
+      content,
+      pointerTarget: document.getElementById('main-content') ?? undefined,
+    }).catch(() => {});
+  }
 </script>
