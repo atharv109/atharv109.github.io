@@ -159,7 +159,14 @@ export async function startHome(opts: HomeOptions): Promise<void> {
   const pointerTarget =
     opts.pointerTarget ?? document.getElementById('main-content') ?? container;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduced) await document.fonts.ready; // t=0 gates the intro (§7.2.1)
+  if (!reduced) {
+    // t=0 gates the intro (§7.2.1). fonts.ready alone can resolve BEFORE the
+    // webfont's load has begun — pin the face explicitly so the program never
+    // builds its geometry on a fallback metric (rendered mark/headings shift
+    // on the stale cellW).
+    await document.fonts.load('1rem "Iosevka Term NF", monospace').catch(() => {});
+    await document.fonts.ready;
+  }
 
   // ---- program state ---------------------------------------------------------
   let cellW = 7;

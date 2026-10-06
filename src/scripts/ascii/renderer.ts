@@ -46,12 +46,18 @@ export class AsciiRenderer {
     this.surface = new AsciiSurface(1, 1);
   }
 
-  /** Measure the host's computed font with a hidden 5x20 'X' probe (ref §8.1). */
+  /** Measure the host's computed font with a hidden 5x20 'X' probe (ref §8.1:
+      in the TARGET's computed font — a bare <pre> measures the UA's default
+      mono (Consolas 7.6977px), which skews every surface-coordinate draw). */
   private measure(): void {
     const probe = document.createElement('pre');
     probe.setAttribute('aria-hidden', 'true');
+    const hc = getComputedStyle(this.host);
     probe.style.cssText =
       'position:absolute;visibility:hidden;margin:0;padding:0;white-space:pre;';
+    probe.style.fontFamily = hc.fontFamily;
+    probe.style.fontSize = hc.fontSize;
+    probe.style.lineHeight = hc.lineHeight;
     probe.textContent = Array.from({ length: 5 }, () => 'X'.repeat(20)).join('\n');
     this.host.appendChild(probe);
     const box = probe.getBoundingClientRect();
@@ -188,6 +194,12 @@ export class AsciiRenderer {
     this.rebuildGrid();
     new ResizeObserver(() => this.rebuildGrid()).observe(this.host);
     document.fonts?.ready?.then(() => this.rebuildGrid());
+    // fonts.ready may resolve before the webfont's load begins — pin the face
+    // so a post-ready load still re-measures (stale metrics skew every draw).
+    document.fonts
+      ?.load?.('1rem "Iosevka Term NF", monospace')
+      ?.then?.(() => this.rebuildGrid())
+      ?.catch?.(() => {});
 
     const pointerTarget = opts.pointerTarget ?? this.host;
     pointerTarget.addEventListener('pointermove', (e) => (this.cursor = this.cellFromEvent(e)));

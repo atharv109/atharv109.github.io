@@ -36,9 +36,11 @@ test.describe('routes', () => {
     });
   }
 
-  test('404 document serves the lost-in-the-buffer hero', async ({ page }) => {
-    const res = await page.goto('/404.html');
-    expect(res?.status()).toBe(200);
+  test('lost-in-the-buffer hero serves as the 404 document', async ({ page }) => {
+    // GH Pages serves 404.html with a 404 STATUS for unknown routes; assert
+    // the real behaviour, not an artificial 200.
+    const res = await page.goto('/this-route-does-not-exist/');
+    expect(res?.status()).toBe(404);
     await expect(page.locator('.content-lines h1')).toContainText('lost in the buffer');
     await expect(page.locator('a.button[href="/"]')).toContainText('Return to the meadow');
   });
