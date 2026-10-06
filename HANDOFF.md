@@ -66,6 +66,8 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | T6 Wave | `11c34b7`+`418e87a` | text-wave + hover wave (ref §7.3 exact), wave-pending try/finally contract with fault-injection e2e; review APPROVED; hardening commit |
 | T10 Boids | `8ba1041`+`484156d` | steering.ts (+6 tests, T9 consumes), boids.ts ref §11 constants verbatim, contact.ts (wave-pending poll + 950ms start), boid-char label spans, lamp glow, boids e2e; review round 1 → sprite-paints-one-cell fix → re-review APPROVED |
 | T9 Trophies | `ac50618`+`299035a` | trophies.ts (7 original, self-healing visits, trophy:secret matched), drawer+toasts (ref §9/§14), marquee-text.ts, moth (steering.arrive, px orbit rx44 2.9s, sessionStorage restore), PageLayout mount, 5 e2e; review APPROVED; lockfile repair |
+| T8 Monogram | `c3a1380`+`2033832` | AM shared-stem ligature (user-picked) at U+100000 via fontTools (no FontForge), real NF subset 101KB (tofu era over), logo-mask/home (hatch→bloom, §7.2 intro, pointer rain, guarded trophy unlock), rain.ts getDrift hook, raster aspect fix (review round 1), stall-sweeper; re-review APPROVED |
+| T12 Hardening | `0228e15`+`6920cf7` | poison-pill tests (all am-* keys incl. trophy-ui pair), boot-script guards (no jsdom — inline-script extraction harness), SiteSettings reduced panel, a11y sweep + spec, webServer fold `astro build &&`; review APPROVED after fix round |
 
 **T7+T11 review COMPLETED — findings FIXED (commit e4d9a7f, scoped re-review APPROVED).**
 Fix details in the ledger ("Task 7 fix round 1/5", "Task 11 fix round 1/5"; reviewer
