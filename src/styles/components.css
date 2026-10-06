@@ -381,6 +381,27 @@ site-terminal {
   border: 0;
 }
 
+/* ---- story-block (Task 15 player): mirrors feature-block's host contract —
+   the absolutely-positioned .fb-title chip anchors to the block; the
+   renderer's absolute .ascii-overlay anchors to the grid. Without
+   position:relative on both, the story draws over the page (overlap bug). */
+story-block {
+  display: block;
+  position: relative;
+  margin-top: var(--line-height);
+}
+.story-grid {
+  position: relative;
+  outline: 1px solid var(--color-overlay0);
+  background: var(--color-surface1);
+}
+.story-caption {
+  color: var(--color-subtext0);
+}
+.story-progress {
+  color: var(--color-overlay1);
+}
+
 /* ---- trophies: <trophy-drawer> (trophy-drawer.ts, ref §9) ---- */
 trophy-drawer {
   position: fixed;
