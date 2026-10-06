@@ -60,4 +60,26 @@ test.describe('story player', () => {
     await page.keyboard.press('ArrowRight');
     await expect(block.locator('.story-chip')).toContainText('beat 2/5');
   });
+
+  for (const slug of ['adversary-lab', 'prompt-optimiser', 'crypton', 'acctomatic']) {
+    test(`${slug} auto-discovers its story: chip, caption, layman line, rendered rows`, async ({ page }) => {
+      await page.goto(`/projects/${slug}/`);
+      await page.waitForFunction(
+        () => !document.documentElement.classList.contains('wave-pending') && !document.querySelector('.wv-char'),
+        null,
+        { timeout: 5000 },
+      );
+
+      const block = page.locator('story-block');
+      await expect(block.locator('.story-chip')).toContainText('story ·', { timeout: 5000 });
+      await expect(block.locator('.story-caption')).not.toBeEmpty({ timeout: 5000 });
+      await expect(block.locator('.story-plain')).not.toBeEmpty({ timeout: 5000 });
+      // The renderer paints inside the reserved rows (poll: some beats start
+      // with a brief blank head, e.g. acctomatic's typed rows).
+      const painted = page
+        .locator('story-block .story-grid .ascii-row')
+        .filter({ hasText: /\S/ });
+      await expect(painted.first()).toBeVisible({ timeout: 5000 });
+    });
+  }
 });
