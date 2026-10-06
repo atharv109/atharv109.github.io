@@ -78,8 +78,14 @@ test('home intro: hold lifts via the CTA wave, not a ~3s all-at-once pop', async
         return el && Number(getComputedStyle(el).opacity) > 0.5;
       },
       null,
-      { timeout: 2600 }, // fixed: lifts ~1.3-1.8s; the late pop lands ~2.9s
+      { timeout: 2600 }, // lift = the CTA wave's start, measured ~0.75-0.8s (round-2
+      // re-review 5x probe); the pre-fix pop (dangling finally) lands ~2.9s — red
     );
+    // §7.2.3: the CTA actually waves (its own block, waved by home.ts) —
+    // this is what the zero-block/early-lift shortcuts silently skip.
+    await page.waitForFunction(() => !!document.querySelector('.cta-row .wv-char'), null, {
+      timeout: 3000,
+    });
     await expect(page.locator('html')).not.toHaveClass(/intro-pending/);
     const op = await page
       .locator('.content-lines')
