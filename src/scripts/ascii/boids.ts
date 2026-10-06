@@ -92,8 +92,9 @@ const GLOW_BAND_COLORS = [
   'color-mix(in srgb, var(--color-green) 67%, var(--color-surface0))',
   'var(--color-green)',
 ];
+// 2×1 flap sprites — TWO characters each (ref §11: `/\` ⇄ `\/`).
+const GLYPHS = ['/\\', '\\/'];
 // Glitch trail + label scramble symbol set (ref §11).
-const GLYPHS = ['/', '\\'];
 const TRAIL_SYMBOLS = ['!', '@', '#', '$', '%', '&', '*', '?', '~', '<', '>', '|', '/'];
 
 interface Trail {

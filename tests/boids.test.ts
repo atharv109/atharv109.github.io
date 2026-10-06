@@ -124,6 +124,28 @@ describe('boids', () => {
     expect(final).toBeLessThan(initial / 2);
   });
 
+  it('moth sprite paints both cells and flips /\\ ⇄ \\/', () => {
+    // Regression for the review round 1 critical: GLYPHS held 1-char strings,
+    // so cell 2 was never painted (the flap only changed one cell's char).
+    const surface = new AsciiSurface(60, 30);
+    const flock = makeBoids({ count: 1, rng: mulberry32(7) });
+    flock.seed(ctxFor(60, 30));
+    const b = flock.boids[0];
+    b.x = 20; b.y = 10; b.vx = 0; b.vy = 0; b.tx = 20; b.ty = 10;
+    b.flapPhase = 0;
+    const boidRuns = (y: number) =>
+      surface
+        .rowRuns(y)
+        .filter((r) => r.color === 'var(--color-overlay1)' && /^[/\\]+$/.test(r.text));
+    flock.update(surface, ctxFor(60, 30));
+    expect(boidRuns(10).map((r) => r.text)).toContain('/\\');
+    // Jump to the next flap state explicitly (update advances flapPhase by
+    // delta·8 ≈ 0.13/frame, below the integer boundary).
+    b.flapPhase = 1;
+    flock.update(surface, ctxFor(60, 30));
+    expect(boidRuns(10).map((r) => r.text)).toContain('\\/');
+  });
+
   it('no NaN at zero distance', () => {
     const surface = new AsciiSurface(60, 30);
     const flock = makeBoids({ count: 6, rng: mulberry32(1) });
