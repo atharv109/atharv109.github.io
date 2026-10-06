@@ -316,6 +316,15 @@ site-terminal {
   75% { transform: translateX(-1px) skewX(1deg); }
 }
 
+/* ---- text wave (ref §7.3) — spans exist only while a wave is running ----
+   .wv-char opacity is driven inline (0 while pending, 1 once due); the
+   stylesheet rule is the baseline. Glitch symbols are plain text — they
+   inherit currentColor; no transition anywhere but the sanctioned 400ms
+   linear .button-inner restore (applied inline, removed after). */
+.wv-char {
+  opacity: 0;
+}
+
 /* ---- ASCII engine overlay (ref §8.1: perf-critical) ---- */
 .ascii-container {
   position: absolute;

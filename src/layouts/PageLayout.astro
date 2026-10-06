@@ -86,8 +86,34 @@ const {
       import '../scripts/site-sidebar';
       import { attachPopupInterceptor } from '../scripts/popup-window';
       import { initFeatureBlocks } from '../scripts/feature-block';
+      import { runTextWave } from '../scripts/text-wave';
+      import { attachHoverWave } from '../scripts/button-hover-wave';
       attachPopupInterceptor();
       initFeatureBlocks();
+      attachHoverWave(document);
+
+      // Arrival text wave (ref §5 arrival reveal + §7.3): fonts first (metrics
+      // must be final before splitting), one rAF for layout, then split + play.
+      // CRITICAL (T3 review contract): wave-pending MUST be removed even when
+      // runTextWave throws, or the buffer stays hidden forever. Reduced motion
+      // skips the split entirely.
+      const el = document.querySelector('.content-lines');
+      if (el) {
+        try {
+          if (document.documentElement.classList.contains('wave-pending')) {
+            await document.fonts.ready;
+            await new Promise((r) => requestAnimationFrame(r));
+            if (
+              document.documentElement.classList.contains('wave-pending') &&
+              !matchMedia('(prefers-reduced-motion: reduce)').matches
+            ) {
+              await runTextWave(el);
+            }
+          }
+        } finally {
+          document.documentElement.classList.remove('wave-pending');
+        }
+      }
     </script>
   </body>
 </html>
