@@ -37,4 +37,25 @@ test.describe('story player', () => {
     await expect(block.locator('.story-chip')).toContainText('beat 2/6');
     await expect(block.locator('.story-progress')).toContainText('2/6');
   });
+
+  test('eleventh-round page auto-discovers its story and plays beat 1', async ({ page }) => {
+    // Template-side glob (server) + client-side glob pick the story up with no
+    // per-page wiring (Task 15 fanout contract).
+    await page.goto('/projects/eleventh-round/');
+    await page.waitForFunction(
+      () => !document.documentElement.classList.contains('wave-pending') && !document.querySelector('.wv-char'),
+      null,
+      { timeout: 5000 },
+    );
+
+    const block = page.locator('story-block');
+    await expect(block.locator('.story-chip')).toContainText('story · THREE TRIBES', { timeout: 5000 });
+    await expect(block.locator('.story-chip')).toContainText('beat 1/5');
+    await expect(block.locator('.story-caption')).toContainText('no single platform');
+    await expect(block.locator('.story-grid .ascii-overlay')).toBeVisible({ timeout: 5000 });
+
+    await block.focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(block.locator('.story-chip')).toContainText('beat 2/5');
+  });
 });
