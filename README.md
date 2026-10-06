@@ -1,41 +1,50 @@
-# Atharv Mittal — Interactive Portfolio
+# Atharv Mittal — the meadow portfolio
 
-A React and Three.js portfolio that presents Atharv's work as an interconnected systems journey across cybersecurity, product engineering, research, and entrepreneurship.
-
-## Live site
-
-[atharv109.github.io](https://atharv109.github.io/)
-
-## Highlights
-
-- Responsive, motion-led single-page experience
-- Demand-loaded Three.js particle network for desktop
-- Lightweight mobile mode with reduced-motion support
-- Draggable identity nodes and cursor-responsive motion
-- Five projects with fluid inline detail reveals
-- Accessible navigation, focus states, and semantic content
+[atharv109.github.io](https://atharv109.github.io/) — a portfolio rendered as
+one big editor window: a file-tree sidebar you walk with vim keys, line-numbered
+buffers with `~` gutters, ASCII rain that hatches the AM monogram into existence
+on the home page, draggable popup windows, and seven trophies to find. The old
+security terminal lives on at [`/shell/`](https://atharv109.github.io/shell/) as
+a vanilla web component.
 
 ## Stack
 
-React 19, TypeScript, Three.js, CSS, and Vite.
+Astro 5 static site (no UI framework), TypeScript, hand-written CSS on a 19px
+line grid, one font (Iosevka Term NF subset, weight 400). Content is Markdown
+collections in `src/content/`; behaviour is vanilla custom elements and rAF
+scripts — no React, no animation libraries.
 
 ## Local development
 
 ```bash
 npm install
-npm run dev
+npm run dev        # astro dev on :4321
 ```
-
-Create a production build with:
 
 ```bash
-npm run build
+npm run build      # static build into dist/
+npm run preview    # serve dist/
+npm run test       # vitest unit tests
+npm run test:e2e   # playwright e2e (builds first, then previews)
 ```
 
-The `main` branch deploys automatically through GitHub Pages.
+## Structure
+
+- `src/pages/` — routes (home, projects, archive, about, contact, resume, shell, 404)
+- `src/content/` — Markdown: featured projects, archive builds, about/contact/resume
+- `src/scripts/` — the behaviour: ASCII engine (`ascii/`), text wave, popups,
+  trophies, moth, contact boids, terminal (`terminal/`)
+- `src/styles/` — design tokens + editor chrome CSS
+- `public/` — fonts, favicon set, social image, robots/llms/manifest
+- `scripts/` — build-time tools (font subsetting, glyph outline, raster icons)
+
+## Deploy
+
+Push to `main` runs `.github/workflows/deploy.yml`, which builds `dist/` and
+publishes it with the official GitHub Pages actions.
 
 ## Contact
 
-- [LinkedIn](https://www.linkedin.com/in/atharv-mittal/)
 - [GitHub](https://github.com/atharv109)
+- [LinkedIn](https://www.linkedin.com/in/atharv-mittal/)
 - [atharvm2005@gmail.com](mailto:atharvm2005@gmail.com)
