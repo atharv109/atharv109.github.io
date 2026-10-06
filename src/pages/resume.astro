@@ -1,16 +1,76 @@
 ---
-// resume.astro — placeholder buffer until a real resume source is supplied.
+// resume.astro — the experience flowchart (ASCII, the editor idiom) above the
+// real resume PDF, embedded and served at /resume/Atharv_Mittal_Resume_Full.pdf.
+// User round 2026-10-06: "make the resume the same pdf file as i gave you" —
+// the document itself is the source of truth; the transcription was replaced
+// by the actual file.
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
-import { getEntry, render } from 'astro:content';
 
-const resume = await getEntry('pages', 'resume');
-const { Content } = await render(resume);
+const PDF = '/resume/Atharv_Mittal_Resume_Full.pdf';
 ---
 <PageLayout title="resume">
   <ContentPage>
-    <h1>{resume.data.title}</h1>
+    <h1>Resume</h1>
     <p aria-hidden="true">&nbsp;</p>
-    <Content />
+    <p>Not two roles. One loop — the flow of every role so far:</p>
+      <p aria-hidden="true">&nbsp;</p>
+    <pre class="exp-flow" aria-label="Flowchart of experience: Penn State cybersecurity feeds three streams — BREAK (soc intern, tinyvulnscanner, ctf), BUILD (buildora, eleventh round, crypton, acctomatic, prompt optimiser, blinks), PROVE (vulnswarm-vex paper, gowda lab research) — all merging into not two roles, one loop">
+                         +---------------+
+                         | penn state '28|
+                         | cybersec · s+ |
+                         +-------+-------+
+                                 |
+                 +---------------+---------------+
+                 v               v               v
+         +-----------+   +-----------+   +-----------+
+         |   BREAK   |   |   BUILD   |   |   PROVE   |
+         +-----+-----+   +-----+-----+   +-----+-----+
+               |               |               |
+         soc intern      buildora        vulnswarm-vex
+         centrient '25   ~50 clients     first-author
+         200+ alerts/day 11th round      ICTAI subm.
+         defender        crypton         z3 · vex
+         tinyvulnscan    acctomatic      gowda lab
+         500+ ports      prompt-opt      ocr · 8 st.
+         ctf · top100    blinks          malware prop.
+               |               |               |
+               +-------+-------+-------+-------+
+                       v
+             not two roles. one loop.</pre>
+      <p aria-hidden="true">&nbsp;</p>
+      <p class="pdf-caption">the document itself — exactly the PDF I hand out:</p>
+      <p>
+        <a class="button" href={PDF} download>Download PDF ↓</a>
+      </p>
+      <iframe class="pdf-embed" src={PDF} title="Atharv Mittal — resume (PDF)"></iframe>
   </ContentPage>
 </PageLayout>
+
+<style>
+  .exp-flow {
+    display: block;
+    font: inherit;
+    line-height: var(--line-height);
+    white-space: pre;
+    color: var(--color-green);
+    user-select: text;
+    overflow-x: auto; /* phones: the art stays crisp, scrolls if needed */
+  }
+  .pdf-chip {
+    display: inline;
+  }
+  .pdf-embed {
+    display: block;
+    margin-top: var(--line-height);
+    width: 100%;
+    height: 1250px; /* both pages at buffer width */
+    border: 1px solid var(--color-overlay0);
+    background: var(--color-surface1);
+  }
+  @media (width <= 50rem) {
+    .pdf-embed {
+      height: 72vh;
+    }
+  }
+</style>
