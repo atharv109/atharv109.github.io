@@ -64,6 +64,7 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | T7/T11 fix | `e4d9a7f` | overlay CSS, fps-cap freeze (last=painted frame), resolvePath ~ strip; re-review APPROVED |
 | T5 Routes | `4362a19`+`41e9ec2` | 22 routes (hero/index/case-study/404), remark-editor registered + soft-wrap split, hero chrome CSS, contact CTA+lamp+popup chips, routes e2e 27; review APPROVED (metrics template lines dropped after adjudication) |
 | T6 Wave | `11c34b7`+`418e87a` | text-wave + hover wave (ref §7.3 exact), wave-pending try/finally contract with fault-injection e2e; review APPROVED; hardening commit |
+| T10 Boids | `8ba1041`+`484156d` | steering.ts (+6 tests, T9 consumes), boids.ts ref §11 constants verbatim, contact.ts (wave-pending poll + 950ms start), boid-char label spans, lamp glow, boids e2e; review round 1 → sprite-paints-one-cell fix → re-review APPROVED |
 
 **T7+T11 review COMPLETED — findings FIXED (commit e4d9a7f, scoped re-review APPROVED).**
 Fix details in the ledger ("Task 7 fix round 1/5", "Task 11 fix round 1/5"; reviewer
