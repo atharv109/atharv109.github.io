@@ -1,6 +1,6 @@
 # HANDOFF — Astro "Meadow" Portfolio Rewrite
 **Saved:** 2026-10-05 ~13:40 EDT (2nd checkpoint, supersedes 2026-10-04 version)
-**Branch:** `redesign/editor-portfolio` · **Status: 6.5/13 tasks done, T5 review dispatched**
+**Branch:** `redesign/editor-portfolio` · **Status: T1-T6 done + reviewed, T8+T10 implementers live**
 
 > **Resume instructions for any future session/model are at the bottom (§9).**
 
@@ -61,6 +61,9 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | T4 Components | `062ed85`, fix `f0fe607` + tip tweak | Button.astro chips, FeatureBlock.astro (collapse persist, media line-snap, embed click-to-activate), popup-window.ts (drag/resize/Esc/persist/new-tab; clampRect+parseSavedRect tested), components.css; fixes: embed 30-line height, popup aria-labelledby |
 | T7 ASCII engine | `4ce66aa` | surface.ts (cells, dirty rows, run-length w/ trailing-blank trim), renderer.ts (metric probe, dirty-row diffing, insertRule class cache, fps cap, visibility pause), rain.ts (injectable rng, spawn/top-up, onCell/onBottomHit hooks) — 6 tests |
 | T11 Terminal | `b1dc418` | fs.ts (faithful port; stats archive 3→8 corrected), machine.ts PURE (13 tests: cd/cat/run/clear/exit/secret/200-char etc.), site-terminal.ts (boot seq, scramble reveal, tab complete, history arrows, glitch, Ctrl+L), matrix.ts canvas overlay, shell.astro route, terminal e2e 4/4 |
+| T7/T11 fix | `e4d9a7f` | overlay CSS, fps-cap freeze (last=painted frame), resolvePath ~ strip; re-review APPROVED |
+| T5 Routes | `4362a19`+`41e9ec2` | 22 routes (hero/index/case-study/404), remark-editor registered + soft-wrap split, hero chrome CSS, contact CTA+lamp+popup chips, routes e2e 27; review APPROVED (metrics template lines dropped after adjudication) |
+| T6 Wave | `11c34b7`+`418e87a` | text-wave + hover wave (ref §7.3 exact), wave-pending try/finally contract with fault-injection e2e; review APPROVED; hardening commit |
 
 **T7+T11 review COMPLETED — findings FIXED (commit e4d9a7f, scoped re-review APPROVED).**
 Fix details in the ledger ("Task 7 fix round 1/5", "Task 11 fix round 1/5"; reviewer
@@ -93,8 +96,9 @@ both). Reviewer may rule to drop the template metrics lines.
 ## 5. Remaining after T5 (wave order)
 
 ```
-done: 1 2 3 4 7 11
-[5 in flight] → [6+8+10 parallel] → [9] → [12] → [13]
+done: 1 2 3 4 5 6 7 11
+[live: 8+10 parallel] → [9] → [12] → [13]
+(steering.ts ruling: T10 creates it per plan T9 Step 3; T9's moth consumes)
 ```
 
 | # | Task | Special care |
@@ -112,6 +116,9 @@ done: 1 2 3 4 7 11
   fix re-reviews) with brief path + interfaces + report path → review-package
   (`bash <skill>/scripts/review-package PLAN BASE HEAD` FROM REPO ROOT) → reviewer →
   fix loop (resume implementer r1-3, fresh+bump r4-5, adjudicate at cap).
+- ⚠️ `node_modules/.astro/data-store.json` (content store) is keyed on md-file hash
+  only, NOT the remark plugin — after ANY plugin edit run `rm -rf node_modules/.astro`
+  before gates or you verify stale render output.
 - **429 reality:** the kimi-k3:cloud subagents died twice on session-usage caps
   (2026-10-04 02:20 and 03:30). Tasks 4, 7, 11 were then implemented INLINE by the
   controller with reviews dispatched after (worked: cap seems per-burst; reviews on
@@ -155,4 +162,11 @@ rain 3, terminal-machine 16, ascii-renderer 1, remark-editor 6).
 > for verdict/fixes, run any fix round it requires, then close T5. Then proceed to the
 > wave [6+8+10 parallel] — note T8's special care in §5 (AM glyph FIRST, pointerTarget),
 > then T9 → T12 → T13 (§5). If the T5 reviewer verdict is pending in a fresh session,
-> check for task-5-review-report.md in the SDD workspace first.
+> check for task-5-review-report.md in the SDD workspace first.> State: T1-T7, T11 done and reviewed (T7/T11 fix round e4d9a7f re-APPROVED); T5
+> done+reviewed (4362a19+41e9ec2); T6 done+reviewed (11c34b7+418e87a); T8 (AM monogram
+> - USER CHOSE shared-stem ligature; brief task-8-brief.md has glyph coords + the
+> no-FontForge font pipeline) and T10 (boids, creates steering.ts) implementers were
+> dispatched in parallel - check git log + task-N-report.md for what landed, dispatch
+> their reviewers if missing, run their fix rounds. Then T9 -> T12 -> T13 (section 5).
+> Parallel-wave process note: reviewers must verify at the COMMIT TREE (throwaway
+> worktree) - working-tree churn and stale preview servers poison gate runs.
