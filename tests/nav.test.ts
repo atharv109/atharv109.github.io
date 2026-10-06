@@ -29,6 +29,7 @@ describe('nav tree', () => {
       '/archive/buildora-agent-pipeline/',
       '/archive/android-app/',
       '/about/',
+      '/experience/',
       '/contact/',
       '/shell/',
       '/resume/',

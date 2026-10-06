@@ -405,6 +405,27 @@ story-block {
   color: var(--color-overlay1);
 }
 
+/* ---- pdf-pages (resume.astro): the resume PDF rendered page-by-page by
+   pdf-pages.ts — pages only, no viewer chrome; site's own framing. */
+pdf-pages {
+  display: block;
+  margin-top: var(--line-height);
+}
+.pdf-page-frame {
+  outline: 1px solid var(--color-overlay0);
+  background: var(--color-surface1);
+  margin-top: var(--line-height);
+}
+.pdf-page-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.pdf-page-label,
+.pdf-caption {
+  color: var(--color-overlay1);
+}
+
 /* ---- trophies: <trophy-drawer> (trophy-drawer.ts, ref §9) ---- */
 trophy-drawer {
   position: fixed;

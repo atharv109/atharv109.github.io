@@ -46,6 +46,7 @@ export const NAV: NavNode[] = [
       { label: 'android-app', icon: FILE, href: '/archive/android-app/' },
     ],
   },
+  { label: 'experience.md', icon: FILE, href: '/experience/' },
   { label: 'about.me', icon: FILE, href: '/about/' },
   { label: 'contact.md', icon: MAIL, href: '/contact/', end: true },
   { label: 'shell', icon: FILE, href: '/shell/' },

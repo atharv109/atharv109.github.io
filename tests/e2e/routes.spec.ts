@@ -17,6 +17,7 @@ const ARCHIVE = [
 const ROUTES = [
   '/',
   '/about/',
+  '/experience/',
   '/contact/',
   '/resume/',
   '/shell/',
