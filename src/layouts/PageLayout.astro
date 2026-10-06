@@ -113,7 +113,16 @@ const {
       // runTextWave throws, or the buffer stays hidden forever. Reduced motion
       // skips the split entirely.
       const el = document.querySelector('.content-lines');
-      if (el) {
+      // A page whose intro choreography owns the arrival (home: intro-pending
+      // at boot + startHome's guarded finally) waves its own CTA in §7.2.3 and
+      // clears the pending classes itself — the generic wave here would lift
+      // the hold early at ~0.2s via the zero-block path.
+      const homeOwnsArrival = document.documentElement.classList.contains('intro-pending');
+      if (el instanceof HTMLElement && homeOwnsArrival) {
+        // Failsafe: if home's intro were somehow to strand the class (startHome
+        // is fully guarded, this is belt), clear it late.
+        setTimeout(() => document.documentElement.classList.remove('wave-pending'), 8000);
+      } else if (el instanceof HTMLElement) {
         try {
           if (document.documentElement.classList.contains('wave-pending')) {
             await document.fonts.ready;

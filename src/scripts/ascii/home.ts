@@ -478,6 +478,12 @@ export async function startHome(opts: HomeOptions): Promise<void> {
     if (cta) cta.removeAttribute('data-text-wave');
     const waveStart = performance.now();
     const D = await runTextWave(content);
+    // runTextWave's own finally removes its inline lift at resolve; until
+    // home's late finally (post-cascade) wave-pending would re-hide the pane
+    // (html.wave-pending .content-lines{opacity:0}). Drop the class here —
+    // same moment PageLayout's finally drops it on generic-wave pages — so
+    // the buffer stays visible through the §7.2.4 cascade.
+    html.classList.remove('wave-pending');
     // 4. D + 500 + 200 + 200ms from the wave's start (§7.2.4)
     await wait(D + WAVE_PAD - (performance.now() - waveStart));
 

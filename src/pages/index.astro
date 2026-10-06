@@ -14,7 +14,7 @@ import { README } from '../data/readme';
 ---
 <PageLayout title="README">
   <ContentPage disableMaxWidth>
-    <div class="ascii-container" aria-hidden="true"></div>
+    <div slot="ascii" class="ascii-container" aria-hidden="true"></div>
     <p id="center-spacers" aria-hidden="true">&nbsp;</p>
     <h1 data-ascii-head data-text-wave="skip">{README.name}</h1>
     <p data-ascii-head data-text-wave="skip">{README.pitch}</p>
@@ -38,16 +38,12 @@ import { README } from '../data/readme';
   const container = document.querySelector('.ascii-container');
   if (content instanceof HTMLElement) attachCentering(content);
 
-  if (
-    container instanceof HTMLElement &&
-    content instanceof HTMLElement
-  ) {
+  if (container instanceof HTMLElement && content instanceof HTMLElement) {
     // §14: reduced motion keeps the ASCII home running WITHOUT introReveal
     // (startHome checks the media query itself — no pending classes there);
-    // with motion allowed the intro owns the arrival and holds the buffer
-    // (inline opacity 0) until home.ts's CTA wave lifts it.
-    if (document.documentElement.classList.contains('intro-pending'))
-      content.style.opacity = '0';
+    // with motion allowed the intro owns the arrival: wave-pending already
+    // holds the DOM text, the rain plays from t=0, home.ts's CTA wave lifts
+    // the hold in §7.2 order and its finally clears the pending classes.
     // §8.3.6: container AND overlay are pointer-events:none — the cursor
     // coordinates need the buffer pane itself.
     startHome({

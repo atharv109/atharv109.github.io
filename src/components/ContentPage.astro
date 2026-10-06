@@ -7,6 +7,9 @@ const { disableMaxWidth = false } = Astro.props;
 ---
 <div class:list={['content-wrapper', { 'disable-max-width': disableMaxWidth }]}>
   <div class="content-page">
+    <!-- ascii: pages mount their ASCII layer here (ref: lives OUTSIDE the
+         buffer text so arrival holds never hide the rain; ref §7.2.1) -->
+    <slot name="ascii" />
     <div class="content-row">
       <div class="line-numbers" aria-hidden="true"></div>
       <div class="content-lines">

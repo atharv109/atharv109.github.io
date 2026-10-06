@@ -44,7 +44,8 @@ export function makeMeadowProgram(bloomChar = '×', rng: () => number = Math.ran
     color: 'var(--color-overlay1)',
     onBottomHit: (x: number) => {
       if (rng() >= FLOWER_CHANCE) return;
-      // One flower per column; cap at floor(cols×0.8) (oldest removed).
+      // Cap enforced per-frame in update; columns may repeat (a drop dying
+      // on the same column plants a second flower there).
       const cap = Math.max(1, Math.floor(cols * MAX_FLOWERS_MULTIPLIER));
       if (flowers.length >= cap) flowers.shift();
       flowers.push({
@@ -64,9 +65,13 @@ export function makeMeadowProgram(bloomChar = '×', rng: () => number = Math.ran
     init(ctx) {
       cols = ctx.cols;
     },
+    // (cols re-captured each update: rebuildGrid doesn't re-run init on resize)
     update(surface, ctx) {
       rain.update(surface, ctx);
+      cols = ctx.cols; // refresh (resize)
       const dt = ctx.delta;
+      // ref cap: min(256, floor(cols×0.8)) — trim oldest when over.
+      while (flowers.length > Math.min(256, Math.floor(cols * 0.8))) flowers.shift();
       for (const f of flowers) {
         // Every stem cell persistently re-set each frame (after rain.update —
         // rain trails pass behind the flowers, not through them).

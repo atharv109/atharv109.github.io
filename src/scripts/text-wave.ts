@@ -80,7 +80,7 @@ function inViewport(el: HTMLElement): boolean {
  */
 function waveRect(el: HTMLElement): DOMRect {
   const r = el.getBoundingClientRect();
-  if (r.height > 0 || r.width > 0) return r;
+  if (r.height > 0) return r;
   const align = el.querySelector<HTMLElement>('.cta-align');
   return align ? align.getBoundingClientRect() : r;
 }
