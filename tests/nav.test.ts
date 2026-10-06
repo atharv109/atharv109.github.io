@@ -50,10 +50,12 @@ describe('nav tree', () => {
     }
   });
 
-  it('contact and externals are flagged end: true', () => {
-    for (const label of ['contact.md', 'github', 'linkedin', 'email']) {
-      const node = NAV.find((n) => n.label === label);
-      expect(node?.end, label).toBe(true);
-    }
+  it('exactly one nav item carries end: true (the bottom cluster is compact; multiple flags spread the links apart)', () => {
+    const ends = NAV.filter((n) => n.end === true).map((n) => n.label);
+    expect(ends).toEqual(['contact.md']);
+  });
+
+  it('the about page shows as about.me in the tree', () => {
+    expect(NAV.find((n) => n.label === 'about.me')?.href).toBe('/about/');
   });
 });

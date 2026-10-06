@@ -56,8 +56,10 @@ const current = normalize(Astro.url.pathname);
     flex-direction: column;
     height: calc(100svh - var(--line-height) - 2 * var(--pad-sm));
   }
-  /* First .end entry absorbs the free space; the rest of the end-group
-     follows it, pinned to the bottom of the viewport. */
+  /* ONE nav item carries `end: true` (the top of the bottom cluster) and its
+     margin-top:auto absorbs the free space — everything after it flows as a
+     compact stack pinned to the bottom. Multiple end items would EACH absorb
+     space and spread the cluster apart (the bug this rules out). */
   .tree > li.end {
     margin-top: auto;
   }
