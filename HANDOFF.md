@@ -1,6 +1,6 @@
 # HANDOFF — Astro "Meadow" Portfolio Rewrite
 **Saved:** 2026-10-05 ~13:40 EDT (2nd checkpoint, supersedes 2026-10-04 version)
-**Branch:** `redesign/editor-portfolio` · **Status: T1-T7, T9-T11 done + reviewed; T8 done (review live)**
+**Branch:** `redesign/editor-portfolio` · **Status: T1-T7,T9-T12 all implemented; T8 fix re-review + T12 review live; T13 last**
 
 > **Resume instructions for any future session/model are at the bottom (§9).**
 
