@@ -1,6 +1,6 @@
 # HANDOFF — Astro "Meadow" Portfolio Rewrite
 **Saved:** 2026-10-05 ~13:40 EDT (2nd checkpoint, supersedes 2026-10-04 version)
-**Branch:** `redesign/editor-portfolio` · **Status: 5.5/13 tasks done, Task 5 in flight**
+**Branch:** `redesign/editor-portfolio` · **Status: 6.5/13 tasks done, T5 review dispatched**
 
 > **Resume instructions for any future session/model are at the bottom (§9).**
 
@@ -62,32 +62,33 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | T7 ASCII engine | `4ce66aa` | surface.ts (cells, dirty rows, run-length w/ trailing-blank trim), renderer.ts (metric probe, dirty-row diffing, insertRule class cache, fps cap, visibility pause), rain.ts (injectable rng, spawn/top-up, onCell/onBottomHit hooks) — 6 tests |
 | T11 Terminal | `b1dc418` | fs.ts (faithful port; stats archive 3→8 corrected), machine.ts PURE (13 tests: cd/cat/run/clear/exit/secret/200-char etc.), site-terminal.ts (boot seq, scramble reveal, tab complete, history arrows, glitch, Ctrl+L), matrix.ts canvas overlay, shell.astro route, terminal e2e 4/4 |
 
-**T7+T11 review COMPLETED after checkpoint — 1 Critical + 2 Important findings, UNFIXED.**
-The fixes are spelled out in the Resume Prompt (§9) step 1 and recorded verbatim in the
-ledger section "T7+T11 review landed". Nothing else from that review blocks work.
+**T7+T11 review COMPLETED — findings FIXED (commit e4d9a7f, scoped re-review APPROVED).**
+Fix details in the ledger ("Task 7 fix round 1/5", "Task 11 fix round 1/5"; reviewer
+note: Task 8 must pass an explicit pointerTarget — container and overlay are both
+pointer-events:none). Deferred minors live in the ledger's fix-round records.
 
-## 4. Task 5 (all routes + markdown pipeline) — IN FLIGHT
+## 4. Task 5 (all routes + markdown pipeline) — DONE (implemented inline)
 
-Done so far (committed as `wip` checkpoint on branch tip):
-- `src/plugins/remark-editor.mjs` — spacer paragraphs before h2 (×2)/h3 (×1)/after lists;
-  links → `.button` chips (`?color=name` suffix support). **NOT yet registered** in
-  astro.config.mjs.
-- `src/scripts/center-content.ts` — hero vertical centring on the line grid.
+Commit `4362a19` (fix round pending review — reviewer dispatched, verdict may
+add fixes; see ledger section "## Task 5" for composition notes).
 
-Remaining for T5 (per task-5-brief.md):
-1. Register remark plugin: `markdown: { remarkPlugins: [remarkEditorRhythm] }` in astro.config.mjs.
-2. `src/pages/index.astro` hero rewrite (replace temp filler): disable-max-width, h1+
-   pitch, `p#center-spacers` marker, Explore CTA → `/projects/`, `<div class="ascii-container">`
-   mount (consumed by T8), wire attachCentering.
-3. `projects/index.astro` + `projects/[slug].astro` (getStaticPaths from collections;
-   case-study: h1, tagline, metrics as `value — label` lines, links as Button chips,
-   `<Content/>` body, "Next project →" cycling by order). Same for `archive/*` (title-only lines OK).
-4. `about.astro` (render pages/about.md), `contact.astro` (hero-style mailto CTA with
-   `data-boid-anchor` + lamp glyph \u{F1A26}→hover \u{F1A25}, seo-only h1/h2), `resume.astro`,
-   `404.astro` (hero-style, Return button \u{F0A54}, ascii mount for T8's meadow overlay).
-5. e2e: new spec asserting all ~19 routes 200 + `.content-lines`; case-study next-button
-   cycle; popup interceptor on a contact-page popup link; reduced-motion instant load.
-6. Commit `feat: all routes and markdown pipeline`, review, loop.
+Done:
+1. remark-editor.mjs registered in astro.config.mjs + EXTENDED: soft-wrapped
+   single-newline paragraphs split into separate buffer lines (5 unit tests).
+2. index.astro hero — center-spacers marker, README h1+pitch, Explore CTA,
+   ascii-container mount, attachCentering wired (same in contact/404).
+3. projects/index + [slug], archive/index + [slug] — case-study template,
+   next-project cycling by order, empty-tolerance (seo-only h2 fallback).
+4. about.astro, contact.astro (hero mailto CTA, data-boid-anchor, lamp
+   glyph hover swap + popup-linked GitHub/LinkedIn chips), resume.astro,
+   404.astro ("lost in the buffer", Return button, ascii mount).
+5. e2e routes.spec.ts: 21 routes 200 + .content-lines + h1, 404 doc, next
+   cycle, index lines, popup interceptor, reduced-motion.
+6. Gates: vitest 39/39, astro build 22 pages, playwright 39/39.
+
+Known tension awaiting reviewer adjudication: metrics `value — label` lines
+duplicate every featured entry's identical `Impact:` sentence (T2 data has
+both). Reviewer may rule to drop the template metrics lines.
 
 ## 5. Remaining after T5 (wave order)
 
@@ -134,11 +135,12 @@ done: 1 2 3 4 7 11
 - reset.css extras beyond brief (fine) (T1)
 - popup title chip random id each instance (a11y fine, snapshot-test care) (T4)
 
-## 8. Test suite state at checkpoint
+## 8. Test suite state (at 4362a19)
 
-`npx vitest run` → 16+13 = 29 unit tests green (persistent 3, nav 4, popup-bounds 3,
-surface 3, rain 3, terminal-machine 13). `npx playwright test` → 12 e2e green
-(shell 8, terminal 4). `npx astro build` green (routes: /, /shell/).
+`npx vitest run` → 39 unit green (persistent 3, nav 4, popup-bounds 3, surface 3,
+rain 3, terminal-machine 16, ascii-renderer 1, remark-editor 6).
+`npx playwright test` → 39 e2e green (shell 8, terminal 4, routes 27).
+`npx astro build` green (22 pages).
 
 ## 9. RESUME PROMPT (paste into a fresh session)
 
@@ -147,11 +149,10 @@ surface 3, rain 3, terminal-machine 13). `npx playwright test` → 12 e2e green
 > .superpowers/sdd/2026-10-04-astro-meadow-redesign/progress.md (the ledger), then the
 > plan docs/superpowers/plans/2026-10-04-astro-meadow-redesign.md. Use
 > superpowers:subagent-driven-development; if subagent dispatches 429, implement inline
-> per HANDOFF §6. First actions: (1) **fix the two landing-blocker findings from the
-> already-completed T7+T11 review** (recorded in the ledger's "T7+T11 review landed"
-> section): T7 Critical — add CSS for `.ascii-overlay`/`.ascii-row` (absolute pre,
-> block rows) or Task 8 is unbuildable; T7 Important — renderer fps-cap freeze (assign
-> `last` only on painted frames); T11 Important — `resolvePath` must strip the `~`
-> segment (`cd ~/projects` currently fails). Then verify build+vitest+playwright green,
-> commit as T7/T11 fix round, scoped re-review, close both in the ledger. (2) Continue
-> Task 5 per HANDOFF §4.
+> per HANDOFF §6. State: T1-T4, T7, T11 done and reviewed; T7/T11 fix round committed
+> (e4d9a7f) and re-review APPROVED; Task 5 committed (4362a19) with its reviewer
+> dispatched — read the ledger's T5 section and .superpowers/sdd/.../task-5-review-report.md
+> for verdict/fixes, run any fix round it requires, then close T5. Then proceed to the
+> wave [6+8+10 parallel] — note T8's special care in §5 (AM glyph FIRST, pointerTarget),
+> then T9 → T12 → T13 (§5). If the T5 reviewer verdict is pending in a fresh session,
+> check for task-5-review-report.md in the SDD workspace first.
