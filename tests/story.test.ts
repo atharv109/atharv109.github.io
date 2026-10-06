@@ -82,6 +82,24 @@ describe('story engine', () => {
     expect(story.time).toBe(6);
   });
 
+  it('speed option scales playback (reader-friendly pacing)', () => {
+    const log: Draw[] = [];
+    const story = makeStory([beatOf('a', 2, log), beatOf('b', 2, log)], { speed: 0.5 });
+    const surface = new AsciiSurface(40, 12);
+    story.update(surface, ctxFor(40, 12, 1));
+    expect(story.time).toBe(0.5);
+    expect(story.beatIndex).toBe(0);
+    story.update(surface, ctxFor(40, 12, 1));
+    expect(story.time).toBe(1);
+    expect(story.beatIndex).toBe(0);
+    story.update(surface, ctxFor(40, 12, 1));
+    expect(story.time).toBe(1.5);
+    expect(story.beatIndex).toBe(1);
+    // Scrub stays absolute (unaffected by speed).
+    story.seek(3.6);
+    expect(story.time).toBe(3.6);
+  });
+
   it('seek clamps into [0, total]; scrubbing back un-finishes', () => {
     const log: Draw[] = [];
     const story = makeStory([beatOf('a', 1, log), beatOf('b', 2, log), beatOf('c', 3, log)]);

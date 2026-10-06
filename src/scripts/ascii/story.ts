@@ -42,6 +42,9 @@ export interface StoryData {
 export interface StoryOptions {
   /** Seed factory for the per-draw-call generators. Default mulberry32. */
   rng?: RngFactory;
+  /** Playback rate multiplier: 0.5 plays half-speed (reader-friendly pacing).
+      Scrubbing is unaffected (seek is absolute). Default 1. */
+  speed?: number;
 }
 
 export interface Story extends AsciiProgram {
@@ -185,7 +188,7 @@ export function makeStory(beats: StoryBeat[], opts: StoryOptions = {}): Story {
       if (!beats.length) return;
       if (playing) {
         const wasAtEnd = time >= total;
-        time = Math.min(total, time + Math.max(0, ctx.delta));
+        time = Math.min(total, time + Math.max(0, ctx.delta) * (opts.speed ?? 1));
         if (!wasAtEnd && time >= total) {
           // End of the story: hold the last frame, mark finished (paused).
           playing = false;

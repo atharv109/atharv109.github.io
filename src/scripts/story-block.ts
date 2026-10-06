@@ -3,12 +3,15 @@
 // Autoplay waits for BOTH the arrival wave to clear (T6 contract: don't play
 // under wave-pending) and the block entering the viewport; ←/→ scrub beats,
 // Space pauses/plays, R replays. Reduced motion: one static final frame,
-// no autoplay — still keyboard-scrub-able.
+// no autoplay — still keyboard-scrub-able. Playback runs at 0.7× — beat
+// pacing is tuned for reading, not realtime.
 import { AsciiRenderer } from './ascii/renderer';
 import { makeStory } from './ascii/story';
 import type { StoryBeat } from './ascii/story';
 
-type StoryFactory = () => { beats: StoryBeat[] };
+type StoryFactory = () => { beats: StoryBeat[]; layman?: string };
+
+const PLAYBACK_SPEED = 0.7;
 
 const FILES = import.meta.glob<StoryFactory>('./stories/*.ts');
 
@@ -50,7 +53,8 @@ class StoryBlock extends HTMLElement {
     this.addEventListener('keydown', (e) => this.onKey(e));
 
     loader().then((mod) => {
-      const story: Story = makeStory(mod.default().beats);
+      const data = mod.default();
+      const story: Story = makeStory(data.beats, { speed: PLAYBACK_SPEED });
       // Assign BEFORE registering: onBeatChange/onStateChange fire
       // synchronously at registration (engine immediate-init), and both sync
       // hooks bail while this.story is still null if it is assigned later.
