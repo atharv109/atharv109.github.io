@@ -1,19 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <!-- AM monogram favicon (ref §6 recipe: mark on a cream circle).
-       Same stroke geometry as assets/mark/am-monogram.svg (bevel-joined
-       A tent + crossbar + M stems/V, single crossing junction). -->
+  <!-- AM favicon (user round 2026-10-06: "just write am separately") — the
+       letters stand as separate glyphs, cream circle, meadow ink. Strokes are
+       heavy so the mark stays legible at 16px. -->
   <circle cx="500" cy="500" r="500" fill="#F8F9E8" />
   <g
     fill="none"
     stroke="#1C2225"
-    stroke-width="80"
+    stroke-width="92"
     stroke-linecap="butt"
-    stroke-linejoin="bevel"
+    stroke-linejoin="miter"
   >
-    <path d="M100 900 390 110 720 900" />
-    <path d="M240 560 610 560" />
-    <path d="M600 110 600 900" />
-    <path d="M600 110 750 560 900 110" />
-    <path d="M900 110 900 900" />
+    <!-- A: apex, two feet, crossbar -->
+    <path d="M290 190 150 810" />
+    <path d="M290 190 430 810" />
+    <path d="M205 600 375 600" />
+    <!-- M: two stems and the valley -->
+    <path d="M580 190 580 810" />
+    <path d="M580 190 705 560 830 190" />
+    <path d="M830 190 830 810" />
   </g>
 </svg>
