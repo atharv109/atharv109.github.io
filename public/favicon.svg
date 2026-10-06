@@ -1,22 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <!-- AM favicon (user round 2026-10-06: "just write am separately") — the
-       letters stand as separate glyphs, cream circle, meadow ink. Strokes are
-       heavy so the mark stays legible at 16px. -->
+  <!-- AM favicon (user round 2026-10-06) — separate A + M letters, ROUND
+       caps and joins (rounded & cute request) heavy for 16px legibility. -->
   <circle cx="500" cy="500" r="500" fill="#F8F9E8" />
   <g
     fill="none"
     stroke="#1C2225"
-    stroke-width="92"
-    stroke-linecap="butt"
-    stroke-linejoin="miter"
+    stroke-width="88"
+    stroke-linecap="round"
+    stroke-linejoin="round"
   >
     <!-- A: apex, two feet, crossbar -->
-    <path d="M290 190 150 810" />
-    <path d="M290 190 430 810" />
-    <path d="M205 600 375 600" />
+    <path d="M290 200 150 800" />
+    <path d="M290 200 430 800" />
+    <path d="M215 595 365 595" />
     <!-- M: two stems and the valley -->
-    <path d="M580 190 580 810" />
-    <path d="M580 190 705 560 830 190" />
-    <path d="M830 190 830 810" />
+    <path d="M590 200 590 800" />
+    <path d="M590 200 710 555 830 200" />
+    <path d="M830 200 830 800" />
   </g>
 </svg>

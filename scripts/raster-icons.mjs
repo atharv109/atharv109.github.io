@@ -13,18 +13,18 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 
-// The mark (user round 2026-10-06: "just write am separately") — A and M as
-// SEPARATE glyphs, heavy strokes for 16px legibility. Mirrors
+// The mark (user round 2026-10-06: separate letters, then rounded & cute) —
+// A and M as separate glyphs, round caps/joins. Mirrors
 // public/favicon.svg — keep the two in sync.
-const LETTERS = `<path d="M290 190 150 810" /><path d="M290 190 430 810" /><path d="M205 600 375 600" /><path d="M580 190 580 810" /><path d="M580 190 705 560 830 190" /><path d="M830 190 830 810" />`;
+const LETTERS = `<path d="M290 200 150 800" /><path d="M290 200 430 800" /><path d="M215 595 365 595" /><path d="M590 200 590 800" /><path d="M590 200 710 555 830 200" /><path d="M830 200 830 800" />`;
 
 const MONOGRAM = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <g fill="none" stroke="currentColor" stroke-width="92" stroke-linecap="butt" stroke-linejoin="miter">${LETTERS}</g>
+  <g fill="none" stroke="currentColor" stroke-width="88" stroke-linecap="round" stroke-linejoin="round">${LETTERS}</g>
 </svg>`;
 
 const FAICON = (color) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
   <circle cx="500" cy="500" r="500" fill="#F8F9E8" />
-  <g transform="translate(501 495) scale(0.72) translate(-501 -495)" fill="none" stroke="${color}" stroke-width="88" stroke-linecap="butt" stroke-linejoin="miter">${LETTERS}</g>
+  <g transform="translate(501 495) scale(0.72) translate(-501 -495)" fill="none" stroke="${color}" stroke-width="88" stroke-linecap="round" stroke-linejoin="round">${LETTERS}</g>
 </svg>`;
 
 const browser = await chromium.launch();
