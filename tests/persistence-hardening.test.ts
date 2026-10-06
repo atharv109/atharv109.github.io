@@ -304,4 +304,25 @@ describe('module reads survive poisoning', () => {
       );
     }
   });
+
+  it('am-trophy-ui:open junk JSON falls back to false; truthy junk never throws', () => {
+    // Consumer: trophy-drawer.ts getJSON<boolean>('trophy-ui:open', false).
+    localStorage.setItem('am-trophy-ui:open', '{broken');
+    expect(getJSON<boolean>('trophy-ui:open', false)).toBe(false);
+    for (const junk of ['null', '"yes"', '[]', '{"x":1}', '3']) {
+      localStorage.setItem('am-trophy-ui:open', junk);
+      expect(() => getJSON<boolean>('trophy-ui:open', false)).not.toThrow();
+    }
+    // String 'true' is the shape the drawer itself writes — round-trips.
+    localStorage.setItem('am-trophy-ui:open', 'true');
+    expect(getJSON<boolean>('trophy-ui:open', false)).toBe(true);
+  });
+
+  it('am-trophy-ui:moth junk never reads as free (caged default survives)', () => {
+    // Consumer: moth.ts getStr('trophy-ui:moth', 'caged'); only exact 'free' frees.
+    for (const junk of ['free ', 'FREE', 'fre', '{broken', '{"a":1}', '']) {
+      localStorage.setItem('am-trophy-ui:moth', junk);
+      expect(getStr('trophy-ui:moth', 'caged')).not.toBe('free');
+    }
+  });
 });

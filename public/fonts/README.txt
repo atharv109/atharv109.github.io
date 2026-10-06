@@ -24,9 +24,10 @@ icons render for real everywhere (the old ASCII stand-ins were interim).
 
 AM monogram glyph: outline spans x 67..935, y 87..903 (design canvas
 1000x1000 -> 1000 upm), stroke 80u, single weight; advance 500 (0.5 em,
-the Iosevka Term width). The glyph is drawn at ~1:1 proportions when
-rasterised to the cell grid (4 canvas px = 1 cell in both axes), which
-is what the rain-hatch logo reads.
+the Iosevka Term width). The rain-hatch rasteriser (src/scripts/ascii/
+logo-mask.ts) applies the ref §8.3.1 cell-ASPECT correction — the draw is
+stretched horizontally by 1/aspect with the x fit-budget scaled — so the
+hatched mark keeps its designed ~1.06 screen aspect at any cell size.
 
 License: SIL Open Font License 1.1 (Iosevka, (c) Belleve Invis);
 Nerd Fonts icons under the Nerd Fonts license (MIT-variant), both
