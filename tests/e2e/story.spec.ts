@@ -53,6 +53,8 @@ test.describe('story player', () => {
     await expect(block.locator('.story-chip')).toContainText('beat 1/5');
     await expect(block.locator('.story-caption')).toContainText('no single platform');
     await expect(block.locator('.story-grid .ascii-overlay')).toBeVisible({ timeout: 5000 });
+    // Layman one-liner under the video (what it IS, no jargon).
+    await expect(block.locator('.story-plain')).toContainText('fighters');
 
     await block.focus();
     await page.keyboard.press('ArrowRight');

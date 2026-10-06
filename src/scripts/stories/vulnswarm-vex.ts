@@ -319,5 +319,8 @@ function shipped(): StoryBeat {
 export default function makeStoryData(_rng?: RngFactory): StoryData {
   return {
     beats: [theFlood(), theFalseSolve(), theEvidence(), z3Decides(), theProof(), shipped()],
+    // One-liner for non-experts, shown under the player (user request
+    // 2026-10-06): what the product IS, no jargon.
+    layman: 'It sorts thousands of security alerts so the real bugs rise to the top — and every verdict is checked, not guessed.',
   };
 }

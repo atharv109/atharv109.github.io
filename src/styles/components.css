@@ -398,6 +398,9 @@ story-block {
 .story-caption {
   color: var(--color-subtext0);
 }
+.story-plain {
+  color: var(--color-overlay2);
+}
 .story-progress {
   color: var(--color-overlay1);
 }

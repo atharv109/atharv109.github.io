@@ -263,6 +263,12 @@ describe('vulnswarm-vex story data', () => {
     expect(shipped).toContain('paper under review');
   });
 
+  it('carries the layman one-liner rendered under the player', () => {
+    expect(typeof data.layman).toBe('string');
+    expect(data.layman!.length).toBeGreaterThan(20);
+    expect(data.layman).toContain('verdict');
+  });
+
   it('no NaN/undefined/Infinity text at any p edge', () => {
     data.beats.forEach((beat, i) => {
       for (const p of [0, 1e-6, 0.5, 1 - 1e-6, 1]) {

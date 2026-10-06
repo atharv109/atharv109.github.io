@@ -280,5 +280,8 @@ function shippedClientProduct(): StoryBeat {
 export default function makeStoryData(_rng?: RngFactory): StoryData {
   return {
     beats: [threeTribes(), theRing(), dashboards(), beyondVideo(), shippedClientProduct()],
+    // One-liner for non-experts, shown under the player (user request
+    // 2026-10-06): what the product IS, no jargon.
+    layman: 'One place for the whole fight business — fighters track readiness, managers run the roster, promoters sell the show.',
   };
 }

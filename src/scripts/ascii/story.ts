@@ -37,6 +37,9 @@ export interface StoryBeat {
 
 export interface StoryData {
   beats: StoryBeat[];
+  /** One-liner in plain language for non-experts; story-block renders it
+      under the video (static, always visible). Optional. */
+  layman?: string;
 }
 
 export interface StoryOptions {

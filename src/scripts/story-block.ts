@@ -40,10 +40,12 @@ class StoryBlock extends HTMLElement {
     grid.style.minHeight = `calc(${GRID_ROWS} * var(--line-height))`;
     const caption = document.createElement('p');
     caption.className = 'story-caption';
+    const plain = document.createElement('p');
+    plain.className = 'story-plain'; // text set in the loader (data.layman)
     const dots = document.createElement('p');
     dots.className = 'story-progress';
     dots.setAttribute('aria-hidden', 'true');
-    this.append(chip, grid, caption, dots);
+    this.append(chip, grid, caption, plain, dots);
     this.chipEl = chip;
     this.captionEl = caption;
     this.dotsEl = dots;
@@ -55,6 +57,9 @@ class StoryBlock extends HTMLElement {
     loader().then((mod) => {
       const data = mod.default();
       const story: Story = makeStory(data.beats, { speed: PLAYBACK_SPEED });
+      // The layman one-liner lives under the video (static, always visible).
+      if (data.layman) plain.textContent = data.layman;
+      else plain.remove();
       // Assign BEFORE registering: onBeatChange/onStateChange fire
       // synchronously at registration (engine immediate-init), and both sync
       // hooks bail while this.story is still null if it is assigned later.
