@@ -31,17 +31,23 @@ const result = await page.evaluate(() => {
     const canvas = document.createElement('canvas');
     canvas.width = w;
     canvas.height = h;
+    // cell metrics mirroring a real grid's aspect (Iosevka Term: cellW 7.7 / lineH 19)
+    const aspect = 7.7 / 19;
     const g = canvas.getContext('2d');
     g.font = '100px NF';
     const m = g.measureText(GLYPH);
-    const bw = (m.actualBoundingBoxLeft ?? 0) + (m.actualBoundingBoxRight ?? 0) || 100;
+    const left = m.actualBoundingBoxLeft ?? 0;
+    const bw = left + (m.actualBoundingBoxRight ?? 0) || 100;
     const bh = (m.actualBoundingBoxAscent ?? 0) + (m.actualBoundingBoxDescent ?? 0) || 100;
-    const s = Math.min((logoScale * w) / bw, (logoScale * h) / bh);
+    const s = Math.min((logoScale * w * aspect) / bw, (logoScale * h) / bh);
     g.textBaseline = 'alphabetic';
-    const X = w / 2 - (bw * s) / 2 + (m.actualBoundingBoxLeft ?? 0) * s;
-    const Y = h / 2 + ((m.actualBoundingBoxAscent ?? bh / 2) - bh / 2) * s;
+    const X = (w / 2) * aspect - ((bw - 2 * left) * s) / 2;
+    const Y = h / 2 + (((m.actualBoundingBoxAscent ?? bh / 2) - bh / 2) * s);
+    g.save();
+    g.scale(1 / aspect, 1);
     g.font = `${100 * s}px NF`;
     g.fillText(GLYPH, X, Y);
+    g.restore();
     const data = g.getImageData(0, 0, w, h).data;
     const alpha = [];
     for (let i = 0; i < w * h; i++) alpha.push(data[i * 4 + 3]);
@@ -75,10 +81,18 @@ const result = await page.evaluate(() => {
   }
 
   const runs = [];
+  // The acceptance's two readings, both measured under the §8.3.1 fit:
+  // (a) mark ~9/~13 cells WIDE (the aspect-corrected mark is ~2.63:1 in cell
+  //     space, so those runs are 3-4 rows tall);
+  // (b) mark ~9/~13 cells TALL (~24/~34 cols wide) — the smaller sizes at
+  //     which a 1.06 screen-aspect mark of this shape can form letters.
+  // (c) mobile 0.9 scale.
   for (const [cols, rows, scale, label] of [
-    [24, 17, 0.5, 'mark ~9 cells wide (desktop 0.5 scale)'],
-    [30, 24, 0.5, 'mark ~13 cells wide'],
-    [24, 17, 0.9, 'mobile 0.9 scale on same grid'],
+    [24, 7, 0.5, 'mark ~9 cells wide (3.4 rows tall)'],
+    [30, 10, 0.5, 'mark ~13 cells wide (5 rows tall)'],
+    [50, 18, 0.5, 'mark ~9 cells tall (~24 cells wide)'],
+    [70, 27, 0.5, 'mark ~13 cells tall (~34 cells wide)'],
+    [56, 20, 0.9, 'mobile 0.9 scale (0.9*rows/cols)'],
   ]) {
     const r = rasterize(cols, rows, scale);
     const m = maskOf(r, cols, rows);

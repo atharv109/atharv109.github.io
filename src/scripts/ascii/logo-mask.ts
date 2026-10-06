@@ -192,12 +192,11 @@ export function bloomColor(ring: number, time: number): string {
 
 /** Rasterise U+100000 with the page font onto a cols×4 × rows×4 offscreen
     canvas (4× supersample per cell), scaled so the glyph bbox fits `logoScale`
-    of the canvas and centred — horizontally at `centreX` (0..1 of the canvas,
-    where the page's own content column centre sits, so mark + headings + CTA
-    line up on one axis as in the ref), vertically at mid-canvas. A plain draw
-    (no aspect stretch): the mask samples 4 canvas px = 1 cell in BOTH axes, so
-    the design's proportions and monoline stroke weight hold in cell space.
-    Browser-only; returns the alpha channel (see maskFromAlpha). */
+    of the canvas, corrected by the cell aspect (ref §8.3.1) and centred —
+    horizontally at `centreX` (0..1 of the canvas, where the page's own content
+    column centre sits, so mark + headings + CTA line up on one axis as in the
+    ref), vertically at mid-canvas. Browser-only; returns the alpha channel
+    (see maskFromAlpha). */
 export function rasterGlyph(opts: {
   cols: number;
   rows: number;
@@ -216,20 +215,27 @@ export function rasterGlyph(opts: {
   if (!g) return { width: w, height: h, alpha: new Uint8ClampedArray(w * h) };
 
   // Reference bbox at 100px, then font-size that fits logoScale of the canvas
-  // with the glyph's own drawn proportions (actualBoundingBox), centred.
-  // The mask samples 4 canvas px = 1 cell in BOTH axes, so a plain draw keeps
-  // the design's proportions and monoline stroke weight in cell space.
+  // with the mark's designed proportions ON SCREEN (ref §8.3.1 "corrected by
+  // cell aspect"): canvas px map to (cellW, lineH) screen px per cell, so the
+  // draw is stretched horizontally by 1/aspect and the fit budget in x is
+  // likewise scaled — the mark keeps its design aspect on the cell grid.
   g.font = `100px ${opts.font}`;
   const m = g.measureText(GLYPH);
+  const left = m.actualBoundingBoxLeft ?? 0;
   const bw = (m.actualBoundingBoxLeft ?? 0) + (m.actualBoundingBoxRight ?? 0) || 100;
   const bh = (m.actualBoundingBoxAscent ?? 0) + (m.actualBoundingBoxDescent ?? 0) || 100;
+  const asc = m.actualBoundingBoxAscent ?? bh / 2;
   g.textBaseline = 'alphabetic';
-  const s = Math.min((opts.logoScale * w) / bw, (opts.logoScale * h) / bh);
+  const aspect = opts.cellW / opts.lineH;
+  const s = Math.min((opts.logoScale * w * aspect) / bw, (opts.logoScale * h) / bh);
   const cx = (opts.centreX ?? 0.5) * w;
-  const X = cx - (bw * s) / 2 + (m.actualBoundingBoxLeft ?? 0) * s;
-  const Y = h / 2 + ((m.actualBoundingBoxAscent ?? bh / 2) - bh / 2) * s;
+  const X = cx * aspect - ((bw - 2 * left) * s) / 2;
+  const Y = h / 2 + (asc - bh / 2) * s;
+  g.save();
+  g.scale(1 / aspect, 1);
   g.font = `${100 * s}px ${opts.font}`;
   g.fillText(GLYPH, X, Y);
+  g.restore();
 
   const data = g.getImageData(0, 0, w, h).data; // RGBA; every 4th byte is alpha
   const alpha = new Uint8ClampedArray(w * h);

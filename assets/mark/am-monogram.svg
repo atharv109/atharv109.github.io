@@ -1,12 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
 <!-- AM shared-stem monogram (original design, Task 8): conjoined A+M,
-     monoline 90u strokes on the 1000x1000 design canvas. The A is one tent
-     with bevel-joined apex (a miter join would spike ~123u above the cap
-     line and read as a floating dot at mask sizes); the M left stem crosses
-     the A right leg near (600, 613) - the single crossing junction of the
-     mark. The approved draft coordinates; scripts/add-glyph.py outlines
-     these same polylines into the font glyph. -->
-<g fill="none" stroke="currentColor" stroke-width="90" stroke-linecap="butt" stroke-linejoin="bevel">
+     monoline 80u strokes (the approved draft said 90u; thinned to 80 with the
+     ±legibility allowance so the mask's gaps stay open at low res - see
+     task-8-report §1) on the 1000x1000 design canvas. The A is one tent with
+     bevel-joined apex (a miter join would spike ~123u above the cap line and
+     read as a floating dot at mask sizes); the M left stem crosses the A
+     right leg near (600, 613) - the single crossing junction of the mark.
+     scripts/add-glyph.py outlines these same polylines into the font glyph. -->
+<g fill="none" stroke="currentColor" stroke-width="80" stroke-linecap="butt" stroke-linejoin="bevel">
     <path d="M100 900 L390 110 L720 900" />
     <path d="M240 560 L610 560" />
     <path d="M600 110 L600 900" />

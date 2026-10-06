@@ -117,8 +117,9 @@ function splitChars(root: HTMLElement): PreppedItem {
   }
   const n = chars.length;
   chars.forEach((c, i) => {
-    // single-line items: the §7.3 diagonal degenerates to a left→right sweep
-    c.delay = (n > 1 ? (i / (n - 1)) * CASC_SWEEP : 0) + i * 0.05;
+    // §7.2.4: single-line items — the wave sweep is the whole delay; the
+    // cascade stagger is the ref's i×60ms between items (no per-char extra).
+    c.delay = n > 1 ? (i / (n - 1)) * CASC_SWEEP : 0;
   });
   const iconEl = root.matches('.nav-item, [data-summary]') ? root : null;
   const item: PreppedItem = {
@@ -412,29 +413,12 @@ export async function startHome(opts: HomeOptions): Promise<void> {
     },
   };
 
-  const renderer = new AsciiRenderer(container, program);
-  renderer.start({ pointerTarget });
-  t0Sec = performance.now() / 1000; // intro t = 0 (ref §7.2.1)
-  const t0 = performance.now();
-
-  // Pointer rain (§8.2): >=10ms apart on pointermove, also click; these drops
-  // repaint face cells green.
-  let lastSpawn = 0;
-  const spawnAt = (e: PointerEvent): void => {
-    const now = performance.now();
-    if (now - lastSpawn < 10) return;
-    lastSpawn = now;
-    const rect = container.getBoundingClientRect();
-    const x = Math.floor((e.clientX - rect.left) / cellW);
-    const y = Math.floor((e.clientY - rect.top) / lineH);
-    if (x < 0 || x >= cols || y < 0 || y >= rows) return;
-    rain.spawn(x, y, { speed: 30 + Math.random() * USER_SPEED_MAX });
-    getExt(rain.drops[rain.drops.length - 1]!)!.user = true;
-  };
-  pointerTarget.addEventListener('pointermove', spawnAt);
-  pointerTarget.addEventListener('click', spawnAt);
-
-  if (reduced) return; // §14: static headings, all visible, no intro
+  // ---- guarded start: nothing below may strand the reader on a blank home.
+  // If any of this throws (renderer mount, intro, wave, cascade), the pending
+  // classes and the buffer hold clear and the DOM headings come back
+  // (PageLayout's finally shape); the reveal flag also switches the in-grid
+  // headings to settled chars so a partial intro degrades to a readable page.
+  let liveItems: PreppedItem[] = [];
 
   function forceReveal(): void {
     revealAll = true;
@@ -446,9 +430,32 @@ export async function startHome(opts: HomeOptions): Promise<void> {
     content.style.removeProperty('opacity');
   }
 
-  // ---- intro choreography (§7.2, motion allowed) -----------------------------
-  let liveItems: PreppedItem[] = [];
   try {
+    const renderer = new AsciiRenderer(container, program);
+    renderer.start({ pointerTarget });
+    t0Sec = performance.now() / 1000; // intro t = 0 (ref §7.2.1)
+    const t0 = performance.now();
+
+    // Pointer rain (§8.2): >=10ms apart on pointermove, also click; these drops
+    // repaint face cells green.
+    let lastSpawn = 0;
+    const spawnAt = (e: PointerEvent): void => {
+      const now = performance.now();
+      if (now - lastSpawn < 10) return;
+      lastSpawn = now;
+      const rect = container.getBoundingClientRect();
+      const x = Math.floor((e.clientX - rect.left) / cellW);
+      const y = Math.floor((e.clientY - rect.top) / lineH);
+      if (x < 0 || x >= cols || y < 0 || y >= rows) return;
+      rain.spawn(x, y, { speed: 30 + Math.random() * USER_SPEED_MAX });
+      getExt(rain.drops[rain.drops.length - 1]!)!.user = true;
+    };
+    pointerTarget.addEventListener('pointermove', spawnAt);
+    pointerTarget.addEventListener('click', spawnAt);
+
+    if (reduced) return; // §14: static headings, all visible, no intro
+
+    // ---- intro choreography (§7.2, motion allowed) ---------------------------
     // The ASCII layer owns the heading lines: DOM goes transparent but stays
     // in the a11y tree (§8.3.5 / §14).
     for (const h of headings) {
@@ -475,7 +482,6 @@ export async function startHome(opts: HomeOptions): Promise<void> {
     await wait(D + WAVE_PAD - (performance.now() - waveStart));
 
     // sidebar cascade: chars pre-split while the sidebar is still hidden
-    liveItems = [];
     const sidebar = document.querySelector('.sidebar');
     if (sidebar instanceof HTMLElement && window.innerWidth > 700) {
       for (const el of sidebar.querySelectorAll<HTMLElement>(CASCADABLE)) {
