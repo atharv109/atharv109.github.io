@@ -8,97 +8,29 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
 
-const ART = `  +------------------------------+
-  |   cybersec club (2022-23)    |
-  |    led it · owasp · cy100    |
-  +------------------------------+
-                 |
-                 +================>+
-                                   |
-                    +--------------+---------------+
-                    |    tinyvulnscanner (2025)    |
-                    |   500+ ports · 70% faster    |
-                    +--------------+---------------+
-                                   |
-                 +<================+
-                 |
-  +------------------------------+
-  |       centrient (2025)       |
-  |    soc intern · 200+/day     |
-  +------------------------------+
-                 |
-                 +================>+
-                                   |
-                    +--------------+---------------+
-                    |    protopaper (2026 jan)     |
-                    |    hackathon · <2 minutes    |
-                    +--------------+---------------+
-                                   |
-                 +<================+
-                 |
-  +------------------------------+
-  |     buildora (2026 jan)      |
-  |    founder · ~50 clients     |
-  +------------------------------+
-                 |
-                 +================>+
-                                   |
-                    +--------------+---------------+
-                    |     gowda lab (2026 may)     |
-                    |    ocr · 8 stages · 0.94     |
-                    +--------------+---------------+
-                                   |
-                 +<================+
-                 |
-  +------------------------------+
-  |      blinks (2026 jul)       |
-  |      icu voice · 1 week      |
-  +------------------------------+
-                 |
-                 +================>+
-                                   |
-                    +--------------+---------------+
-                    |    eleventh round (2026)     |
-                    |      paid client build       |
-                    +--------------+---------------+
-                                   |
-                 +<================+
-                 |
-  +------------------------------+
-  |     vulnswarm-vex (2026)     |
-  |   1st author · ICTAI subm.   |
-  +------------------------------+
-                 |
-                 +================>+
-                                   |
-                    +--------------+---------------+
-                    |   prompt optimiser (2026)    |
-                    |    groq 6-stage · 3 chats    |
-                    +--------------+---------------+
-                                   |
-                 +<================+
-                 |
-  +------------------------------+
-  |      crypton (2026 apr)      |
-  |  co-founder & cto · 10 beta  |
-  +------------------------------+
-                 |
-                 +================>+
-                                   |
-                    +--------------+---------------+
-                    |      acctomatic (2026)       |
-                    |    paddleocr · green/red     |
-                    +--------------+---------------+
-                                   |
-                                   v
+const ART = `
+ +---------+----------+   +--------------------+   +--------------------+   +--------------------+
+ | cybersec club ·22  |==>|  tinyvulnscan ·25  |==>| centrient soc ·25  |==>| protopaper ·26 jan |
+ |  led·owasp·cy100   |   | 500+ ports · -70%  |   |  200+ alerts/day   |   | hackathon ·2 mins  |
+ +--------------------+   +--------------------+   +--------------------+   +---------+----------+
+                                                                                      |
+ +--------------------+   +--------------------+   +--------------------+   +---------+----------+
+ |   11th round ·26   |<==|   blinks ·26 jul   |<==| gowda lab ·26 may  |<==|  buildora ·26 jan  |
+ | paid client build  |   |  icu voice · 1 wk  |   | ocr · 8 stg · 0.94 |   | ~50 paying clients |
+ +---------+----------+   +--------------------+   +--------------------+   +--------------------+
+           |
+ +---------+----------+   +--------------------+   +--------------------+   +--------------------+
+ | vulnswarm-vex ·26  |==>|   prompt-opt ·26   |==>|  crypton ·26 apr   |==>|   acctomatic ·26   |
+ |  1st auth · ICTAI  |   | groq 6stg·3 chats  |   | passkeys · 10 beta |   | paddleocr·tenants  |
+ +--------------------+   +--------------------+   +--------------------+   +---------+----------+
 
-              (the snake ends — the loop continues in the resume)`;
+                            (the snake ends — the loop continues in the resume)`;
 ---
 <PageLayout title="experience">
   <ContentPage>
     <h1>Experience</h1>
     <p aria-hidden="true">&nbsp;</p>
-    <p>every stop on the resume, wired as a snake — follow it down:</p>
+    <p>every stop on the resume — the snake runs right, then doubles back, then right again:</p>
     <p aria-hidden="true">&nbsp;</p>
     <pre
       class="exp-flow"
