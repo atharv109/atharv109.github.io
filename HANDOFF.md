@@ -70,6 +70,9 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | T12 Hardening | `0228e15`+`6920cf7` | poison-pill tests (all am-* keys incl. trophy-ui pair), boot-script guards (no jsdom — inline-script extraction harness), SiteSettings reduced panel, a11y sweep + spec, webServer fold `astro build &&`; review APPROVED after fix round |
 
 | Final review | `681801e` | requireds fixed: home intro hold lift (waveRect + zero-block lift + e2e), 404 meadow (§8.4 rain+flowers, descope-d wind), SDD file untracked, manifest bg; re-review dispatched |
+| Final fix rounds | `c718ad5`+`e808af3`+`dd70d2f` | hold restructure (ascii slot outside held .content-lines), waveRect gate, meadow cap; e2e comment corrected (lift ~0.75-0.8s measured); renderer metric probe font fix (dd70d2f); re-reviews APPROVED |
+| T14 Story engine | `3bcefd5` | story.ts (makeStory timeline engine: auto-advance, deterministic scrub, per-beat seeded rng, 14 tests), story-draw.ts helpers, stories/vulnswarm-vex.ts reference (6 beats/16.5s), story-block.ts `<story-block>` player custom element, [slug].astro auto-discovery wiring (glob both sides) — committed late by the T15 round (see ledger) |
+| T15 eleventh-round story | `1911418`+`f38014a` | player fix (3 bugs found by live probes: sync hooks registered before this.story; wave-poll arm() livelock; stale chip after seek) pinned by e2e/story.spec.ts; stories/eleventh-round.ts five beats 12.5s (tribes→ring→dashboards→beyond-video→shipped) + 7 unit tests + e2e; visually verified all beats |
 **T7+T11 review COMPLETED — findings FIXED (commit e4d9a7f, scoped re-review APPROVED).**
 Fix details in the ledger ("Task 7 fix round 1/5", "Task 11 fix round 1/5"; reviewer
 note: Task 8 must pass an explicit pointerTarget — container and overlay are both
@@ -147,11 +150,14 @@ done: 1 2 3 4 5 6 7 11
 - reset.css extras beyond brief (fine) (T1)
 - popup title chip random id each instance (a11y fine, snapshot-test care) (T4)
 
-## 8. Test suite state (at 4362a19)
+## 8. Test suite state (at 3bcefd5)
 
-`npx vitest run` → 39 unit green (persistent 3, nav 4, popup-bounds 3, surface 3,
-rain 3, terminal-machine 16, ascii-renderer 1, remark-editor 6).
-`npx playwright test` → 39 e2e green (shell 8, terminal 4, routes 27).
+`npx vitest run` → 107 unit green (persistent 14, nav 4, popup-bounds 3,
+surface 3, rain 3, terminal-machine 16, ascii-renderer 1, remark-editor 6,
+logo-mask 3, wave-timing 3, meadow 4, boids 5, story 14,
+story-eleventh-round 7, + a11y/settings suites).
+`npx playwright test` → 68 e2e green (incl. story player 2, wave 3, boids,
+trophies, shell/terminal, routes 22-route sweep).
 `npx astro build` green (22 pages).
 
 ## 9. RESUME PROMPT (paste into a fresh session)
