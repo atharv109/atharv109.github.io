@@ -1,13 +1,15 @@
 // stories/eleventh-round.ts — Eleventh Round's story scenes (Task 15). Each
 // beat is a PURE draw of the whole frame from (surface, ctx, p, rng), so any
 // seek reproduces the exact frame (engine contract, Task 14). Facts ONLY from
-// committed data (eleventh-round.md + the Task 15 brief): athletes / managers
-// / promoters as stakeholders with no single platform, role-specific
-// dashboards, podcasts, apparel integration, careers · content · commerce,
-// shipped as a paid Buildora client product, live site eleventh-rnd.com.
-// Glyphs are in-font ASCII (see story-draw.ts) — pure cells, no box-drawing
-// codepoints. Flicker slots are pure hash2 gating; positions advance linearly
-// with p (no easing, per the stack locks).
+// committed data (eleventh-round.md + the Task 15 brief) and, per the user's
+// 2026-10-06 addition, the product repo README (github.com/sagaryash001/
+// eleventh-round-beta): fighter readiness ring, 5-stage pipeline, sponsor/
+// media obligations, education modules, SponsorForge, manager roster +
+// budget/camp planning, admin users/mentors/subscriptions, podcast + apparel
+// pages, React/Express/Supabase(GSAP) stack. Glyphs are in-font ASCII (see
+// story-draw.ts) — pure cells, no box-drawing codepoints. Flicker slots are
+// pure hash2 gating; positions advance linearly with p (no easing, per the
+// stack locks).
 
 import type { AsciiSurface } from '../ascii/surface';
 import type { RngFactory, StoryBeat, StoryData } from '../ascii/story';
@@ -142,60 +144,79 @@ function theRing(): StoryBeat {
           str(surface, finalX - Math.floor(label.length / 2), Y0 + 5, label, TRIBES[k].color);
         }
       }
-      if (p > 0.8) strC(surface, yb + 2, 'one platform between them', TEXT);
+      if (p > 0.8) {
+        strC(surface, yb + 2, 'readiness · pipeline · obligations', TEXT);
+        strC(surface, yb + 3, 'one platform between them', TEXT);
+      }
     },
   };
 }
 
-/* ---- 3/5 · DASHBOARDS (2.5s): role-specific panels build row by row ---- */
+/* ---- 3/5 · DASHBOARDS (2.5s): role dashboards build row by row ---- */
+const DASHBOARDS: [string, string, string[]][] = [
+  [
+    'FIGHTER',
+    GREEN,
+    ['> readiness', '> pipeline', '> obligations', '> education'],
+  ],
+  [
+    'MANAGER',
+    BLUE,
+    ['> roster', '> camp budget', '> SponsorForge'],
+  ],
+  [
+    'ADMIN',
+    YELLOW,
+    ['> users + roles', '> mentors', '> subs'],
+  ],
+];
+
 function dashboards(): StoryBeat {
   const DUR = 2.5;
-  const BOX_H = 9;
+  const BOX_H = 10;
   const Y0 = 3;
   return {
     label: 'DASHBOARDS',
-    caption: 'role-specific dashboards, row by row',
+    caption: 'role dashboards: fighter · manager · admin, row by row',
     dur: DUR,
     draw(surface, _ctx, p, _rng) {
       const W = surface.cols;
-      for (let k = 0; k < TRIBES.length; k++) {
+      for (let k = 0; k < DASHBOARDS.length; k++) {
+        const [label, color, rows] = DASHBOARDS[k];
         const x0 = tribeX(k, W);
-        const build = clamp01((p - k * 0.22) / 0.55);
+        const build = clamp01((p - k * 0.2) / 0.55);
         if (build <= 0) continue;
         box(surface, x0, Y0, PW, BOX_H, STRUCT);
-        borderLabel(surface, x0 + 3, Y0, ` ${TRIBES[k].label} `, TRIBES[k].color, PANE_BG);
-        // Rows type in top-down below the label; '=' flecks as texture.
-        const innerW = PW - 2;
-        const rows = BOX_H - 2;
-        for (let r = 0; r < rows; r++) {
-          const vis = Math.floor(clamp01(build * (rows + 1) - (r + 1)) * innerW);
-          for (let x = 0; x < vis; x++) {
-            const gx = x0 + 1 + x;
-            const gy = Y0 + 1 + r;
-            surface.set(gx, gy, hash2(gx, gy * 7) % 9 === 0 ? '=' : '.', DIM);
-          }
+        borderLabel(surface, x0 + 3, Y0, ` ${label} `, color, PANE_BG);
+        // Real feature rows type in top-down, one per build step.
+        for (let r = 0; r < rows.length; r++) {
+          const frac = clamp01(build * (rows.length + 1) - (r + 1));
+          const vis = Math.floor(frac * (rows[r].length - 2)); // after '> '
+          if (vis <= 0) continue;
+          str(surface, x0 + 1, Y0 + 2 + r, rows[r].slice(0, 2 + vis), frac < 1 ? DIM : TEXT);
         }
-        if (build >= 1) str(surface, x0 + 1, Y0 + BOX_H + 1, `> ${TRIBES[k].label.toLowerCase()}`, TRIBES[k].color);
+        if (build >= 1) str(surface, x0 + 1, Y0 + BOX_H + 1, `> ${label.toLowerCase()}`, color);
       }
-      if (p > 0.6) strC(surface, Y0 + BOX_H + 2, 'role-specific dashboards', TEXT);
+      if (p > 0.6) strC(surface, Y0 + BOX_H + 3, 'readiness · pipeline · obligations', TEXT);
     },
   };
 }
 
-/* ---- 4/5 · BEYOND VIDEO (2.5s): podcasts · apparel integration · careers */
+/* ---- 4/5 · BEYOND VIDEO (2.5s): podcasts · apparel · SponsorForge · education */
 function beyondVideo(): StoryBeat {
   const DUR = 2.5;
-  const BW = 27;
-  const BH = 7;
+  const BW = 33;
+  const BH = 8;
   const Y0 = 3;
   const ROWS: [string, number][] = [
-    ['> podcasts', 0.5],
-    ['> apparel', 1.05],
-    ['> careers', 1.6],
+    ['> podcasts', 0.4],
+    ['> apparel', 0.85],
+    ['> SponsorForge', 1.3],
+    ['> education', 1.75],
   ];
   return {
     label: 'BEYOND VIDEO',
-    caption: 'beyond video: podcasts, apparel integration, careers',
+    caption: 'beyond video: podcasts, apparel, SponsorForge, education',
     dur: DUR,
     draw(surface, _ctx, p, _rng) {
       const W = surface.cols;
@@ -249,6 +270,8 @@ function shippedClientProduct(): StoryBeat {
       const cx = Math.max(1, Math.floor((W - cw) / 2));
       box(surface, cx, 10, cw, 3, STRUCT);
       strC(surface, 11, 'eleventh-rnd.com', GREEN, PANE_BG);
+      // The real shipped stack (product repo README).
+      strC(surface, 14, 'react · express · supabase realtime', DIM);
     },
   };
 }

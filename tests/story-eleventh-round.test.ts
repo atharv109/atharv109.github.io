@@ -45,8 +45,9 @@ describe('eleventh-round story data', () => {
     const caps = data.beats.map((b) => b.caption);
     expect(caps[0]).toContain('no single platform');
     expect(caps[1]).toContain('ring assembles');
-    expect(caps[2]).toContain('role-specific dashboards');
-    expect(caps[3]).toContain('apparel integration');
+    expect(caps[2]).toContain('role dashboards');
+    expect(caps[2]).toContain('fighter · manager · admin');
+    expect(caps[3]).toContain('SponsorForge');
     expect(caps[4]).toContain('paid Buildora client product');
   });
 
@@ -65,20 +66,29 @@ describe('eleventh-round story data', () => {
     expect(ring).toContain('A');
     expect(ring).toContain('M');
     expect(ring).toContain('P');
+    expect(ring).toContain('readiness · pipeline · obligations');
 
     const dash = at(2, 1);
-    expect(dash).toContain('ATHLETES');
-    expect(dash).toContain('MANAGERS');
-    expect(dash).toContain('PROMOTERS');
+    expect(dash).toContain('FIGHTER');
+    expect(dash).toContain('MANAGER');
+    expect(dash).toContain('ADMIN');
+    expect(dash).toContain('readiness');
+    expect(dash).toContain('obligations');
+    expect(dash).toContain('roster');
+    expect(dash).toContain('SponsorForge');
+    expect(dash).toContain('mentors');
 
     const beyond = at(3, 1);
     expect(beyond).toContain('podcasts');
     expect(beyond).toContain('apparel');
-    expect(beyond).toContain('careers');
+    expect(beyond).toContain('SponsorForge');
+    expect(beyond).toContain('education');
+    expect(beyond).toContain('careers · content · commerce');
 
     const shipped = at(4, 1);
     expect(shipped).toContain('Buildora');
     expect(shipped).toContain('eleventh-rnd.com');
+    expect(shipped).toContain('react · express · supabase realtime');
   });
 
   it('clusters converge into columns: RING beat draws the ring late, columns settled', () => {
