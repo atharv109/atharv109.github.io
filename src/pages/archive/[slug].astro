@@ -19,7 +19,10 @@ export async function getStaticPaths() {
 const { entry, next } = Astro.props;
 const { Content } = await render(entry);
 ---
-<PageLayout title={entry.data.title} description={entry.data.tagline}>
+<PageLayout
+  title={entry.data.title}
+  description={entry.data.tagline || `Archived build: ${entry.data.title} — Atharv Mittal`}
+>
   <ContentPage>
     <h1>{entry.data.title}</h1>
     {entry.data.tagline ? (

@@ -1,0 +1,43 @@
+# Atharv Mittal
+
+Interactive portfolio of Atharv Mittal — full-stack developer, security-trained,
+product-obsessed. Founder @ Buildora. Rendered as an editor window: file-tree
+sidebar, line-numbered buffers, ASCII rain, popup windows, and a security
+terminal at /shell/.
+
+## Pages
+
+- / — README (home): intro buffer with the ASCII rain that draws the AM monogram.
+- /about/ — who I am: the security-and-product loop, current work, stack.
+- /resume/ — resume buffer (formatted CV content).
+- /shell/ — interactive security terminal: real command set over a virtual filesystem.
+- /404/ — lost-in-the-buffer page (not linked from the tree).
+
+## Projects
+
+- /projects/ — index of the six featured case studies.
+- /projects/vulnswarm-vex/ — VulnSwarm-VEX: triages vulnerability alerts with Z3 and OSV/VEX data; 91.7% agreement with ground truth.
+- /projects/adversary-lab/ — Adversary Lab: MITRE ATT&CK-mapped Sigma rules validated against Wazuh + Elastic.
+- /projects/prompt-optimiser/ — Prompt Optimiser: Chrome extension that runs one prompt across several AI platforms; open source.
+- /projects/eleventh-round/ — Eleventh Round: combat-sports product shipped as a paid Buildora client build.
+- /projects/crypton/ — Crypton: Rust/Axum identity system replacing passwords and OTPs with WebAuthn.
+- /projects/acctomatic/ — Acctomatic: OCR + n8n pipeline that reads, classifies, and flags accounting invoices.
+
+## Archive
+
+- /archive/ — index of eight earlier builds.
+- /archive/tinyvulnscanner/ — multithreaded Python scanner with banner grabbing and basic XSS/SQLi checks.
+- /archive/eduai/ — AI study scheduler that ingests Canvas LMS data into weekly plans.
+- /archive/protopaper/ — hackathon frontend turning research PDFs into checklists and code scaffolds.
+- /archive/billshield/ — product concept for disputing and tracking healthcare bills.
+- /archive/ai-outfit/ — ML outfit recommender using clothing attributes, occasion, and season.
+- /archive/blinks/ — webcam blink-detection interface for switch-scanning communication.
+- /archive/buildora-agent-pipeline/ — 12-agent LangGraph pipeline with a real-time Next.js dashboard.
+- /archive/android-app/ — Java Android app applying high-school CS concepts.
+
+## Contact
+
+- /contact/ — contact buffer with links.
+- https://github.com/atharv109 — GitHub.
+- https://www.linkedin.com/in/atharv-mittal/ — LinkedIn.
+- mailto:atharvm2005@gmail.com — email.

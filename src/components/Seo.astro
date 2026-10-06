@@ -1,0 +1,79 @@
+---
+// Seo.astro — head partial (ref §6 adapted): canonical with trailing slash,
+// Open Graph / Twitter card pointing at the real route, and the JSON-LD
+// @graph (Person + WebSite + WebPage) with Atharv's own data only.
+//
+// Canonicalisation: the static build emits directory paths (`/about/`) plus
+// `404.html`; strip an `.html` suffix (and any `index.html`) and re-add the
+// trailing slash so every canonical URL matches the `trailingSlash: 'always'`
+// routing.
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const site = Astro.site ?? new URL('https://atharv109.github.io');
+const path = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '');
+const canonicalPath = path === '' || path === '/' ? '/' : path.endsWith('/') ? path : path + '/';
+// The 404 page is served for whatever URL was missed — it has no canonical of
+// its own, so point nothing at the fake `/404/` route.
+const is404 = canonicalPath === '/404/';
+const canonical = is404 ? null : new URL(canonicalPath, site).href;
+const fullTitle = `${title} ~ Atharv Mittal`;
+const siteName = 'Atharv Mittal';
+const ogImage = new URL('/og.jpg', site).href;
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': new URL('/#person', site).href,
+      name: 'Atharv Mittal',
+      url: new URL('/', site).href,
+      email: 'mailto:atharvm2005@gmail.com',
+      jobTitle: 'Founder @ Buildora',
+      description: 'Full-stack / security-trained / product-obsessed.',
+      knowsAbout: ['Full-stack', 'Security', 'AI infra'],
+      sameAs: [
+        'https://github.com/atharv109',
+        'https://www.linkedin.com/in/atharv-mittal/',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': new URL('/#website', site).href,
+      url: new URL('/', site).href,
+      name: siteName,
+      publisher: { '@id': new URL('/#person', site).href },
+      inLanguage: 'en',
+    },
+    ...(canonical ? [{
+        '@type': 'WebPage',
+        '@id': canonical,
+        url: canonical,
+        name: fullTitle,
+        description,
+        isPartOf: { '@id': new URL('/#website', site).href },
+        about: { '@id': new URL('/#person', site).href },
+        inLanguage: 'en',
+      }]
+    : []),
+  ],
+});
+---
+{canonical ? <link rel="canonical" href={canonical} /> : null}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="en_US" />
+{canonical ? <meta property="og:url" content={canonical} /> : null}
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content="AM monogram on the dark meadow background" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content="AM monogram on the dark meadow background" />
+<script type="application/ld+json" is:inline set:html={jsonLd} />
