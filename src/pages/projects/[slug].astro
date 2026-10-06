@@ -31,15 +31,9 @@ const { Content } = await render(entry);
     <p aria-hidden="true">&nbsp;</p>
     <p class="stack-line">
       {entry.data.stack.map((t) => (
-        <span class="button" style="color:var(--color-overlay1)">{t}</span>
+        <span><span class="button" style="color:var(--color-overlay1)">{t}</span>{' '}</span>
       ))}
     </p>
-    {entry.data.metrics.map((m) => (
-      <>
-        <p aria-hidden="true">&nbsp;</p>
-        <p>{m.value} — {m.label}</p>
-      </>
-    ))}
     <Content />
     {entry.data.links.length > 0 && (
       <>

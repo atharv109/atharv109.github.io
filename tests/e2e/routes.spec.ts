@@ -75,6 +75,19 @@ test.describe('routes', () => {
     await expect(page.locator('popup-window')).toHaveCount(0);
   });
 
+  test('contact CTA is horizontally centred over the buffer', async ({ page }) => {
+    await page.setViewportSize({ width: 1200, height: 800 }); // desktop, gutter visible
+    await page.goto('/contact/');
+    const centered = await page.evaluate(() => {
+      const btn = document.querySelector('a.button[data-boid-anchor]');
+      const pane = document.querySelector('.content-lines');
+      const b = btn.getBoundingClientRect();
+      const p = pane.getBoundingClientRect();
+      return Math.abs(b.x + b.width / 2 - (p.x + p.width / 2));
+    });
+    expect(centered).toBeLessThanOrEqual(3); // inline-format centring tolerance
+  });
+
   test('reduced motion: content visible immediately, no wave-pending hang', async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: 'reduce' });
     const page = await context.newPage();

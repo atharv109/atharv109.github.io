@@ -49,6 +49,7 @@ const { disableMaxWidth = false } = Astro.props;
     user-select: none;
   }
   .content-lines {
+    flex: 1; /* buffer fills the row — hero pages' spacer content alone collapses to max-content */
     min-width: 0;
     max-width: 100ch;
   }
