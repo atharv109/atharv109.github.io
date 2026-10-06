@@ -79,11 +79,13 @@ const {
     <main id="main-content">
       <slot />
     </main>
+    <trophy-drawer></trophy-drawer>
     <script>
       import '../scripts/tree-folder';
       import '../scripts/nav-tree';
       import '../scripts/line-numbers';
       import '../scripts/site-sidebar';
+      import '../scripts/trophy-drawer';
       import { attachPopupInterceptor } from '../scripts/popup-window';
       import { initFeatureBlocks } from '../scripts/feature-block';
       import { runTextWave } from '../scripts/text-wave';

@@ -376,3 +376,160 @@ site-terminal {
   padding: 0;
   border: 0;
 }
+
+/* ---- trophies: <trophy-drawer> (trophy-drawer.ts, ref §9) ---- */
+trophy-drawer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 151;
+  font: inherit;
+  text-align: right;
+  transition: opacity 0.2s linear;
+}
+trophy-drawer:not([data-ready]) {
+  visibility: hidden;
+}
+html.intro-pending trophy-drawer {
+  opacity: 0;
+}
+html[data-embedded] trophy-drawer {
+  display: none;
+}
+.trophy-toggle {
+  display: block;
+  margin-left: auto;
+  padding: var(--pad-md);
+  border: 0;
+  border-left: 1px solid var(--color-overlay0);
+  border-top: 1px solid var(--color-overlay0);
+  background: var(--color-surface1);
+  font: inherit;
+  color: var(--color-subtext0);
+  cursor: pointer;
+}
+.trophy-toggle:hover {
+  background: var(--color-surface2);
+  color: var(--color-subtext1);
+}
+.trophy-toggle[aria-expanded='true'] toggle-indicator::after {
+  content: '[-]';
+}
+.trophy-panel {
+  position: fixed;
+  right: 0;
+  bottom: calc(var(--line-height) + 2 * var(--pad-md) + 1px);
+  width: min(36ch, 100vw - 18px);
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: var(--color-surface1);
+  border-left: 1px solid var(--color-overlay0);
+  border-top: 1px solid var(--color-overlay0);
+  text-align: left;
+}
+.trophy-card {
+  padding: var(--pad-sm) var(--pad-md);
+  background: color-mix(in srgb, var(--trophy-color, var(--color-surface2)) 10%, var(--color-surface1));
+}
+.trophy-card[data-unlocked] {
+  background: color-mix(in srgb, var(--trophy-color, var(--color-text)) 20%, var(--color-surface1));
+}
+.trophy-card + .trophy-card {
+  border-top: 1px solid var(--color-overlay0);
+}
+.trophy-head {
+  display: flex;
+  gap: 1ch;
+  line-height: var(--line-height);
+}
+.trophy-icon {
+  color: var(--color-overlay2);
+}
+.trophy-card[data-unlocked] .trophy-icon {
+  color: var(--trophy-color, var(--color-text));
+}
+.trophy-name {
+  color: var(--color-subtext1);
+}
+.trophy-card[data-unlocked] .trophy-name {
+  color: var(--color-text);
+}
+button.trophy-cage {
+  display: block;
+  width: 100%;
+  border: 0;
+  font: inherit;
+  cursor: default;
+}
+button.trophy-cage[data-unlocked] {
+  cursor: pointer;
+}
+.trophy-cage {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Toasts: inert clones above the toggle, 1px trophy-colour outline flashing
+   step-end (50% transparent) every 0.4 s (ref §9). */
+.trophy-toasts {
+  position: fixed;
+  right: 0;
+  bottom: calc(var(--line-height) + 2 * var(--pad-md) + 1px);
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+.trophy-toast {
+  outline: 1px solid var(--trophy-color, var(--color-text));
+  outline-offset: -1px;
+  animation: trophy-flash 0.4s step-end infinite;
+}
+@keyframes trophy-flash {
+  0% { outline-color: var(--trophy-color, var(--color-text)); }
+  50% { outline-color: transparent; }
+  100% { outline-color: var(--trophy-color, var(--color-text)); }
+}
+
+/* ---- <marquee-text> (marquee-text.ts): overflow-only linear scroll ---- */
+marquee-text {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--color-overlay2);
+}
+.marquee-inner {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* ---- the moth (moth.ts, ref §10) ---- */
+.moth-host {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+  overflow: hidden;
+}
+.moth {
+  position: absolute;
+  white-space: pre;
+  will-change: transform;
+  color: var(--color-overlay2);
+  user-select: none;
+}
+.moth.is-free {
+  color: var(--color-aqua);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  trophy-drawer {
+    transition: none;
+  }
+  .trophy-toast {
+    animation: none;
+  }
+  .marquee-inner {
+    transform: none !important;
+  }
+}
