@@ -13,18 +13,23 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 
-// The mark (user round 2026-10-06: separate letters, then rounded & cute) —
-// A and M as separate glyphs, round caps/joins. Mirrors
+// The mark (user round 2026-10-06: bubble letters — dark outline under a
+// green core, round caps; no gradients per the stack locks). Mirrors
 // public/favicon.svg — keep the two in sync.
 const LETTERS = `<path d="M290 200 150 800" /><path d="M290 200 430 800" /><path d="M215 595 365 595" /><path d="M590 200 590 800" /><path d="M590 200 710 555 830 200" /><path d="M830 200 830 800" />`;
+const BUBBLE = (core, outline) =>
+  `<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="${outline}" stroke-width="172">${LETTERS}</g>
+    <g stroke="${core}" stroke-width="116">${LETTERS}</g>
+  </g>`;
 
 const MONOGRAM = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <g fill="none" stroke="currentColor" stroke-width="88" stroke-linecap="round" stroke-linejoin="round">${LETTERS}</g>
+  ${BUBBLE('currentColor', 'transparent')}
 </svg>`;
 
 const FAICON = (color) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
   <circle cx="500" cy="500" r="500" fill="#F8F9E8" />
-  <g transform="translate(501 495) scale(0.72) translate(-501 -495)" fill="none" stroke="${color}" stroke-width="88" stroke-linecap="round" stroke-linejoin="round">${LETTERS}</g>
+  <g transform="translate(501 495) scale(0.62) translate(-501 -495)">${BUBBLE('#5AAE5A', '#1C2225')}</g>
 </svg>`;
 
 const browser = await chromium.launch();
