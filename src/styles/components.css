@@ -406,10 +406,42 @@ story-block {
 }
 
 /* ---- pdf-pages (resume.astro): the resume PDF rendered page-by-page by
-   pdf-pages.ts — pages only, no viewer chrome; site's own framing. */
+   pdf-pages.ts — pages only, no viewer chrome; site's own framing. The
+   page rail (scrollbar metaphor) sits on the document's right edge. */
 pdf-pages {
-  display: block;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1ch;
   margin-top: var(--line-height);
+  align-items: start;
+}
+.pdf-body {
+  min-width: 0;
+}
+.pdf-rail {
+  position: sticky;
+  top: 30svh;
+  display: flex;
+  flex-direction: column;
+  outline: 1px solid var(--color-overlay0);
+}
+.pdf-thumb {
+  width: 3ch;
+  height: calc(4 * var(--line-height));
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--color-overlay0);
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.pdf-thumb.is-active {
+  background: var(--color-surface2);
+  color: var(--color-green);
+}
+.pdf-thumb:hover {
+  color: var(--color-subtext0);
 }
 .pdf-page-frame {
   outline: 1px solid var(--color-overlay0);
@@ -421,13 +453,8 @@ pdf-pages {
   width: 100%;
   height: auto;
 }
-.pdf-page-label,
 .pdf-caption {
   color: var(--color-overlay1);
-}
-.pdf-page-label {
-  /* book-footer convention: page numeral on the right */
-  text-align: right;
 }
 
 /* ---- trophies: <trophy-drawer> (trophy-drawer.ts, ref §9) ---- */

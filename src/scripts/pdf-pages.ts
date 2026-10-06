@@ -56,26 +56,50 @@ class PdfPages extends HTMLElement {
     const doc = await pdfjs.getDocument({ url: src }).promise;
 
     this.classList.add('pdf-pages');
+    // The page rail: a scrollbar-like column on the PDF's right edge, one
+    // segment per page, the visible page filled (the thumb); click jumps.
+    const body = document.createElement('div');
+    body.className = 'pdf-body';
+    const rail = document.createElement('nav');
+    rail.className = 'pdf-rail';
+    rail.setAttribute('aria-label', 'PDF pages');
+    this.append(body, rail);
+    const thumbs: HTMLButtonElement[] = [];
     for (let n = 1; n <= doc.numPages; n++) {
       const frame = document.createElement('div');
       frame.className = 'pdf-page-frame';
       frame.style.minHeight = 'calc(30 * var(--line-height))'; // reserved row space
-      const label = document.createElement('p');
-      label.className = 'pdf-page-label';
-      label.textContent = `page ${n} / ${doc.numPages}`;
       const canvas = document.createElement('canvas');
       canvas.className = 'pdf-page-canvas';
       canvas.setAttribute('aria-label', `Resume page ${n} of ${doc.numPages}`);
-      frame.append(canvas, label);
-      this.append(frame);
-      // Lazy: paint the canvas when its own frame is about to be seen.
+      frame.append(canvas);
+      body.append(frame);
+      // Rail thumb per page — the active one fills like a scrollbar thumb.
+      const thumb = document.createElement('button');
+      thumb.type = 'button';
+      thumb.className = 'pdf-thumb';
+      thumb.textContent = `${doc.numPages > 1 ? n : ''}`;
+      thumb.setAttribute('aria-label', `Go to page ${n} of ${doc.numPages}`);
+      thumb.addEventListener('click', () =>
+        frame.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+      );
+      rail.append(thumb);
+      thumbs.push(thumb);
+      // Lazy: paint + highlight the rail thumb when the frame is about to be
+      // seen.
       const paint = (): Promise<void> => this.paint(doc, n, canvas);
-      if (n === 1) await paint(); // page 1 paints immediately (it is the ask)
-      else {
+      const activate = () => {
+        thumbs.forEach((t, k) => t.classList.toggle('is-active', k === n - 1));
+      };
+      if (n === 1) {
+        await paint(); // page 1 paints immediately (it is the ask)
+        activate();
+      } else {
         const io = new IntersectionObserver(
           (entries) => {
             if (entries.some((e) => e.isIntersecting)) {
               io.disconnect();
+              activate();
               void paint();
             }
           },
@@ -97,8 +121,12 @@ class PdfPages extends HTMLElement {
     canvas.height = Math.floor(viewport.height);
     await page.render({ canvasContext: canvas.getContext('2d')!, viewport }).promise;
     // Frame height now tracks the painted page (aspect-correct, no reserved gap).
-    canvas.parentElement!.style.minHeight = 'unset';
+    frameFrom(canvas).style.minHeight = 'unset';
   }
+}
+
+function frameFrom(canvas: HTMLCanvasElement): HTMLElement {
+  return canvas.closest<HTMLElement>('.pdf-page-frame')!;
 }
 
 if (typeof customElements !== 'undefined' && !customElements.get('pdf-pages')) {
