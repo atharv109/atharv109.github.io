@@ -66,10 +66,23 @@ interface InnerRec {
 }
 
 function inViewport(el: HTMLElement): boolean {
-  const r = el.getBoundingClientRect();
+  const r = waveRect(el);
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < vh && r.right > 0 && r.left < vw;
+}
+
+/**
+ * A block whose own height is 0 because its content is an absolutely
+ * positioned descendant (the hero `.cta-row` placeholder pattern) still
+ * waves — measure the positioned content instead, and use this rect for
+ * phase/delay math so the CTA chars sweep across its real geometry.
+ */
+function waveRect(el: HTMLElement): DOMRect {
+  const r = el.getBoundingClientRect();
+  if (r.height > 0 || r.width > 0) return r;
+  const align = el.querySelector<HTMLElement>('.cta-align');
+  return align ? align.getBoundingClientRect() : r;
 }
 
 function collectBlocks(root: Element): HTMLElement[] {
@@ -184,7 +197,13 @@ export async function runTextWave(root: Element | null): Promise<number> {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 0;
 
   const blocks = collectBlocks(root);
-  if (!blocks.length) return 0;
+  if (!blocks.length) {
+    // Zero target blocks can still leave the caller's hold in place — lift it
+    // anyway (same contract as the try block's lift below): a caller that
+    // awaits this wave before revealing must never be stranded on opacity 0.
+    if (root instanceof HTMLElement) root.style.opacity = '1';
+    return 0;
+  }
 
   const chars: CharSpan[] = [];
   const recs: SplitRec[] = [];
@@ -192,12 +211,12 @@ export async function runTextWave(root: Element | null): Promise<number> {
   try {
     for (const block of blocks) splitBlock(block, chars, recs); // split first, measure after
 
-    const tops = blocks.map((b) => b.getBoundingClientRect().top);
+    const tops = blocks.map((b) => waveRect(b).top);
     const topmost = Math.min(...tops);
     const vh = window.innerHeight;
     let maxDelay = 0;
     for (const block of blocks) {
-      const rect = block.getBoundingClientRect();
+    const rect = waveRect(block);
       const base = blockStart(rect.top, topmost, vh);
       const mine = chars.filter((c) => block.contains(c.el));
       mine.forEach((c, i) => {

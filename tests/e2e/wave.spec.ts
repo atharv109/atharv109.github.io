@@ -66,4 +66,24 @@ test.describe('text wave', () => {
       'GitHub',
     );
   });
+
+test('home intro: hold lifts via the CTA wave, not a ~3s all-at-once pop', async ({ page }) => {
+    // Regression for the final-review R1 seam (T5 x T6 x T8): the zero-block
+    // CTA row (absolute .cta-align) must join the wave so the buffer hold
+    // lifts mid-intro. Buggy builds pop the whole buffer at ~2.9s instead.
+    await page.goto('/');
+    await page.waitForFunction(
+      () => {
+        const el = document.querySelector('.content-lines');
+        return el && Number(getComputedStyle(el).opacity) > 0.5;
+      },
+      null,
+      { timeout: 2600 }, // fixed: lifts ~1.3-1.8s; the late pop lands ~2.9s
+    );
+    await expect(page.locator('html')).not.toHaveClass(/intro-pending/);
+    const op = await page
+      .locator('.content-lines')
+      .evaluate((el) => getComputedStyle(el).opacity);
+    expect(Number(op)).toBeGreaterThan(0.5);
+  });
 });

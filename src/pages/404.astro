@@ -1,6 +1,8 @@
 ---
 // 404.astro — hero-style buffer: lost-in-the-buffer line and a Return button;
-// Task 8 mounts the meadow rain (bloom char ×) inside .ascii-container.
+// the meadow rain (ref §8.4: rain + flowers, bloom char ×) mounts below via
+// scripts/ascii/meadow.ts. Reduced motion: rain runs without the intro
+// choreography (§14), matching the home page.
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
 import Button from '../components/Button.astro';
@@ -20,6 +22,14 @@ import Button from '../components/Button.astro';
 </PageLayout>
 <script>
   import { attachCentering } from '../scripts/center-content';
-  const el = document.querySelector('.content-lines');
-  if (el instanceof HTMLElement) attachCentering(el);
+  import { startMeadow } from '../scripts/ascii/meadow';
+  const content = document.querySelector('.content-lines');
+  const container = document.querySelector('.ascii-container');
+  if (content instanceof HTMLElement) attachCentering(content);
+  if (container instanceof HTMLElement && content instanceof HTMLElement) {
+    startMeadow(
+      container,
+      document.getElementById('main-content') ?? content,
+    );
+  }
 </script>
