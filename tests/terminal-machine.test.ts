@@ -31,6 +31,19 @@ describe('terminal machine', () => {
     const r = createMachine().exec('cat projects', s0());
     expect(r.lines.some((l) => /directory/i.test(l.text) && l.tone === 'err')).toBe(true);
   });
+  it('cd ~/projects resolves from home (strips the ~ base)', () => {
+    const moved = createMachine().exec('cd ~/projects', s0());
+    expect(moved.state.cwd).toEqual(['projects']);
+  });
+  it('cd ~ returns to root', () => {
+    const st = s0();
+    st.cwd = ['projects'];
+    expect(createMachine().exec('cd ~', st).state.cwd).toEqual([]);
+  });
+  it('cat ~/skills.txt resolves the ~ base', () => {
+    const r = createMachine().exec('cat ~/skills.txt', s0());
+    expect(r.lines.every((l) => l.tone !== 'err')).toBe(true);
+  });
   it('clear sets clear flag', () => {
     expect(createMachine().exec('clear', s0()).clear).toBe(true);
   });

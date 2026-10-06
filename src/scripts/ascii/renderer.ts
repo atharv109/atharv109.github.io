@@ -135,12 +135,15 @@ export class AsciiRenderer {
   private tick = (now: number): void => {
     if (!this.running) return;
     const rawDt = this.last ? (now - this.last) / 1000 : 1 / 60;
-    this.last = now;
     const delta = Math.min(rawDt, Math.max(0.1, this.fpsCap > 0 ? 1 / this.fpsCap : 0.1));
-    if (this.fpsCap > 0 && rawDt < 1 / this.fpsCap) {
+    // `last` marks the last PAINTED frame: while skipping, deltas accumulate
+    // until they cross the cap interval. (Updating it on skipped frames would
+    // reset the delta to a single rAF tick — always below the cap — and freeze.)
+    if (this.fpsCap > 0 && this.last && rawDt < 1 / this.fpsCap) {
       this.raf = requestAnimationFrame(this.tick);
       return;
     }
+    this.last = now;
     const ctx: AsciiCtx = {
       frame: this.frame++,
       time: now / 1000,

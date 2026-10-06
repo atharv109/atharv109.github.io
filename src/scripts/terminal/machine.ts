@@ -196,7 +196,8 @@ function statsLines(): TermLine[] {
 
 function resolvePath(cwd: string[], target: string): string[] {
   const parts = target.split('/').filter(Boolean);
-  if (target.startsWith('~/') || target === '~') return parts;
+  if (target === '~') return [];
+  if (target.startsWith('~/')) return parts.slice(1); // strip the '~' base — home IS the fs root
   return [...cwd, ...parts];
 }
 
