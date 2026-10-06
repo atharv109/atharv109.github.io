@@ -25,7 +25,7 @@ const MONOGRAM = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000
 
 const FAICON = (color) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
   <circle cx="500" cy="500" r="500" fill="#F8F9E8" />
-  <g fill="none" stroke="${color}" stroke-width="80" stroke-linecap="butt" stroke-linejoin="bevel">
+  <g transform="translate(501 495) scale(0.78) translate(-501 -495)" fill="none" stroke="${color}" stroke-width="80" stroke-linecap="butt" stroke-linejoin="bevel">
     <path d="M100 900 390 110 720 900" />
     <path d="M240 560 610 560" />
     <path d="M600 110 600 900" />
