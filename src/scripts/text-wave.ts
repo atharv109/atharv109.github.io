@@ -272,7 +272,11 @@ function drive(chars: CharSpan[], inners: InnerRec[], maxDelay: number): Promise
           pending = true;
         }
       } catch {
-        // normalize() still runs in the caller's finally; resolve to let boot finish
+        // A throw here must never wedge the loop (pending would stay true and
+        // the rAF chain, the promise and wave-pending would hang). Resolve so
+        // the caller's finally can normalize + drop the class.
+        resolve(maxDelay);
+        return;
       }
       if (pending) {
         requestAnimationFrame(step);

@@ -107,7 +107,12 @@ function play(btn: HTMLElement, running: Set<HTMLElement>): void {
         }
       }
     } catch {
-      // restoring the plain label still matters more than the effect
+      // Restoring the plain label matters more than the effect — and this must
+      // not wedge the rAF loop (pending would stay true) or the button would
+      // stay in `running` and never wave again.
+      restore(recs);
+      running.delete(btn);
+      return;
     }
     if (pending) {
       requestAnimationFrame(step);
