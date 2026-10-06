@@ -1,9 +1,18 @@
 ---
 // contact.astro — hero-style page: visually hidden h1/h2, one centred mailto
 // CTA with the lamp glyph (off → on on hover). The boids flock and lamp-glow
-// field attach to the ASCII layer in Task 10 via [data-boid-anchor].
+// field attach to the ASCII layer via [data-boid-anchor] (Task 10,
+// src/scripts/contact.ts). The CTA label is pre-wrapped in .boid-char spans
+// (server-side, icon spans intact) so the flock's trail scramble can hit
+// individual chars; the CTA opts out of the hover wave (ref §11) since the
+// scramble owns label glyph changes.
 import PageLayout from '../layouts/PageLayout.astro';
 import ContentPage from '../components/ContentPage.astro';
+
+const CTA_LABEL = 'atharvm2005@gmail.com';
+const labelSpans = [...CTA_LABEL]
+  .map((ch) => `<span class="boid-char">${ch}</span>`)
+  .join('');
 ---
 <PageLayout title="contact" description="Reach me — Atharv Mittal">
   <ContentPage disableMaxWidth>
@@ -17,14 +26,15 @@ import ContentPage from '../components/ContentPage.astro';
         <a
           class="button"
           href="mailto:atharvm2005@gmail.com"
+          data-no-hover-wave
           data-boid-anchor
         >
           <span class="button-inner"
             ><span class="button-icon" aria-hidden="true"
               ><span class="icon-rest">&#xf1a26;</span
               ><span class="icon-hover">&#xf1a25;</span></span
-            >atharvm2005@gmail.com</span
-          >
+            ><span set:html={labelSpans}></span
+          ></span>
         </a>
       </span>
     </p>
@@ -56,6 +66,8 @@ import ContentPage from '../components/ContentPage.astro';
 </PageLayout>
 <script>
   import { attachCentering } from '../scripts/center-content';
+  import { initContact } from '../scripts/contact';
   const el = document.querySelector('.content-lines');
   if (el instanceof HTMLElement) attachCentering(el);
+  initContact();
 </script>

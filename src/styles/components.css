@@ -71,15 +71,18 @@
 .button:not(a) {
   cursor: default;
 }
-/* Contact CTA lamp glyph: off at rest, on while hovered (swap inside .button-icon). */
+/* Contact CTA lamp glyph: off at rest, on while hovered (swap inside .button-icon).
+   The swap is hover-device-only so touch devices keep the "off" lamp. */
 .button .icon-hover {
   display: none;
 }
-.button:hover .icon-hover {
-  display: inline;
-}
-.button:hover .icon-rest {
-  display: none;
+@media (hover: hover) {
+  .button:hover .icon-hover {
+    display: inline;
+  }
+  .button:hover .icon-rest {
+    display: none;
+  }
 }
 
 /* ---- feature-block ---- */
