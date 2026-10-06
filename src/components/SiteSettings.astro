@@ -1,0 +1,115 @@
+---
+// SiteSettings.astro — reduced control panel markup (decision 6): theme +
+// font-size selects and an FPS readout only (ref §4.4 summary style). Ships
+// hidden; site-settings.ts un-hides it on desktop when not data-embedded, so
+// no-JS / mobile / embedded popups never render it.
+---
+
+<site-settings id="site-controls" hidden>
+  <div class="cp-root">
+    <button type="button" class="cp-title" aria-expanded="false" aria-controls="cp-controllers">
+      Site Settings
+      <toggle-indicator aria-hidden="true"></toggle-indicator>
+      <span class="cp-stats" aria-hidden="true">-- FPS</span>
+    </button>
+    <div class="cp-controllers" id="cp-controllers" hidden>
+      <label class="cp-row">
+        Theme
+        <select id="cp-theme">
+          <option value="Dark">Dark</option>
+          <option value="Light">Light</option>
+        </select>
+      </label>
+      <label class="cp-row">
+        Font Size
+        <select id="cp-font-size">
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="16">16</option>
+          <option value="18">18</option>
+          <option value="20">20</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</site-settings>
+
+<style is:global>
+  /* ref §4.4 .cp-root: absolute top-right, min(280px,90%), surface0, 10px/1.1,
+     draggable by title. z 98: below popups (100+stack) and the mobile Menu
+     button (99) — the only thing it can overlap at 701–800px. */
+  #site-controls {
+    position: fixed;
+    inset: 0;
+    z-index: 98;
+    pointer-events: none;
+  }
+  #site-controls[hidden] {
+    display: none;
+  }
+  .cp-root {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(280px, 90%);
+    background: var(--color-surface0);
+    border: 1px solid var(--color-overlay0);
+    font-size: 10px;
+    line-height: 1.1;
+    text-align: left;
+    pointer-events: auto;
+  }
+  .cp-title {
+    width: 100%;
+    display: block;
+    padding: var(--pad-sm);
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: inherit;
+    color: var(--color-subtext0);
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+  }
+  .cp-title:hover {
+    color: var(--color-subtext1);
+  }
+  .cp-title toggle-indicator::after {
+    content: '[+]';
+  }
+  .cp-title[aria-expanded='true'] toggle-indicator::after {
+    content: '[-]';
+  }
+  .cp-stats {
+    float: right;
+    opacity: 0.5;
+    font-variant-numeric: tabular-nums;
+  }
+  .cp-controllers {
+    border-top: 1px solid var(--color-overlay0);
+    padding: var(--pad-sm);
+    display: grid;
+    gap: var(--pad-sm);
+  }
+  .cp-controllers[hidden] {
+    display: none;
+  }
+  .cp-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--pad-sm);
+    align-items: center;
+    color: var(--color-subtext1);
+  }
+  .cp-row select {
+    min-width: 0;
+    padding: 1px var(--pad-xs);
+    border: 1px solid var(--color-overlay0);
+    background: var(--color-surface0);
+    color: var(--color-subtext0);
+    font: inherit;
+    font-size: inherit;
+  }
+</style>

@@ -45,6 +45,7 @@ class TrophyDrawer extends HTMLElement {
     this.countEl = document.createElement('span');
     this.countEl.className = 'trophy-count';
     const indicator = document.createElement('toggle-indicator');
+    indicator.setAttribute('aria-hidden', 'true');
     this.toggle.append(this.countEl, ' ', indicator);
 
     this.panel = document.createElement('div');

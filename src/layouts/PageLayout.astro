@@ -5,6 +5,7 @@ import '../styles/reset.css';
 import '../styles/layout.css';
 import '../styles/components.css';
 import Sidebar from '../components/Sidebar.astro';
+import SiteSettings from '../components/SiteSettings.astro';
 
 interface Props {
   title: string;
@@ -37,8 +38,11 @@ const {
       try {
         if (localStorage.getItem('am-theme') === 'Light')
           document.documentElement.dataset.theme = 'light';
-        var fs = localStorage.getItem('am-font-size');
-        if (fs) document.documentElement.style.fontSize = fs + 'px';
+        var fs = parseInt(localStorage.getItem('am-font-size'), 10);
+        if (!Number.isNaN(fs)) {
+          // harden (T12): junk/out-of-range persisted sizes must not reach CSSOM
+          document.documentElement.style.fontSize = Math.min(Math.max(fs, 12), 20) + 'px';
+        }
         if (window.self !== window.top) document.documentElement.dataset.embedded = '';
         if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
           document.documentElement.classList.add('wave-pending');
@@ -73,12 +77,13 @@ const {
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <button type="button" class="menu-button" aria-expanded="false">
-      Menu <toggle-indicator></toggle-indicator>
+      Menu <toggle-indicator aria-hidden="true"></toggle-indicator>
     </button>
     <Sidebar />
-    <main id="main-content">
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
+    <SiteSettings />
     <trophy-drawer></trophy-drawer>
     <script>
       import '../scripts/tree-folder';
@@ -88,10 +93,12 @@ const {
       import '../scripts/trophy-drawer';
       import { attachPopupInterceptor } from '../scripts/popup-window';
       import { initFeatureBlocks } from '../scripts/feature-block';
+      import { initSiteSettings } from '../scripts/site-settings';
       import { runTextWave } from '../scripts/text-wave';
       import { attachHoverWave } from '../scripts/button-hover-wave';
       attachPopupInterceptor();
       initFeatureBlocks();
+      initSiteSettings();
       attachHoverWave(document);
 
       // Arrival text wave (ref §5 arrival reveal + §7.3): fonts first (metrics
