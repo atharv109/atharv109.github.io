@@ -73,6 +73,7 @@ lines are real `<p aria-hidden>&nbsp;</p>`.
 | Final fix rounds | `c718ad5`+`e808af3`+`dd70d2f` | hold restructure (ascii slot outside held .content-lines), waveRect gate, meadow cap; e2e comment corrected (lift ~0.75-0.8s measured); renderer metric probe font fix (dd70d2f); re-reviews APPROVED |
 | T14 Story engine | `3bcefd5` | story.ts (makeStory timeline engine: auto-advance, deterministic scrub, per-beat seeded rng, 14 tests), story-draw.ts helpers, stories/vulnswarm-vex.ts reference (6 beats/16.5s), story-block.ts `<story-block>` player custom element, [slug].astro auto-discovery wiring (glob both sides) — committed late by the T15 round (see ledger) |
 | T15 eleventh-round story | `1911418`+`f38014a` | player fix (3 bugs found by live probes: sync hooks registered before this.story; wave-poll arm() livelock; stale chip after seek) pinned by e2e/story.spec.ts; stories/eleventh-round.ts five beats 12.5s (tribes→ring→dashboards→beyond-video→shipped) + 7 unit tests + e2e; visually verified all beats |
+| T15 fanout complete | `a31a4ac`..`330686c` | user round: playback speed 0.7x (engine `speed` option), layman one-liners under all six stories (StoryData.layman → .story-plain), layout fix (story classes had no host positioning — overlay painted over the page), content depth from the real beta repo (FIGHTER/MANAGER/ADMIN dashboards, SponsorForge, stack line), and the remaining 4 stories (adversary-lab 13.5s, prompt-optimiser 12.5s, crypton 13s, acctomatic 13s) each with 6-7 data tests + a six-page e2e sweep |
 **T7+T11 review COMPLETED — findings FIXED (commit e4d9a7f, scoped re-review APPROVED).**
 Fix details in the ledger ("Task 7 fix round 1/5", "Task 11 fix round 1/5"; reviewer
 note: Task 8 must pass an explicit pointerTarget — container and overlay are both
@@ -150,15 +151,17 @@ done: 1 2 3 4 5 6 7 11
 - reset.css extras beyond brief (fine) (T1)
 - popup title chip random id each instance (a11y fine, snapshot-test care) (T4)
 
-## 8. Test suite state (at 3bcefd5)
+## 8. Test suite state (at 330686c)
 
-`npx vitest run` → 107 unit green (persistent 14, nav 4, popup-bounds 3,
-surface 3, rain 3, terminal-machine 16, ascii-renderer 1, remark-editor 6,
-logo-mask 3, wave-timing 3, meadow 4, boids 5, story 14,
-story-eleventh-round 7, + a11y/settings suites).
-`npx playwright test` → 68 e2e green (incl. story player 2, wave 3, boids,
-trophies, shell/terminal, routes 22-route sweep).
+`npx vitest run` → 136 unit green (incl. story 15, story-eleventh-round 8,
+story-adversary-lab 7, story-prompt-optimiser 6, story-crypton 6,
+story-acctomatic 8, terminal-machine 16, boids 5, meadow 4).
+`npx playwright test` → 72 e2e green (incl. story player 6 = vulnswarm +
+eleventh-round + four-story sweep).
 `npx astro build` green (22 pages).
+NOTE: e2e currently reuses a stale astro DEV server on port 4321 (previous
+session's click-through server; prod preview falls back to 4322) — kill it or
+pin the port for prod-true e2e runs.
 
 ## 9. RESUME PROMPT (paste into a fresh session)
 
