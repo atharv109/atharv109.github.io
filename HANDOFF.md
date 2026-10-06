@@ -151,9 +151,9 @@ done: 1 2 3 4 5 6 7 11
 - reset.css extras beyond brief (fine) (T1)
 - popup title chip random id each instance (a11y fine, snapshot-test care) (T4)
 
-## 8. Test suite state (at 330686c)
+## 8. Test suite state (at 326b378)
 
-`npx vitest run` → 136 unit green (incl. story 15, story-eleventh-round 8,
+`npx vitest run` → 137 unit green (incl. story 15, story-eleventh-round 8,
 story-adversary-lab 7, story-prompt-optimiser 6, story-crypton 6,
 story-acctomatic 8, terminal-machine 16, boids 5, meadow 4).
 `npx playwright test` → 72 e2e green (incl. story player 6 = vulnswarm +
