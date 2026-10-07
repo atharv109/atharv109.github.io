@@ -49,10 +49,10 @@ test.describe('site-terminal', () => {
     await expect(err).toBeVisible();
     const color = await err.evaluate((el) => getComputedStyle(el).color);
     expect(color).toBe('rgb(245, 127, 130)'); // --color-red
-    // cwd still ~ (the prompt re-renders unchanged)
+    // cwd still ~ (pwd's out line)
     await input.fill('pwd');
     await input.press('Enter');
-    await expect(page.locator('site-terminal')).toContainText('~/');
+    await expect(page.locator('.t-out', { hasText: '~' })).toBeVisible();
   });
 
   test('banner spells ATHARV MITTAL', async ({ page }) => {
