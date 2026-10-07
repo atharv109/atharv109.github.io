@@ -4,6 +4,8 @@ export interface NavNode {
   href?: string;
   children?: NavNode[];
   end?: boolean;
+  /** Highlighted entry (shell — the site's own terminal) — green label. */
+  hl?: boolean;
 }
 
 // Sidebar cwd header (rendered purple by Task 3's sidebar).
@@ -49,7 +51,7 @@ export const NAV: NavNode[] = [
   { label: 'experience.md', icon: FILE, href: '/experience/' },
   { label: 'about.me', icon: FILE, href: '/about/' },
   { label: 'contact.md', icon: MAIL, href: '/contact/' },
-  { label: 'shell', icon: FILE, href: '/shell/' },
+  { label: 'shell', icon: FILE, href: '/shell/', hl: true },
   { label: 'resume.md', icon: FILE, href: '/resume/' },
   { label: 'github', icon: GITHUB, href: 'https://github.com/atharv109' },
   { label: 'linkedin', icon: EXTERNAL, href: 'https://www.linkedin.com/in/atharv-mittal/' },

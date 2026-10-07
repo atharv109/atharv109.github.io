@@ -16,7 +16,7 @@ const isExternal = /^[a-z][a-z0-9+.-]*:/i.test(href);
 const isCurrent = !isExternal && normalize(href) === current;
 ---
 <a
-  class:list={['nav-item', 'nav-item--page', { 'is-current': isCurrent }]}
+  class:list={['nav-item', 'nav-item--page', { 'is-current': isCurrent, 'is-hl': node.hl && !isCurrent }]}
   role="treeitem"
   href={href}
   tabindex={isCurrent ? '0' : '-1'}
@@ -57,5 +57,9 @@ const isCurrent = !isExternal && normalize(href) === current;
   .nav-item.is-current {
     background: var(--color-green);
     color: var(--color-background);
+  }
+  .nav-item.is-hl {
+    /* highlit entries (shell) — green label, the meadow's live-system signal */
+    color: var(--color-green);
   }
 </style>
