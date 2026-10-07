@@ -47,11 +47,62 @@ const ART = `
   </ContentPage>
 </PageLayout>
 
+<script>
+  // fit-art — the cqw sizing rendered too big on the user's machine ("way
+  // too big make it fit the screen"); CSS can't see the RENDERED cell width
+  // (font metrics/zoom/DPR vary). Metric probe via canvas measureText — NO
+  // DOM footprint (a wide hidden span inside the pane blew the page's
+  // scroll width) and pure font metrics, re-measured when the webfont
+  // loads. Fit = largest font-size where the art fits BOTH pane width and
+  // viewport height, floored at 14px (never smaller than the site's text).
+  const art = document.querySelector<HTMLElement>('.exp-flow');
+  const pane = document.querySelector<HTMLElement>('.content-lines');
+  if (art && pane) {
+    const rows = (art.textContent ?? '').split('\n');
+    const widest = Math.max(...rows.map((r) => r.length)); // measure, don't assume
+    const LH_RATIO = 1.357; // the 19:14 grid line ratio, by design
+    const ctx2d = document.createElement('canvas').getContext('2d');
+    let chPerEm = NaN;
+    let raf = 0;
+    const metrics = () => {
+      if (!ctx2d) return;
+      ctx2d.font = '100px "Iosevka Term NF", Iosevka, monospace';
+      chPerEm = ctx2d.measureText('X'.repeat(widest)).width / widest / 100;
+    };
+    const fit = () => {
+      if (!Number.isFinite(chPerEm) || chPerEm <= 0) return;
+      raf = 0;
+      const fsW = (pane.clientWidth - 8) / (widest * chPerEm); // -8: px rounding headroom
+      const fsH = (window.innerHeight - 4 * 19) / (rows.length * LH_RATIO); // air: 2 rows top+bottom
+      const fs = Math.max(14, Math.min(fsW, fsH, 64));
+      art.style.fontSize = `${fs.toFixed(2)}px`;
+    };
+    const queueFit = () => {
+      if (!raf) raf = requestAnimationFrame(fit);
+    };
+    metrics();
+    fit();
+    new ResizeObserver(queueFit).observe(pane);
+    addEventListener('resize', queueFit);
+    document.fonts?.ready
+      ?.then(() => {
+        metrics();
+        queueFit();
+      })
+      .catch(() => {});
+    document.fonts
+      ?.load?.('1rem "Iosevka Term NF", monospace')
+      ?.then(() => {
+        metrics();
+        queueFit();
+      })
+      ?.catch?.(() => {});
+  }
+</script>
+
 <style>
-  /* The snake covers the screen: the art is 97 cells wide; at 1ch = 0.5em
-     (Iosevka Term), font-size = availableWidth / 48.5 -> fluid vw scaling.
-     Line-height stays 1.357em (the 19:14 grid ratio) so cells keep the
-     7:19 aspect at every size. The hero centers the art in the viewport. */
+  /* The snake covers the screen (fit-art fits it exactly; these are the
+     pre-JS defaults + the centring frame). */
   .exp-hero {
     min-height: 100svh;
     min-width: 100%;
@@ -70,5 +121,8 @@ const ART = `
     white-space: pre;
     color: var(--color-green);
     user-select: text;
+    max-width: 100%;
+    overflow-x: auto; /* phone: floor keeps the art readable; panes internally */
+    scrollbar-width: thin;
   }
   </style>
