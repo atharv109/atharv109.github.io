@@ -19,6 +19,8 @@ test.describe('story player', () => {
     await expect(block.locator('.story-chip')).toContainText('story · pause', { timeout: 5000 });
     await expect(block.locator('.story-chip')).toContainText('1/6');
     await expect(block.locator('.story-caption')).toContainText('4,102 advisories');
+    // The '<>' slide arrows only EXIST once the story completes (user: no
+    // mid-play clicking); checked at the end of this test.
 
     // The renderer mounts and paints inside the reserved grid rows.
     await expect(block.locator('.story-grid .ascii-overlay')).toBeVisible({ timeout: 5000 });
@@ -27,7 +29,6 @@ test.describe('story player', () => {
       return overlay ? overlay.textContent?.replace(/\s/g, '').length ?? 0 : 0;
     });
     expect(drawn).toBeGreaterThan(0);
-
     // Progress dots show beat 1 of 6.
     await expect(block.locator('.story-progress')).toContainText('1/6');
 
@@ -36,6 +37,16 @@ test.describe('story player', () => {
     await page.keyboard.press('ArrowRight');
     await expect(block.locator('.story-chip')).toContainText('2/6');
     await expect(block.locator('.story-progress')).toContainText('2/6');
+
+    // At the very end: arrows materialise, the chip reads replay.
+    await expect(block.locator('.story-prev')).toBeHidden();
+    await page.evaluate(() =>
+      (
+        document.querySelector('story-block') as HTMLElement & { story: { seek(t: number): void } }
+      ).story.seek(999),
+    );
+    await expect(block.locator('.story-chip')).toContainText('story · replay');
+    await expect(block.locator('.story-next')).toBeVisible();
   });
 
   test('eleventh-round page auto-discovers its story and plays beat 1', async ({ page }) => {
@@ -59,11 +70,24 @@ test.describe('story player', () => {
     await block.focus();
     await page.keyboard.press('ArrowRight');
     await expect(block.locator('.story-chip')).toContainText('2/5');
-    // The chip's '<>' arrows go to slides by mouse too.
+    // Arrows only exist at the end; drive the slides by mouse there.
+    await page.evaluate(() =>
+      (
+        document.querySelector('story-block') as HTMLElement & { story: { seek(t: number): void } }
+      ).story.seek(999),
+    );
+    await expect(block.locator('.story-next')).toBeVisible();
     await block.locator('.story-prev').click();
-    await expect(block.locator('.story-chip')).toContainText('1/5');
+    await expect(block.locator('.story-chip')).toContainText('4/5');
+    // Browsing mode: after the end was reached, paused slides keep the
+    // arrows live (they only hide again when the story RUNS).
+    await expect(block.locator('.story-next')).toBeVisible();
     await block.locator('.story-next').click();
-    await expect(block.locator('.story-chip')).toContainText('2/5');
+    await expect(block.locator('.story-chip')).toContainText('5/5');
+    // Resume (replay): mid-run the arrows hide again (no glitchy clicks).
+    await page.keyboard.press('r');
+    await expect(block.locator('.story-chip')).toContainText('story · pause');
+    await expect(block.locator('.story-next')).toBeHidden();
   });
 
   for (const slug of ['adversary-lab', 'prompt-optimiser', 'crypton', 'acctomatic']) {

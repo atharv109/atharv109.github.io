@@ -26,6 +26,12 @@ class StoryBlock extends HTMLElement {
   private chipEl: HTMLElement | null = null;
   private toggleEl: HTMLButtonElement | null = null;
   private idxEl: HTMLElement | null = null;
+  private prevEl: HTMLButtonElement | null = null;
+  private nextEl: HTMLButtonElement | null = null;
+  // Browsing mode: set once the story reaches its very end; while PAUSED
+  // after that, the '<>' arrows stay live (slide browsing); while PLAYING
+  // they hide (user: no glitchy mid-run clicks).
+  private endReached = false;
   private started = false;
   private waveCleared = false;
 
@@ -62,6 +68,10 @@ class StoryBlock extends HTMLElement {
     next.textContent = '>';
     next.setAttribute('aria-label', 'next beat');
     next.addEventListener('click', () => this.story?.seekToBeat(this.story.beatIndex + 1));
+    // Arrows exist ONLY after the story completes (user: no glitchy mid-play
+    // clicks) — syncChip toggles the hidden attribute as states flip.
+    prev.hidden = true;
+    next.hidden = true;
     chip.append(toggle, ' · ', idx, '  ', prev, next);
     const grid = document.createElement('div');
     grid.className = 'story-grid';
@@ -77,6 +87,8 @@ class StoryBlock extends HTMLElement {
     this.chipEl = chip;
     this.toggleEl = toggle;
     this.idxEl = idx;
+    this.prevEl = prev;
+    this.nextEl = next;
     this.captionEl = caption;
     this.dotsEl = dots;
     this.setAttribute('tabindex', '0');
@@ -167,6 +179,12 @@ class StoryBlock extends HTMLElement {
     toggle.textContent = `story · ${state}`;
     toggle.setAttribute('aria-expanded', String(story.playing));
     idx.textContent = `${i + 1}/${n}`;
+    // Arrows: only in paused browsing after the end was reached at least
+    // once — never while the story is running.
+    if (story.finished) this.endReached = true;
+    const show = !story.playing && this.endReached;
+    if (this.prevEl) this.prevEl.hidden = !show;
+    if (this.nextEl) this.nextEl.hidden = !show;
   }
 
   private syncUi(i: number): void {
