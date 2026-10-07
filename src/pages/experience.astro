@@ -72,10 +72,10 @@ const ART = `
     const fit = () => {
       if (!Number.isFinite(chPerEm) || chPerEm <= 0) return;
       raf = 0;
-      // Reserve the trophy-button/drawer overlay the site pins bottom-right
-      // (user round: "it gets covered by the trophies") — the art keeps a
-      // clear right margin of ~1 drawer-chip of pane.
-      const fsW = (pane.clientWidth - 130) / (widest * chPerEm); // px-rounding headroom + trophy clearance
+      // Reserve the trophy overlay's real footprint (measured at open:
+      // ~252px right column + chip row) — the art left-HUGS the buffer
+      // (editor idiom), so the reserved right zone can never cover it.
+      const fsW = (pane.clientWidth - 280) / (widest * chPerEm);
       const fsH = (window.innerHeight - 4 * 19) / (rows.length * LH_RATIO); // air: 2 rows top+bottom
       const fs = Math.max(14, Math.min(fsW, fsH, 64));
       art.style.fontSize = `${fs.toFixed(2)}px`;
@@ -111,7 +111,8 @@ const ART = `
     min-width: 100%;
     display: grid;
     align-content: center;
-    justify-items: center;
+    justify-items: start; /* left-hug: overlays live on the right */
+    padding-left: 0.5ch;
   }
   .exp-hero h1 {
     margin-bottom: var(--line-height);

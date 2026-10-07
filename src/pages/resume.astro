@@ -12,6 +12,9 @@ const PDF = '/resume/Atharv_Mittal_Resume_Full.pdf';
 <PageLayout title="resume">
   <ContentPage>
     <h1>Resume</h1>
+    <p>
+      <a class="button" href={PDF} download>Download PDF ↓</a>
+    </p>
     <pdf-pages data-src={PDF}></pdf-pages>
     <script>
       import '../scripts/pdf-pages';
