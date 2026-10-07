@@ -404,6 +404,27 @@ story-block {
 .story-progress {
   color: var(--color-overlay1);
 }
+/* compact chip (user round 2026-10-06): 'story · pause' + '1/6' + '< >' */
+.story-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font: inherit;
+  line-height: var(--line-height);
+  white-space: pre;
+}
+.story-btn {
+  font: inherit;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 0.5ch;
+  text-decoration: none;
+}
+.story-btn:hover {
+  color: var(--color-green);
+}
 
 /* ---- pdf-pages (resume.astro): the resume PDF rendered page-by-page by
    pdf-pages.ts — pages only, no viewer chrome; site's own framing. The

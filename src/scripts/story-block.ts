@@ -21,7 +21,11 @@ class StoryBlock extends HTMLElement {
   private story: Story | null = null;
   private captionEl: HTMLElement | null = null;
   private dotsEl: HTMLElement | null = null;
-  private chipEl: HTMLButtonElement | null = null;
+  // Chip parts: toggle reads 'story · pause|play', idx reads 'n/N', the '<'
+  // '>' arrows jump slides by mouse (user round 2026-10-06: compact chip).
+  private chipEl: HTMLElement | null = null;
+  private toggleEl: HTMLButtonElement | null = null;
+  private idxEl: HTMLElement | null = null;
   private started = false;
   private waveCleared = false;
 
@@ -32,9 +36,33 @@ class StoryBlock extends HTMLElement {
     const loader = FILES[`./stories/${slug}.ts`];
     if (!slug || !loader) return;
 
-    const chip = document.createElement('button');
-    chip.type = 'button';
+    // Chip: 'story · pause' (click = play/pause), '1/6', then '< >' arrows.
+    const chip = document.createElement('span');
     chip.className = 'fb-title story-chip';
+    chip.setAttribute('role', 'group');
+    chip.setAttribute('aria-label', 'story player');
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'story-btn';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = 'story · pause';
+    toggle.addEventListener('click', () => this.story?.toggle());
+    const idx = document.createElement('span');
+    idx.className = 'story-idx';
+    idx.setAttribute('aria-live', 'polite');
+    const prev = document.createElement('button');
+    prev.type = 'button';
+    prev.className = 'story-btn story-prev';
+    prev.textContent = '<';
+    prev.setAttribute('aria-label', 'previous beat');
+    prev.addEventListener('click', () => this.story?.seekToBeat(this.story.beatIndex - 1));
+    const next = document.createElement('button');
+    next.type = 'button';
+    next.className = 'story-btn story-next';
+    next.textContent = '>';
+    next.setAttribute('aria-label', 'next beat');
+    next.addEventListener('click', () => this.story?.seekToBeat(this.story.beatIndex + 1));
+    chip.append(toggle, ' · ', idx, '  ', prev, next);
     const grid = document.createElement('div');
     grid.className = 'story-grid';
     grid.style.minHeight = `calc(${GRID_ROWS} * var(--line-height))`;
@@ -47,6 +75,8 @@ class StoryBlock extends HTMLElement {
     dots.setAttribute('aria-hidden', 'true');
     this.append(chip, grid, caption, plain, dots);
     this.chipEl = chip;
+    this.toggleEl = toggle;
+    this.idxEl = idx;
     this.captionEl = caption;
     this.dotsEl = dots;
     this.setAttribute('tabindex', '0');
@@ -128,13 +158,15 @@ class StoryBlock extends HTMLElement {
 
   private syncChip(): void {
     const story = this.story;
-    const chip = this.chipEl;
-    if (!story || !chip) return;
+    const toggle = this.toggleEl;
+    const idx = this.idxEl;
+    if (!story || !toggle || !idx) return;
     const n = story.beats.length;
     const i = Math.min(n - 1, story.beatIndex);
     const state = story.finished ? 'replay' : story.playing ? 'pause' : 'play';
-    chip.textContent = `story · ${story.beats[i]?.label ?? ''} — beat ${i + 1}/${n} [${state}]`;
-    chip.setAttribute('aria-expanded', String(story.playing));
+    toggle.textContent = `story · ${state}`;
+    toggle.setAttribute('aria-expanded', String(story.playing));
+    idx.textContent = `${i + 1}/${n}`;
   }
 
   private syncUi(i: number): void {

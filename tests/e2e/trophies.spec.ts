@@ -82,7 +82,7 @@ test.describe('trophies', () => {
     // DIRECTOR trigger (capture-phase, immune to the player's own handlers).
     await page.goto('/projects/eleventh-round/');
     const chip = page.locator('story-block .story-chip');
-    await expect(chip).toContainText('story ·', { timeout: 8000 });
+    await expect(chip).toContainText('story', { timeout: 8000 });
 
     const toast = page.locator('.trophy-toast', { hasText: 'DIRECTOR' });
     await chip.click();

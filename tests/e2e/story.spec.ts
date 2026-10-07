@@ -16,8 +16,8 @@ test.describe('story player', () => {
 
     const block = page.locator('story-block');
     // Chip + caption + dots populated by the immediate registration callbacks.
-    await expect(block.locator('.story-chip')).toContainText('story · THE FLOOD', { timeout: 5000 });
-    await expect(block.locator('.story-chip')).toContainText('beat 1/6');
+    await expect(block.locator('.story-chip')).toContainText('story · pause', { timeout: 5000 });
+    await expect(block.locator('.story-chip')).toContainText('1/6');
     await expect(block.locator('.story-caption')).toContainText('4,102 advisories');
 
     // The renderer mounts and paints inside the reserved grid rows.
@@ -34,7 +34,7 @@ test.describe('story player', () => {
     // Keyboard scrub: → advances a beat; the chip and dots follow.
     await block.focus();
     await page.keyboard.press('ArrowRight');
-    await expect(block.locator('.story-chip')).toContainText('beat 2/6');
+    await expect(block.locator('.story-chip')).toContainText('2/6');
     await expect(block.locator('.story-progress')).toContainText('2/6');
   });
 
@@ -49,8 +49,8 @@ test.describe('story player', () => {
     );
 
     const block = page.locator('story-block');
-    await expect(block.locator('.story-chip')).toContainText('story · THREE TRIBES', { timeout: 5000 });
-    await expect(block.locator('.story-chip')).toContainText('beat 1/5');
+    await expect(block.locator('.story-chip')).toContainText('story · pause', { timeout: 5000 });
+    await expect(block.locator('.story-chip')).toContainText('1/5');
     await expect(block.locator('.story-caption')).toContainText('no single platform');
     await expect(block.locator('.story-grid .ascii-overlay')).toBeVisible({ timeout: 5000 });
     // Layman one-liner under the video (what it IS, no jargon).
@@ -58,7 +58,12 @@ test.describe('story player', () => {
 
     await block.focus();
     await page.keyboard.press('ArrowRight');
-    await expect(block.locator('.story-chip')).toContainText('beat 2/5');
+    await expect(block.locator('.story-chip')).toContainText('2/5');
+    // The chip's '<>' arrows go to slides by mouse too.
+    await block.locator('.story-prev').click();
+    await expect(block.locator('.story-chip')).toContainText('1/5');
+    await block.locator('.story-next').click();
+    await expect(block.locator('.story-chip')).toContainText('2/5');
   });
 
   for (const slug of ['adversary-lab', 'prompt-optimiser', 'crypton', 'acctomatic']) {
@@ -71,7 +76,7 @@ test.describe('story player', () => {
       );
 
       const block = page.locator('story-block');
-      await expect(block.locator('.story-chip')).toContainText('story ·', { timeout: 5000 });
+      await expect(block.locator('.story-chip')).toContainText('story', { timeout: 5000 });
       await expect(block.locator('.story-caption')).not.toBeEmpty({ timeout: 5000 });
       await expect(block.locator('.story-plain')).not.toBeEmpty({ timeout: 5000 });
       // The renderer paints inside the reserved rows (poll: some beats start
