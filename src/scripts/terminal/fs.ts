@@ -137,21 +137,15 @@ export function pathString(path: string[]): string {
   return path.length === 0 ? '~' : `~/${path.join('/')}`;
 }
 
-export const BANNER = [
-  '    _      _____   _   _      _      ____   __     __ ',
-  '   / \\    |_   _| | | | |    / \\    |  _ \\  \\ \\   / / ',
-  '  / _ \\     | |   | |_| |   / _ \\   | |_) |  \\ \\_/ /  ',
-  ' / ___ \\    | |   |  _  |  / ___ \\  |  _ <    |   |   ',
-  '/_/   \\_\\   |_|   |_| |_| /_/   \\_\\ |_| \\_\\   |_|_|   ',
-  '',
-  '    __  __   ___   _____   _____      _      _      ',
-  '   |  \\/  | |_ _| |_   _| |_   _|    / \\    | |     ',
-  '   | |\\/| |  | |    | |     | |     / _ \\   | |     ',
-  '   | |  | |  | |    | |     | |    / ___ \\  | |     ',
-  '   |_|  |_| |___|   |_|     |_|   /_/   \\_\\ |____|  ',
-  '',
-  '         SECURITY ENGINEER  ·  PRODUCT BUILDER',
-];
+// Banner (user round 2026-10-06: "do atharv mittal in one line… is there
+// more than one way to do this?"): tried figlet-style spelling first (this
+// round, git history) — its dense letterforms mash at the terminal's real
+// cell metrics, and the glyphs I hand-typed were row-misaligned (apex/feet
+// diagonals drift). There are four ways: figlet art, big display text,
+// block-glyph art (needs a font-subset rebuild), or an SVG banner. Shipped:
+// big display text — one line, zero misreads at any size.
+export const BANNER = ['ATHARV MITTAL'];
+export const TAGLINE = 'SECURITY ENGINEER  ·  PRODUCT BUILDER';
 
 export const BOOT_LINES: { text: string; status: 'ok' | 'info' }[] = [
   { text: 'BIOS DATE 09/22/2026 14:23:01 VER 1.2.7', status: 'ok' },

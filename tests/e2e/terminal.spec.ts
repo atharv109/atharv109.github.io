@@ -55,15 +55,17 @@ test.describe('site-terminal', () => {
     await expect(page.locator('.t-out', { hasText: '~' })).toBeVisible();
   });
 
-  test('banner spells ATHARV MITTAL', async ({ page }) => {
+  test('banner says ATHARV MITTAL in one line', async ({ page }) => {
     await page.goto('/shell/');
     const banner = page.locator('.term-banner');
-    await expect(banner).toBeVisible();
-    const rows = (await banner.textContent()) ?? '';
-    // Distinctive glyph of the new art's R (`| |_) |`) — the legacy banner
-    // art never contained it. Sub-line stays.
-    expect(rows).toContain('| |_) |');
-    expect(rows).toContain('SECURITY ENGINEER');
+    await expect(banner).toHaveText('ATHARV MITTAL');
+    // Display-size: renders as ONE line (the old figlet tried to and mashed).
+    const box = await banner.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { h: el.getBoundingClientRect().height, lh: parseFloat(cs.lineHeight) };
+    });
+    expect(box.h).toBeLessThanOrEqual(box.lh * 1.5); // one visual line
+    await expect(page.locator('.term-tagline')).toHaveText('SECURITY ENGINEER  ·  PRODUCT BUILDER');
   });
 
   test('the block cursor sits after the typed text, not at the row end', async ({ page }) => {

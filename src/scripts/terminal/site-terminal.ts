@@ -4,7 +4,7 @@
 
 import { createMachine, complete } from './machine';
 import type { TermState, TermLine, TermResult } from './machine';
-import { BANNER, BOOT_LINES, pathString } from './fs';
+import { BANNER, BOOT_LINES, TAGLINE, pathString } from './fs';
 import { runMatrixOverlay } from './matrix';
 
 const GLYPHS = '!<>-_\\/[]{}—=+*^?#_ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -25,6 +25,7 @@ class SiteTerminal extends HTMLElement {
     this.classList.add('term');
     this.innerHTML = `
       <pre class="term-banner" aria-hidden="true"></pre>
+      <div class="term-tagline t-muted" aria-hidden="true"></div>
       <div class="term-buffer"></div>
       <div class="term-input-row">
         <span class="term-prompt t-err"></span>
@@ -38,6 +39,7 @@ class SiteTerminal extends HTMLElement {
     this.input = this.querySelector('.term-input')!;
     this.promptEl = this.querySelector('.term-prompt')!;
     (this.querySelector('.term-banner') as HTMLPreElement).textContent = BANNER.join('\n');
+    (this.querySelector('.term-tagline') as HTMLElement).textContent = TAGLINE;
     this.updatePrompt();
 
     const hint = this.querySelector<HTMLElement>('.term-hint')!;

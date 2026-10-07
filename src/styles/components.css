@@ -249,10 +249,21 @@ site-terminal {
   margin: 0;
   padding: 0;
   border: 0;
+  /* font: inherit is LOAD-BEARING: <pre>'s UA default font-family is
+     monospace — without the shorthand the banner paints in the UA mono
+     and every drawn row drifts. */
   font: inherit;
-  font-size: 0.75rem;
-  line-height: 1;
+  /* One-line display name (user round 2026-10-06): big text over figlet
+     art, which mashes at these cell metrics; letters here are plain mono
+     glyphs. */
+  font-size: 2rem; /* 32px: name spans ~15ch ≈ 200px — one line, huge, crisp */
+  line-height: 1.25;
   color: var(--color-green);
+  margin-bottom: calc(var(--line-height) / 2);
+}
+.term-tagline {
+  height: var(--line-height);
+  line-height: var(--line-height);
   margin-bottom: var(--line-height);
 }
 .term-line {
