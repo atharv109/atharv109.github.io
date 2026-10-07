@@ -1,21 +1,23 @@
-// scripts/raster-icons.mjs — generate the raster image set from the AM mark
-// (asset/mark/am-monogram.svg, ref §6 adapted). sharp is blocked on this box
-// (npm allow-scripts policy), so the sanctioned fallback is a Playwright
-// headless-chromium screenshot of the SVG renders:
+// scripts/raster-icons.mjs — generate the raster image set. Source of truth
+// since the user round 2026-10-06 is the user's own PNG
+// (assets/cocoa-am.png — the cocoa "cute AM" monogram they made; the
+// hand-drawn SVG marks below are retired from the icon set and only feed
+// og.jpg now). sharp is blocked on this box (npm allow-scripts policy), so
+// the sanctioned fallback is a Playwright headless-chromium screenshot of
+// the resizes:
 //
 //   node scripts/raster-icons.mjs
 //
 // Writes into public/: og.jpg (1200x630, dark bg + cream mark), and
 // icon-96.png / apple-touch-icon.png (180) / icon-192.png / icon-512.png
-// (cream disc + dark mark, maskable-safe because the art is a full-bleed
-// circle). favicon.ico is NOT produced (multi-size ICO needs a raster
-// pipeline we don't have) — documented as a follow-up.
-import { mkdirSync, writeFileSync } from 'node:fs';
+// from assets/cocoa-am.png (full-bleed cream square; maskable-safe: the AM
+// art sits inside the middle ~60%). favicon.ico NOT produced (no ICO
+// pipeline) — documented follow-up; the tab uses icon-96.png.
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright-core';
 
-// The mark (user round 2026-10-06: bubble letters — dark outline under a
-// green core, round caps; no gradients per the stack locks). Mirrors
-// public/favicon.svg — keep the two in sync.
+// Retired icon mark (kept only for og.jpg): bubble letters, dark outline
+// under a green core, round caps; no gradients per the stack locks.
 const LETTERS = `<path d="M290 200 150 800" /><path d="M290 200 430 800" /><path d="M215 595 365 595" /><path d="M590 200 590 800" /><path d="M590 200 710 555 830 200" /><path d="M830 200 830 800" />`;
 const BUBBLE = (core, outline) =>
   `<g fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -25,11 +27,6 @@ const BUBBLE = (core, outline) =>
 
 const MONOGRAM = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
   ${BUBBLE('currentColor', 'transparent')}
-</svg>`;
-
-const FAICON = (color) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-  <circle cx="500" cy="500" r="500" fill="#F8F9E8" />
-  <g transform="translate(501 495) scale(0.62) translate(-501 -495)">${BUBBLE('#5AAE5A', '#1C2225')}</g>
 </svg>`;
 
 const browser = await chromium.launch();
@@ -56,14 +53,13 @@ writeFileSync(
   await page.screenshot({ clip: { x: 0, y: 0, width: OG_W, height: OG_H }, type: 'jpeg', quality: 92 }),
 );
 
-// Icon set — cream disc + dark mark, one render per size.
+// Icon set — the user's cocoa AM PNG, downscaled one render per size.
+const COCOA = readFileSync('assets/cocoa-am.png').toString('base64');
 for (const size of [96, 180, 192, 512]) {
   await page.setViewportSize({ width: size, height: size });
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>
-    html,body{margin:0;padding:0;} img{display:block;width:${size}px;height:${size}px;}
-  </style></head><body><img alt="" src="data:image/svg+xml;base64,${Buffer.from(
-    FAICON('#1C2225'),
-  ).toString('base64')}" /></body></html>`;
+    html,body{margin:0;padding:0;} img{display:block;width:${size}px;height:${size}px;image-rendering:auto;}
+  </style></head><body><img alt="" src="data:image/png;base64,${COCOA}" /></body></html>`;
   await page.setContent(html, { waitUntil: 'networkidle' });
   const name = size === 180 ? 'apple-touch-icon.png' : `icon-${size}.png`;
   mkdirSync('public', { recursive: true });
