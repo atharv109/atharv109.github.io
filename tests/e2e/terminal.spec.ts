@@ -39,6 +39,22 @@ test.describe('site-terminal', () => {
     expect(page.url()).toMatch(/\/$/);
   });
 
+  test('unknown command errors in red, cwd survives bad cd', async ({ page }) => {
+    await page.goto('/shell/');
+    await page.keyboard.press('x');
+    const input = page.locator('.term-input');
+    await input.fill('cd nowhere');
+    await input.press('Enter');
+    const err = page.locator('.t-err', { hasText: 'no such directory' });
+    await expect(err).toBeVisible();
+    const color = await err.evaluate((el) => getComputedStyle(el).color);
+    expect(color).toBe('rgb(245, 127, 130)'); // --color-red
+    // cwd still ~ (the prompt re-renders unchanged)
+    await input.fill('pwd');
+    await input.press('Enter');
+    await expect(page.locator('site-terminal')).toContainText('~/');
+  });
+
   test('banner spells ATHARV MITTAL', async ({ page }) => {
     await page.goto('/shell/');
     const banner = page.locator('.term-banner');
