@@ -65,10 +65,12 @@ class PdfPages extends HTMLElement {
     rail.setAttribute('aria-label', 'PDF pages');
     this.append(body, rail);
     const thumbs: HTMLButtonElement[] = [];
+    const frames: HTMLDivElement[] = [];
     for (let n = 1; n <= doc.numPages; n++) {
       const frame = document.createElement('div');
       frame.className = 'pdf-page-frame';
       frame.style.minHeight = 'calc(30 * var(--line-height))'; // reserved row space
+      frames.push(frame as HTMLDivElement);
       const canvas = document.createElement('canvas');
       canvas.className = 'pdf-page-canvas';
       canvas.setAttribute('aria-label', `Resume page ${n} of ${doc.numPages}`);
@@ -85,21 +87,14 @@ class PdfPages extends HTMLElement {
       );
       rail.append(thumb);
       thumbs.push(thumb);
-      // Lazy: paint + highlight the rail thumb when the frame is about to be
-      // seen.
+      // Lazy: paint once when the frame is about to be seen.
       const paint = (): Promise<void> => this.paint(doc, n, canvas);
-      const activate = () => {
-        thumbs.forEach((t, k) => t.classList.toggle('is-active', k === n - 1));
-      };
-      if (n === 1) {
-        await paint(); // page 1 paints immediately (it is the ask)
-        activate();
-      } else {
+      if (n === 1) await paint(); // page 1 paints immediately (it is the ask)
+      else {
         const io = new IntersectionObserver(
           (entries) => {
             if (entries.some((e) => e.isIntersecting)) {
               io.disconnect();
-              activate();
               void paint();
             }
           },
@@ -108,6 +103,32 @@ class PdfPages extends HTMLElement {
         io.observe(frame);
       }
     }
+    // The rail must TRACK scrolling (user round: the thumb never moved after
+    // page 1 — activation was bound to the one-shot lazy-paint observer).
+    // Scroll-driven: the page whose frame spans the 40%-viewport line is the
+    // active thumb; rAF-throttled.
+    const repaintRail = (): void => {
+      const line = window.innerHeight * 0.4;
+      let active = 0;
+      frames.forEach((f, k) => {
+        const r = f.getBoundingClientRect();
+        if (r.top <= line && r.bottom >= line) active = k;
+      });
+      thumbs.forEach((t, k) => t.classList.toggle('is-active', k === active));
+    };
+    let railRaf = 0;
+    addEventListener(
+      'scroll',
+      () => {
+        if (!railRaf)
+          railRaf = requestAnimationFrame(() => {
+            railRaf = 0;
+            repaintRail();
+          });
+      },
+      { passive: true },
+    );
+    repaintRail();
   }
 
   /** Render page n into the canvas at exactly the frame's CSS width and

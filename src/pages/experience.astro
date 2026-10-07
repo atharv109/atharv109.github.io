@@ -72,7 +72,10 @@ const ART = `
     const fit = () => {
       if (!Number.isFinite(chPerEm) || chPerEm <= 0) return;
       raf = 0;
-      const fsW = (pane.clientWidth - 8) / (widest * chPerEm); // -8: px rounding headroom
+      // Reserve the trophy-button/drawer overlay the site pins bottom-right
+      // (user round: "it gets covered by the trophies") — the art keeps a
+      // clear right margin of ~1 drawer-chip of pane.
+      const fsW = (pane.clientWidth - 130) / (widest * chPerEm); // px-rounding headroom + trophy clearance
       const fsH = (window.innerHeight - 4 * 19) / (rows.length * LH_RATIO); // air: 2 rows top+bottom
       const fs = Math.max(14, Math.min(fsW, fsH, 64));
       art.style.fontSize = `${fs.toFixed(2)}px`;
