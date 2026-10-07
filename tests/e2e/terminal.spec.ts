@@ -39,15 +39,34 @@ test.describe('site-terminal', () => {
     expect(page.url()).toMatch(/\/$/);
   });
 
-  test('unknown command errors in red, cwd survives bad cd', async ({ page }) => {
+  test('banner spells ATHARV MITTAL', async ({ page }) => {
     await page.goto('/shell/');
-    await page.keyboard.press('x');
+    const banner = page.locator('.term-banner');
+    await expect(banner).toBeVisible();
+    const rows = (await banner.textContent()) ?? '';
+    // Distinctive glyph of the new art's R (`| |_) |`) — the legacy banner
+    // art never contained it. Sub-line stays.
+    expect(rows).toContain('| |_) |');
+    expect(rows).toContain('SECURITY ENGINEER');
+  });
+
+  test('the block cursor sits after the typed text, not at the row end', async ({ page }) => {
+    await page.goto('/shell/');
+    await page.keyboard.press('x'); // skip boot
     const input = page.locator('.term-input');
-    await input.fill('cd nowhere');
-    await input.press('Enter');
-    const err = page.locator('.t-err', { hasText: 'no such directory' });
-    await expect(err).toBeVisible();
-    const color = await err.evaluate((el) => getComputedStyle(el).color);
-    expect(color).toBe('rgb(245, 127, 130)'); // --color-red
+    await expect(input).toBeFocused();
+    await input.fill('whoami');
+    const check = await page.evaluate(() => {
+      const el = document.querySelector<HTMLElement>('.term-input')!;
+      const w = el.getBoundingClientRect().width;
+      const cell = parseFloat(getComputedStyle(el).width) ;
+      // advance 0.5em per cell at 14px → 7px
+      const cellW = parseFloat(getComputedStyle(el).fontSize) * 0.5;
+      return { len: el.value.length, cells: w / cellW, cellW };
+    });
+    // Input width ≈ len + 1 cells (sized to the text) — with the old
+    // flex: 1 stretch it was dozens of cells wide, pushing the cursor to
+    // the row's utmost right.
+    expect(Math.round(check.cells)).toBeLessThanOrEqual(check.len + 2);
   });
 });

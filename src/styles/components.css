@@ -280,9 +280,10 @@ site-terminal {
   outline: none;
   font: inherit;
   color: var(--color-green);
-  flex: 1;
+  /* sized in JS (fitInput) so the block cursor hugs the typed text */
   caret-color: transparent;
-  min-width: 0;
+  min-width: 3ch;
+  max-width: 100%;
   padding: 0;
 }
 .term-cursor {

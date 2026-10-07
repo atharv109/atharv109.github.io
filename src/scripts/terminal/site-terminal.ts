@@ -47,6 +47,11 @@ class SiteTerminal extends HTMLElement {
     }, 12000);
 
     this.input.addEventListener('keydown', (e) => this.onKey(e));
+    // The input is sized to its TEXT (cells), so the block cursor (next
+    // sibling) sits directly after what's typed — not at the row's utmost
+    // right (the old flex: 1 stretch put it there; user round 2026-10-06).
+    this.input.addEventListener('input', () => this.fitInput());
+    this.fitInput();
     this.addEventListener('click', () => this.input.focus());
     this.addEventListener('keydown', () => this.skipBoot(), true);
 
@@ -61,6 +66,13 @@ class SiteTerminal extends HTMLElement {
 
   disconnectedCallback() {
     this.bootTimers.forEach(clearTimeout);
+  }
+
+  /** Input width = value length + 1 (room for the cursor); every value
+      change routes through this so the cursor hugs the text. */
+  private fitInput(): void {
+    this.input.style.width = `${this.input.value.length + 1}ch`;
+    void this.input; // keep the style flow obvious
   }
 
   private runBoot() {
@@ -153,6 +165,7 @@ class SiteTerminal extends HTMLElement {
     if (e.key === 'Enter') {
       const raw = this.input.value;
       this.input.value = '';
+      this.fitInput();
       const r = this.machine.exec(raw, this.state);
       this.state = r.state;
       this.historyNav = -1;
@@ -163,8 +176,10 @@ class SiteTerminal extends HTMLElement {
     if (e.key === 'Tab') {
       e.preventDefault();
       const c = complete(this.input.value, this.state.cwd);
-      if (c.value) this.input.value = c.value;
-      else if (c.options) {
+      if (c.value) {
+        this.input.value = c.value;
+        this.fitInput();
+      } else if (c.options) {
         this.line(`${this.promptEl.textContent} ${this.input.value}`, 'sys');
         this.line(c.options.join('  '), 'out');
       }
@@ -177,6 +192,7 @@ class SiteTerminal extends HTMLElement {
       if (!h.length) return;
       this.historyNav = this.historyNav === -1 ? h.length - 1 : Math.max(0, this.historyNav - 1);
       this.input.value = h[this.historyNav];
+      this.fitInput();
       return;
     }
     if (e.key === 'ArrowDown') {
@@ -187,9 +203,11 @@ class SiteTerminal extends HTMLElement {
       if (next === this.historyNav) {
         this.historyNav = -1;
         this.input.value = '';
+        this.fitInput();
       } else {
         this.historyNav = next;
         this.input.value = h[next];
+        this.fitInput();
       }
       return;
     }
