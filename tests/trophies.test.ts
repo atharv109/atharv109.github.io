@@ -30,7 +30,7 @@ describe('trophy table', () => {
     expect(TROPHIES.map((t) => t.id)).toEqual([
       'first-visit',
       'explorer',
-      'gander',
+      'director',
       'secret',
       'complete-the-mark',
       'reach-out',
@@ -60,10 +60,10 @@ describe('unlock', () => {
   });
 
   it('dispatches trophy:unlocked {detail:{id}} exactly once per trophy', () => {
-    unlock('gander');
+    unlock('director');
     expect(events).toHaveLength(1);
-    expect(events[0].detail).toEqual({ id: 'gander' });
-    unlock('gander');
+    expect(events[0].detail).toEqual({ id: 'director' });
+    unlock('director');
     expect(events).toHaveLength(1);
   });
 

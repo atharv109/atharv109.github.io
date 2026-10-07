@@ -10,7 +10,8 @@
 // Trigger wiring by id:
 //   first-visit        unlock on init (any page load)
 //   explorer           am-trophy-visits ≥ 5 distinct pathnames (recordVisit)
-//   gander             click inside .fb-embed-catcher on /projects/* pages —
+//   director           click a story chip (project-page story players) —
+//                      the old trigger (project embed click) was unobtainable
 //                      capture-phase (the catcher's own click handler calls
 //                      stopPropagation, which cannot reach back to capture)
 //   secret             document 'trophy:secret' {detail:{id}} (T11 contract,
@@ -44,7 +45,7 @@ const def = (
 export const TROPHIES: TrophyDef[] = [
   def('first-visit', 'WELCOME IN', 'Visit the buffer', 'yellow', '\u{EFB7}'),
   def('explorer', 'PATHFINDER', 'Open 5+ pages', 'orange', '\u{F0DFA}'),
-  def('gander', 'PEER REVIEW', 'Interact with a project embed', 'red', '\u{F0CFD}'),
+  def('director', 'DIRECTOR', 'Scrub a beat in any story', 'red', '\u{F0CFD}'),
   def('secret', 'BREACH', "Find the terminal's secret", 'purple', '\u{EEF7}'),
   def('complete-the-mark', 'CLOSER', 'Complete the monogram', 'pink', '\u{100000}'),
   def('reach-out', 'SIGNAL', 'Reach out!', 'green', '\u{F1020}'),
@@ -109,16 +110,17 @@ export function initTrophyTriggers(): void {
 
   document.addEventListener('trophy:secret', () => unlock('secret'));
 
-  // Capture phase: the embed catcher's own click handler stopPropagation()s
-  // its bubble path, but this fires first and is immune to that.
+  // Capture phase: page-level trigger delegation (immune to any bubbling
+  // handler that stops propagation, e.g. the story chip's own handlers).
   document.addEventListener(
     'click',
     (e) => {
       const t = e.target as Element | null;
       if (!t?.closest) return;
-      if (/^\/projects\/.+/.test(location.pathname) && t.closest('.fb-embed-catcher')) {
-        unlock('gander');
-      }
+      // DIRECTOR: direct the story — any click on a story chip (exists only
+      // inside project-page story players). The old trigger (project embed
+      // click) was unobtainable: FeatureBlock mounts no embeds anywhere.
+      if (t.closest('story-block .story-chip')) unlock('director');
       if (t.closest('a[href^="mailto:"]')) unlock('reach-out');
     },
     true,

@@ -52,7 +52,7 @@ test.describe('trophies', () => {
   test('free-the-moth releases the moth to the host', async ({ page }) => {
     // Seed the six non-rare trophies; the load-time checkRare() fires the rare one.
     await page.addInitScript(() => {
-      for (const id of ['first-visit', 'explorer', 'gander', 'secret', 'complete-the-mark', 'reach-out']) {
+      for (const id of ['first-visit', 'explorer', 'director', 'secret', 'complete-the-mark', 'reach-out']) {
         localStorage.setItem('am-trophy:' + id, '1');
       }
     });
@@ -75,5 +75,23 @@ test.describe('trophies', () => {
     await page.locator('.trophy-toggle').click();
     await expect(page.locator('.trophy-cage .moth')).toBeAttached();
     await context.close();
+  });
+
+  test('director unlocks from the story chip: toast, 2/7, state survives reload', async ({ page }) => {
+    // The story player arms after the arrival wave; the chip's click is the
+    // DIRECTOR trigger (capture-phase, immune to the player's own handlers).
+    await page.goto('/projects/eleventh-round/');
+    const chip = page.locator('story-block .story-chip');
+    await expect(chip).toContainText('story ·', { timeout: 8000 });
+
+    const toast = page.locator('.trophy-toast', { hasText: 'DIRECTOR' });
+    await chip.click();
+    await expect(toast).toBeVisible({ timeout: 8000 });
+    await expect(page.locator('.trophy-toggle')).toHaveText(/Trophies \[2\/7\]/);
+
+    // Persisted: a reload keeps DIRECTOR (no second toast).
+    await page.reload();
+    await expect(page.locator('.trophy-toggle')).toHaveText(/Trophies \[2\/7\]/);
+    await expect(page.locator('.trophy-toast')).toHaveCount(0);
   });
 });
