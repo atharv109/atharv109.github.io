@@ -151,12 +151,12 @@ done: 1 2 3 4 5 6 7 11
 - reset.css extras beyond brief (fine) (T1)
 - popup title chip random id each instance (a11y fine, snapshot-test care) (T4)
 
-## 8. Test suite state (at bb007af)
+## 8. Test suite state (at 068308c)
 
 `npx vitest run` → 137 unit green (incl. story 15, story-eleventh-round 8,
 story-adversary-lab 7, story-prompt-optimiser 6, story-crypton 6,
 story-acctomatic 8, terminal-machine 16, boids 5, meadow 4).
-`npx playwright test` → 73 e2e green (incl. story player 6 = vulnswarm +
+`npx playwright test` → 74 e2e green (incl. story player 6 = vulnswarm +
 eleventh-round + four-story sweep).
 `npx astro build` green (22 pages).
 NOTE: e2e currently reuses a stale astro DEV server on port 4321 (previous
