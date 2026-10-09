@@ -71,17 +71,39 @@ test.describe('a11y — keyboard', () => {
 });
 
 test.describe('a11y — popup focus restore', () => {
-  test('opening and closing a popup returns focus to the trigger link', async ({ page }) => {
+  test('an internal popup keeps managed focus and restores it on close', async ({ page, context }) => {
     await page.goto('/contact/');
     const trigger = page.locator('a[data-popup-src]', { hasText: 'GitHub' }).first();
-    await trigger.click();
+    // External src → real tab now (their CSP blocks iframes): the managed
+    // focus flow needs a same-origin popup — assert the focus contract on
+    // one by opening it, closing, and checking focus restoration via the
+    // mailto/external distinction below.
+    const popupSrc = await trigger.getAttribute('data-popup-src');
+    const target = 'http://localhost:4321/about/';
+    await page.evaluate((url) => {
+      const a = document.createElement('a');
+      a.setAttribute('data-popup-src', url);
+      a.setAttribute('data-popup-type', 'iframe');
+      a.dataset.test = 'internal-popup';
+      a.textContent = 'internal';
+      a.href = url;
+      document.querySelector('.content-lines')!.appendChild(a);
+    }, target);
+    const internal = page.locator('a[data-popup-src][data-test="internal-popup"]');
+    await internal.click();
     const popup = page.locator('popup-window');
     await expect(popup).toBeVisible();
     await expect(popup.locator('[data-close]')).toBeFocused(); // managed focus
-
     await page.keyboard.press('Escape');
     await expect(popup).toHaveCount(0);
-    await expect(trigger).toBeFocused();
+    await expect(internal).toBeFocused(); // focus restored
+    // the external trigger still routes to a real tab
+    const [ext] = await Promise.all([
+      context.waitForEvent('page'),
+      trigger.click(),
+    ]);
+    await ext.waitForURL((u) => u.toString().includes('github'), { timeout: 4000 });
+    await ext.close();
   });
 });
 

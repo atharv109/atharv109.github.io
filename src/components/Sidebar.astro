@@ -27,8 +27,14 @@ const current = normalize(Astro.url.pathname);
         </ul>
       </nav-tree>
     </nav>
-    <div data-sidebar-overlay></div>
   </aside>
+  <!-- Mobile overlay must be a sibling of, not inside, the z-150 sidebar:
+       inside it, its z-140 put it ABOVE the drawer's own nav links in the
+       sidebar's stacking context (fixed inset: 0), so every tap on a drawer
+       link hit the overlay and only closed the drawer (mobile menu never
+       navigated). Sibling: overlay (140) sits under the drawer (150), above
+       the page. -->
+  <div data-sidebar-overlay></div>
 </site-sidebar>
 
 <style>

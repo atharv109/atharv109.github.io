@@ -168,6 +168,16 @@ const {
     font: inherit;
     color: var(--color-subtext2);
     cursor: pointer;
+    /* fat invisible hit area: the visible label is a tiny chip, the tap
+       target isn't (mobile sweep finding; ≥44px is the touch floor) */
+  }
+  .menu-button::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    right: -14px;
+    bottom: -7px;
+    left: -14px;
   }
   .menu-button[aria-expanded='true'] {
     color: var(--color-subtext0);

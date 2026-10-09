@@ -32,6 +32,10 @@ export class AsciiRenderer {
   private sheet!: CSSStyleSheet;
   private classCache = new Map<string, string>();
   private classSeq = 0;
+  /** Test seam: full grid-rebuild count since start, surfaced on the overlay
+      as data-rebuilds so e2e tests can assert resize-rebuild behaviour. */
+  private rebuildCount = 0;
+  private lastW = 0;
   private raf = 0;
   private last = 0;
   private frame = 0;
@@ -69,6 +73,7 @@ export class AsciiRenderer {
 
   private rebuildGrid(): void {
     this.measure();
+    this.lastW = this.host.clientWidth;
     const w = this.host.clientWidth;
     const h = this.host.clientHeight;
     this.surface.resize(
@@ -85,6 +90,7 @@ export class AsciiRenderer {
       this.rowEls.push(row);
       this.prevRuns.push([]);
     }
+    this.overlay.dataset.rebuilds = String(++this.rebuildCount);
   }
 
   private classFor(color?: string, bg?: string): string {
@@ -192,7 +198,18 @@ export class AsciiRenderer {
     this.overlay.setAttribute('aria-hidden', 'true');
     this.host.appendChild(this.overlay);
     this.rebuildGrid();
-    new ResizeObserver(() => this.rebuildGrid()).observe(this.host);
+    // Mobile browser chrome (address bar show/hide, keyboard) resizes the
+    // viewport HEIGHT repeatedly — often mid-animation (the home mark's grid
+    // was rebuilt on every chrome toggle while the user filled in the
+    // monogram: the mask re-rasterised at the new row count, hatch progress
+    // was wiped and the completed mark re-anchored mid-celebration). A
+    // height-only change moves nothing the grid anchors to, so rebuild on a
+    // WIDTH change only; orientation/rotate and real resizes still get a
+    // fresh grid. The surface keeps its last row count until then (rain
+    // simply drops to the old bottom, inside the clipped overlay).
+    new ResizeObserver(() => {
+      if (this.host.clientWidth !== this.lastW) this.rebuildGrid();
+    }).observe(this.host);
     document.fonts?.ready?.then(() => this.rebuildGrid());
     // fonts.ready may resolve before the webfont's load begins — pin the face
     // so a post-ready load still re-measures (stale metrics skew every draw).

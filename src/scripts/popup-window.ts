@@ -225,6 +225,20 @@ export function titleFromSrc(src: string): string {
 }
 
 export function openPopup(src: string, type: 'iframe' | 'image' = 'iframe', title?: string): void {
+  // External sites ship frame-ancestors 'none' (github, linkedin) — an
+  // iframe popup of them renders blank. Cross-origin src routes to a real
+  // tab at EVERY width (the mobile divert existed; now it's the rule for
+  // anything off-origin), per the mobile QA sweep's finding.
+  try {
+    const abs = new URL(src, window.location.href);
+    if (abs.origin !== window.location.origin) {
+      window.open(src, '_blank', 'noopener,noreferrer');
+      return;
+    }
+  } catch {
+    window.open(src, '_blank', 'noopener,noreferrer');
+    return;
+  }
   if (window.matchMedia('(width<=50rem)').matches) {
     window.open(src, '_blank', 'noopener,noreferrer');
     return;

@@ -48,8 +48,11 @@ test.describe('editor shell', () => {
     await expect(page.locator('site-sidebar')).toHaveAttribute('open', '');
     await expect(menu).toHaveAttribute('aria-expanded', 'true');
 
-    // overlay tap closes the drawer
-    await page.locator('[data-sidebar-overlay]').click();
+    // overlay tap closes the drawer (tap outside the 36ch drawer: the overlay
+    // now sits UNDER the drawer, so its centre point is the drawer itself)
+    await page
+      .locator('[data-sidebar-overlay]')
+      .click({ position: { x: 380, y: 400 } });
     await expect(page.locator('site-sidebar')).not.toHaveAttribute('open', '');
     await expect(menu).toHaveAttribute('aria-expanded', 'false');
   });

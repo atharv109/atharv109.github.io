@@ -433,6 +433,25 @@ story-block {
   cursor: pointer;
   padding: 0 0.5ch;
   text-decoration: none;
+  position: relative;
+}
+/* the '<' '>' arrows are one char wide — their tap area isn't; the two
+   pseudo-areas meet in the middle without crossing each other */
+.story-btn.story-prev::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -14px;
+  right: -2px;
+}
+.story-btn.story-next::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -2px;
+  right: -14px;
 }
 .story-btn:hover {
   color: var(--color-green);

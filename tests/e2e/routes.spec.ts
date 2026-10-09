@@ -68,14 +68,22 @@ test.describe('routes', () => {
     await expect(page.locator('.content-lines').first()).toContainText('archive-index');
   });
 
-  test('popup interceptor opens contact external chips in a popup window', async ({ page }) => {
+  test('external contact chips open real tabs (their CSP blocks iframes)', async ({ page, context }) => {
+    // github/linkedin send frame-ancestors 'none': an iframe popup renders
+    // blank; the popup interceptor routes off-origin src to a real tab at
+    // every width (mobile QA sweep + desktop probe).
     await page.goto('/contact/');
     const popupButton = page.locator('.content-lines a.button[data-popup-src]').first();
     await expect(popupButton).toBeVisible();
-    await popupButton.click();
-    await expect(page.locator('popup-window')).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(page.locator('popup-window')).toHaveCount(0);
+    const src = await popupButton.getAttribute('data-popup-src');
+    const host = src ? new URL(src, 'http://x/').hostname : '';
+    const [ext] = await Promise.all([
+      context.waitForEvent('page'),
+      popupButton.click(),
+    ]);
+    await ext.waitForURL((u) => u.toString().includes(host), { timeout: 4000 });
+    await expect(page.locator('popup-window')).toHaveCount(0); // no blank popup
+    await ext.close();
   });
 
   test('contact CTA is horizontally centred over the buffer', async ({ page }) => {
