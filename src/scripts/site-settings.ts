@@ -33,7 +33,7 @@ export function initSiteSettings(): void {
   const el = document.querySelector<HTMLElement>('site-settings');
   if (!el) return;
   const html = document.documentElement;
-  if (html.hasAttribute('data-embedded') || window.innerWidth <= 700) return;
+  if (html.hasAttribute('data-embedded')) return;
   armed = true;
   el.hidden = false;
   const root = el.querySelector<HTMLElement>('.cp-root');
@@ -111,16 +111,13 @@ export function initSiteSettings(): void {
   };
   raf = requestAnimationFrame(tick);
 
-  // Destroyed ≤700px (ref §4.4: mobile never gets the panel). One-way.
-  const destroy = (): void => {
-    el.hidden = true;
+  // Mobile (≤44rem) gets the same panel (mobile QA round retired the old
+  // "never at ≤700px" rule): the class re-positions it below the fixed Menu
+  // chip in the component's stylesheet. Re-evaluated on resize so a rotate
+  // across the breakpoint keeps the right placement.
+  const place = (): void => {
+    el.classList.toggle('cp-mobile', window.matchMedia('(width <= 44rem)').matches);
   };
-  const onResize = (): void => {
-    if (window.innerWidth <= 700) {
-      if (raf) cancelAnimationFrame(raf);
-      window.removeEventListener('resize', onResize);
-      destroy();
-    }
-  };
-  window.addEventListener('resize', onResize);
+  place();
+  window.addEventListener('resize', place);
 }

@@ -93,12 +93,26 @@ test.describe('site settings panel', () => {
     await expect(page.locator('.cp-title')).toHaveAttribute('aria-expanded', 'false');
   });
 
-  test('destroyed at ≤700px, never mounted', async ({ page }) => {
+  test('mounted on mobile too — below the Menu chip, controls operable', async ({ page }) => {
+    // The mobile QA round's deferred finding: theme/font controls exist on
+    // phones (the old contract "destroyed ≤700px" is retired).
     await page.setViewportSize({ width: 640, height: 800 });
     await page.goto('/about/');
-    await expect(page.locator('#site-controls')).toBeHidden();
-    expect(await page.evaluate(() => document.querySelector('#site-controls')?.hidden)).toBe(
-      true,
-    );
+    const panel = page.locator('site-settings');
+    await expect(panel).toBeVisible();
+
+    // Sits BELOW the fixed Menu chip — the tap targets must not overlap.
+    const below = await page.evaluate(() => {
+      const menu = document.querySelector('.menu-button')?.getBoundingClientRect();
+      const root = document.querySelector('.cp-root')?.getBoundingClientRect();
+      return !!(menu && root && root.top >= menu.bottom - 1);
+    });
+    expect(below).toBe(true);
+
+    await page.locator('.cp-title').click();
+    await expect(page.locator('.cp-controllers')).toBeVisible();
+    await page.locator('#cp-theme').selectOption('Light');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    expect(await page.evaluate(() => localStorage.getItem('am-theme'))).toBe('Light');
   });
 });

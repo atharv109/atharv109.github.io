@@ -182,4 +182,33 @@ test.describe('a11y — reduced motion sweep', () => {
     expect(await toast.evaluate((el) => getComputedStyle(el).animationName)).toBe('none');
     await context.close();
   });
+
+  test('closed mobile drawer is inert: not focusable, open drops it', async ({ page }) => {
+    // Mobile QA deferred finding: the transform-hidden drawer stayed
+    // keyboard-reachable (foldables with attached keyboards land inside it).
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/about/');
+    await expect(
+      page.locator('.sidebar nav').evaluate((n) => n.inert),
+    ).resolves.toBe(true);
+
+    await page.locator('.menu-button').click();
+    await expect(
+      page.locator('.sidebar nav').evaluate((n) => !n.inert),
+    ).resolves.toBe(true);
+    // focus actually lands inside the open drawer
+    await page.locator('.sidebar nav a').first().focus();
+    expect(
+      await page.evaluate(() =>
+        document.querySelector('.sidebar nav')!.contains(document.activeElement),
+      ),
+    ).toBe(true);
+
+    await page.keyboard.press('Escape'); // or overlay tap → closes
+    const reInert = await page.evaluate(() => {
+      const drawerOpen = document.querySelector('site-sidebar')?.hasAttribute('open');
+      return !drawerOpen && document.querySelector('.sidebar nav')!.inert;
+    });
+    expect(reInert).toBe(true);
+  });
 });

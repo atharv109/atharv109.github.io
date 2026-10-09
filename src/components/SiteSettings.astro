@@ -48,6 +48,12 @@
   #site-controls[hidden] {
     display: none;
   }
+  /* mobile (site-settings.ts toggles .cp-mobile): the same panel, one row
+     lower — the top-right slot belongs to the fixed Menu chip; the mobile
+     QA round's deferred finding, now fixed */
+  site-settings.cp-mobile .cp-root {
+    top: 48px; /* Menu chip row + pad */
+  }
   .cp-root {
     position: absolute;
     top: 0;
